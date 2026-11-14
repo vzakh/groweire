@@ -59,7 +59,7 @@ const providers: Source[] = [
           How It Works: <span class="text-lime">Data Fusion</span> &amp; Crop Rotation
         </h2>
 
-        <div class="hiw-top mt-14 grid items-center gap-12 lg:mt-16 lg:grid-cols-12 lg:gap-14">
+        <div class="mt-14 grid items-center gap-12 lg:mt-16 lg:grid-cols-12 lg:gap-14">
           <!-- Interface frame -->
           <div class="min-w-0 lg:col-span-7">
             <div class="device">

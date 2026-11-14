@@ -1,13 +1,16 @@
 <script setup lang="ts">
 /**
- * Top bar, ported from final-header/groweire-v7.3 (`header.top`), including the A+ text-size
- * toolbar (100 / 125 / 150 / 200%, remembered in localStorage).
+ * Top bar, ported from final-header/groweire-v7.3 (`header.top`). The right corner shows the
+ * user profile (nickname + picture) from config/assets.ts.
  * Fixed; dark gradient over the hero photo, solid deep green after 70% of a screen of scroll.
  * The link for the section currently in view is underlined in lime.
  * Links point at the matching parts of this page.
  */
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { CURRENT_USER } from '@/config/assets'
+
+const initials = CURRENT_USER.nickname.trim().split(' ').filter(Boolean).map((w) => w.charAt(0)).join('').slice(0, 2).toUpperCase()
 
 const links = [
   { to: '/#how-it-works', label: 'How it works', ch: 'how-it-works' },
@@ -17,20 +20,6 @@ const links = [
 ]
 const tracked = ['solutions', 'coverage', 'how-it-works'] // in page order
 
-/* A+ text size (v7.3): 100 → 125 → 150 → 200 → 100 */
-const TSZ = ['', 'text-125', 'text-150', 'text-200']
-const TLB = ['100%', '125%', '150%', '200%']
-const ti = ref(0)
-function setText() {
-  const h = document.documentElement
-  h.classList.remove('text-125', 'text-150', 'text-200')
-  if (TSZ[ti.value]) h.classList.add(TSZ[ti.value]!)
-}
-function cycleText() {
-  ti.value = (ti.value + 1) % 4
-  try { localStorage.setItem('ge73-ts', String(ti.value)) } catch { /* not persisted */ }
-  setText()
-}
 
 const solid = ref(false)
 const current = ref('')
@@ -56,9 +45,6 @@ function onScrollRaf() {
 }
 
 onMounted(() => {
-  try { ti.value = parseInt(localStorage.getItem('ge73-ts') || '0', 10) || 0 } catch { ti.value = 0 }
-  if (ti.value < 0 || ti.value > 3) ti.value = 0
-  setText()
   onScroll()
   window.addEventListener('scroll', onScrollRaf, { passive: true })
 })
@@ -117,21 +103,27 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
         </ol>
       </nav>
       <div style="display:flex;gap:.6rem;align-items:center">
-        <button
-          id="aplus"
-          type="button"
-          class="aplus"
-          :aria-label="`Text size ${TLB[ti]}. Make text bigger`"
-          @click="cycleText"
+        <RouterLink
+          class="user"
+          to="/app"
+          :aria-label="`Your profile: ${CURRENT_USER.nickname}`"
         >
+          <img
+            v-if="CURRENT_USER.avatar"
+            class="avatar"
+            :src="CURRENT_USER.avatar"
+            alt=""
+          >
           <span
-            class="ic"
+            v-else
+            class="avatar avatar--initials"
             aria-hidden="true"
-          >A+</span><span
-            class="tx"
+          >{{ initials }}</span>
+          <span
+            class="nick"
             aria-hidden="true"
-          >Text size <span id="ts-val">{{ TLB[ti] }}</span></span>
-        </button>
+          >{{ CURRENT_USER.nickname }}</span>
+        </RouterLink>
         <RouterLink
           class="btn btn-primary top-cta"
           to="/app"
@@ -215,12 +207,13 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
 }
 .navl a[aria-current='true'] { border-bottom-color: #c8f36b; }
 
-/* A+ text-size toolbar (v7.3) */
-.aplus {
+/* User profile (right corner) */
+.user {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   min-height: 3rem;
+  padding: 0 1rem 0 0.4rem;
   border-radius: 999px;
   border: 2px solid rgba(255, 255, 255, 0.6);
   background: rgba(5, 17, 13, 0.35);
@@ -228,23 +221,28 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
   font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
   font-weight: 700;
   font-size: 1rem;
-  cursor: pointer;
-  padding: 0 1rem 0 0.4rem;
+  text-decoration: none;
   white-space: nowrap;
+  transition: border-color 0.18s;
 }
-.aplus .ic {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.user:hover { border-color: #ffffff; }
+.avatar {
   width: 2.1rem;
   height: 2.1rem;
   border-radius: 999px;
-  background: #ffffff;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+.avatar--initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #c8f36b;
   color: #122b23;
   font-family: 'Manrope', system-ui, sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
+  font-weight: 700;
 }
-.aplus:hover { border-color: #ffffff; }
 
 /* Header button (v7.3: shown only when the links collapse) */
 .top .top-cta { display: none; }
@@ -258,29 +256,13 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
     padding: 0 1rem;
     font-size: 1rem;
   }
-  .top .aplus .tx { display: inline; }
 }
 @media (max-width: 640px) {
   .top .top-cta { display: none !important; }
 }
+@media (max-width: 380px) {
+  .user { padding-right: 0.4rem; }
+  .user .nick { display: none; }
+}
 </style>
 
-<style>
-/* Unscoped on purpose: these key off the A+ text-size class on <html> (v7.3 rules). */
-/* Larger text needs more room: collapse the links earlier so the bar never wraps */
-header.top .navl a { white-space: nowrap; }
-@media (max-width: 1340px) { html.text-125 header.top nav { display: none; } }
-@media (max-width: 1620px) { html.text-150 header.top nav { display: none; } }
-@media (max-width: 2600px) { html.text-200 header.top nav { display: none; } }
-@media (max-width: 400px) { html.text-125 header.top .aplus .tx { display: none; } }
-@media (max-width: 1060px) {
-  html.text-150 header.top .top-cta,
-  html.text-200 header.top .top-cta { display: none; }
-}
-@media (max-width: 640px) {
-  html.text-150 header.top .aplus .tx,
-  html.text-200 header.top .aplus .tx { display: none; }
-  html.text-200 header.top .wordmark { font-size: 1.05rem; }
-  html.text-200 header.top .wrap { gap: 0.5rem; }
-}
-</style>
