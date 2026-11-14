@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import pytest
 
-from agrolens_ml import CONTRACT_VERSION
+from agrolens_ml import CONTRACT_VERSION, RISK_RULES_VERSION
 from api.routes import health
-from core.config import REPO_ROOT, Settings, get_settings
+from core.config import Settings, get_settings
 
 
 def test_live(client):
@@ -39,29 +39,33 @@ def test_body_over_1mb_is_rejected(client):
     assert r.json()["code"] == "payload_too_large"
 
 
-def test_model_dir_comes_from_current_file():
-    current = (REPO_ROOT / "ml/artifacts/CURRENT").read_text(encoding="utf-8").strip()
-    assert Settings(model_dir=None).resolved_model_dir().name == current
-
-
 @pytest.fixture
 def with_source(monkeypatch):
-    def _set(source):
+    def _set(source, has_counts=True):
         monkeypatch.setattr(health, "_data_source", lambda _factory: source)
+        monkeypatch.setattr(health, "_has_counts", lambda _factory: has_counts)
 
     return _set
 
 
-def test_ready_on_stub_and_synthetic(client, with_source):
+def test_ready_needs_no_model_bundle(client, with_source):
     with_source("synthetic")
     r = client.get("/api/v1/health/ready")
     assert r.status_code == 200, r.text
     body = r.json()
-    assert body["model_version"] == "stub-0"
-    assert body["model_kind"] == "stub"
+    assert body["model_version"] == RISK_RULES_VERSION
+    assert body["model_kind"] == "counted_history"
     assert body["data_source"] == "synthetic"
     assert body["contract_version"] == CONTRACT_VERSION
     assert body["cache"] in ("redis", "degraded")
+    assert not hasattr(client.app.state, "stress_model")
+
+
+def test_ready_without_counted_risks(client, with_source):
+    with_source("real", has_counts=False)
+    r = client.get("/api/v1/health/ready")
+    assert r.status_code == 503
+    assert r.json()["code"] == "dataset_not_loaded"
 
 
 def test_ready_refuses_stub_when_not_allowed(app, client, with_source):

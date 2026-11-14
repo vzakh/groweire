@@ -6,7 +6,7 @@ import joblib
 import pyarrow.parquet as pq
 import pytest
 
-from agrolens_ml import CONTRACT_VERSION, FEATURE_NAMES, schemas
+from agrolens_ml import CONTRACT_VERSION, FEATURE_NAMES, RISK_TYPES, schemas
 
 pytestmark = pytest.mark.contract
 
@@ -14,6 +14,7 @@ TABLES = {
     "grid_cells": schemas.GRID_CELLS_SCHEMA,
     "cell_month_features": schemas.CELL_MONTH_SCHEMA,
     "risk_grid": schemas.RISK_GRID_SCHEMA,
+    "risk_counts": schemas.RISK_COUNTS_SCHEMA,
 }
 
 
@@ -46,6 +47,25 @@ def test_cell_month_keys_unique(data_dir):
     df = cm.to_pandas()
     assert not df.duplicated().any()
     assert df["month"].str.fullmatch(r"\d{4}-\d{2}").all()
+
+
+def test_risk_counts(data_dir):
+    counts = pq.read_table(data_dir / "risk_counts.parquet").to_pandas()
+    cells = pq.read_table(data_dir / "grid_cells.parquet", columns=["cell_id"]).to_pandas()
+    assert not counts.duplicated(["cell_id", "calendar_month", "stress_type"]).any()
+    per_cell = counts.groupby("cell_id").size()
+    assert set(per_cell.index) == set(cells["cell_id"])
+    assert (per_cell == 8 * len(RISK_TYPES)).all()  # months 3..10 x every stress type
+    assert set(counts["calendar_month"]) == set(range(3, 11))
+    assert set(counts["stress_type"]) == set(RISK_TYPES)
+    assert (counts["years_total"] > 0).all()
+    assert (counts["years_hit"].between(0, counts["years_total"])).all()
+    expected = counts["years_hit"] / counts["years_total"]
+    assert (counts["frequency"] - expected).abs().max() < 1e-6
+    assert counts["recent_frequency"].between(0, 1).all()
+    n_examples = counts["example_years"].map(len)
+    assert (n_examples <= counts["years_hit"]).all()
+    assert (n_examples[counts["years_hit"] > 0] > 0).all()
 
 
 def test_risk_grid(data_dir):

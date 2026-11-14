@@ -8,38 +8,37 @@ from __future__ import annotations
 
 import ast
 import inspect
-import json
-import math
 
 import agrolens_ml
-from core.config import APP_DIR, get_settings
+from core.config import APP_DIR
 
+# Since contract 2.0 the backend's main path counts risks; it loads no model bundle.
 USED_BY_BACKEND = {
     "CONTRACT_VERSION",
     "FEATURE_NAMES",
-    "STRESS_TYPES",
+    "RISK_TYPES",
+    "RISK_RULES_VERSION",
     "POWER_DAILY_PARAMETERS",
     "CELL_STATIC_KEYS",
     "MONTHLY_INPUT_COLUMNS",
     "power_daily_to_monthly",
-    "build_feature_row",
-    "StressModel",
-    "load_bundle",
+    "count_risks",
     "make_synthetic_tables",
     "schemas",
 }
+NOT_ON_THE_MAIN_PATH = {"load_bundle", "StressModel", "build_feature_row", "attribute_stress"}
 
 
 def test_contract_version_the_backend_was_built_for():
-    assert agrolens_ml.CONTRACT_VERSION == "1.0"
+    assert agrolens_ml.CONTRACT_VERSION == "2.0"
 
 
 def test_everything_the_backend_uses_is_public():
     assert USED_BY_BACKEND <= set(agrolens_ml.__all__)
 
 
-def test_backend_imports_only_the_public_surface():
-    """No `agrolens_ml.<submodule>` imports and no names outside __all__ anywhere in app/."""
+def test_backend_imports_only_the_public_surface_and_no_model():
+    """No `agrolens_ml.<submodule>` imports, no names outside __all__, no model on the main path."""
     public = set(agrolens_ml.__all__)
     for path in APP_DIR.rglob("*.py"):
         for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
@@ -50,6 +49,7 @@ def test_backend_imports_only_the_public_surface():
                 assert node.module == "agrolens_ml", f"{path}: from {node.module} import ..."
                 used = {alias.name for alias in node.names}
                 assert used <= public, f"{path}: {used - public}"
+                assert not used & NOT_ON_THE_MAIN_PATH, f"{path}: {used & NOT_ON_THE_MAIN_PATH}"
 
 
 def test_signatures_the_backend_calls():
@@ -58,12 +58,14 @@ def test_signatures_the_backend_calls():
         "elev_m",
         "lat",
     ]
-    assert list(inspect.signature(agrolens_ml.build_feature_row).parameters) == [
-        "cell_static",
-        "monthly_history",
-        "target_month",
+    assert list(inspect.signature(agrolens_ml.count_risks).parameters) == [
+        "daily",
+        "elev_m",
+        "lat",
+        "drainage_class",
+        "monthly_rain_mm",
     ]
-    assert set(agrolens_ml.STRESS_TYPES) == {"drought", "waterlogging", "heat", "frost", "other"}
+    assert agrolens_ml.RISK_TYPES == ("drought", "waterlogging", "heat", "frost")
     assert {"lat", "lon", "elev_m", "slope_deg", "drainage_class"} <= set(
         agrolens_ml.CELL_STATIC_KEYS
     )
@@ -80,18 +82,14 @@ def test_signatures_the_backend_calls():
     } <= set(agrolens_ml.MONTHLY_INPUT_COLUMNS)
 
 
-def test_current_bundle_loads_and_reproduces_its_example():
-    model_dir = get_settings().resolved_model_dir()
-    model = agrolens_ml.load_bundle(model_dir)
-    example = json.loads((model_dir / "example.json").read_text())
-    row = {k: (math.nan if v is None else v) for k, v in example["features"].items()}
-    prediction = model.predict([row])[0]
-    assert abs(prediction["probability"] - example["expected"]["probability"]) < 1e-9
-    assert set(prediction) == {
-        "probability",
-        "interval",
-        "drivers",
-        "stress_types",
-        "needs_local_review",
-    }
-    assert {"feature", "value", "contribution", "text"} <= set(prediction["drivers"][0])
+def test_risk_counts_columns_the_backend_reads():
+    assert agrolens_ml.schemas.RISK_COUNTS_SCHEMA.names == [
+        "cell_id",
+        "calendar_month",
+        "stress_type",
+        "years_hit",
+        "years_total",
+        "frequency",
+        "recent_frequency",
+        "example_years",
+    ]

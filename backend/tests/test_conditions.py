@@ -45,6 +45,22 @@ def test_pilot_field(db_client, pilot_field):
     assert body["disclaimer"].startswith("This tool supports, not replaces")
     assert "no_soil_test" in {g["code"] for g in body["information_gaps"]}
 
+    # "Your soil" card: the map values in farmer words
+    card = {f["label"]: f["text"] for f in body["soil"]["plain"]}
+    assert {"Soil mix", "Acidity", "Slope"} <= set(card)
+    assert card["Acidity"].startswith("pH about ") and "7 is neutral" in card["Acidity"]
+    if body["soil"]["drainage_class"] is not None:
+        assert card["Drainage"].startswith("Drains ")
+
+    # summer greenness per year, for the "is my land getting less green?" chart
+    green = body["greenness_history"]
+    assert green["years"] == sorted(green["years"]) and len(green["years"]) >= 3
+    assert len(green["summer_ndvi"]) == len(green["years"])
+    assert all(v is None or 0 < v < 1 for v in green["summer_ndvi"])
+    assert set(green["lowest_years"]) <= set(green["years"]) and len(green["lowest_years"]) <= 3
+    assert green["text"].startswith("How green the land around your field was each summer")
+    assert "greenness_is_area_not_field" in {g["code"] for g in body["information_gaps"]}
+
     # Warm call: served from the cache, no second POWER request.
     again = db_client.get(f"/api/v1/fields/{pilot_field}/conditions")
     assert again.json() == body
@@ -85,3 +101,13 @@ def test_unknown_field_and_bad_years(db_client, pilot_field):
     assert r.status_code == 404 and r.json()["code"] == "field_not_found"
     r = db_client.get(f"/api/v1/fields/{pilot_field}/conditions", params={"years": 99})
     assert r.status_code == 422
+
+
+@respx.mock
+def test_non_pilot_field_has_a_soil_card_but_no_greenness_history(db_client, kenya_field):
+    respx.get(power.POWER_URL).mock(side_effect=power_responder)
+    respx.get(soilgrids.SOILGRIDS_URL).respond(json=soil_payload())
+    body = db_client.get(f"/api/v1/fields/{kenya_field}/conditions").json()
+    assert body["greenness_history"] is None
+    labels = [f["label"] for f in body["soil"]["plain"]]
+    assert "Acidity" in labels and "Drainage" not in labels  # no drainage map outside Ireland

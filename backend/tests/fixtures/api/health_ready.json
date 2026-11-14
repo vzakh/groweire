@@ -1,5 +1,5 @@
 {
-  "_fixture_source": "stub-0",
+  "_fixture_source": "counted-1",
   "_request": {
     "method": "GET",
     "path": "/api/v1/health/ready",
@@ -7,9 +7,9 @@
     "status": 200
   },
   "status": "ok",
-  "model_version": "stub-0",
-  "model_kind": "stub",
-  "data_source": "synthetic",
-  "contract_version": "1.0",
+  "model_version": "counted-1",
+  "model_kind": "counted_history",
+  "data_source": "real",
+  "contract_version": "2.0",
   "cache": "redis"
 }

@@ -64,8 +64,22 @@ def test_stress_risk_layer(db_client):
     assert body["type"] == "FeatureCollection" and len(body["features"]) > 100
     feature = body["features"][0]
     assert feature["geometry"]["type"] == "Polygon"
-    assert {"cell_id", "p", "level", "dominant_type"} <= set(feature["properties"])
+    assert {"cell_id", "p", "p_lo", "p_hi", "level", "dominant_type"} <= set(feature["properties"])
+    assert {"stress_type", "years_hit", "years_total"} <= set(feature["properties"])
+    assert body["stress_type"] is None  # no type asked: each cell shows its most frequent one
     assert body["data_quality"] == ["synthetic_data"]
+
+    frost = db_client.get("/api/v1/layers/stress-risk", params={"month": 3, "type": "frost"})
+    assert frost.status_code == 200, frost.text
+    assert frost.json()["stress_type"] == "frost"
+    assert len(frost.json()["features"]) == len(body["features"])
+    for f in frost.json()["features"]:
+        props = f["properties"]
+        assert props["stress_type"] == "frost"
+        assert props["p"] == pytest.approx(props["years_hit"] / props["years_total"], abs=1e-3)
+        assert props["p_lo"] <= props["p"] <= props["p_hi"]
+    bad = db_client.get("/api/v1/layers/stress-risk", params={"month": 7, "type": "hail"})
+    assert bad.status_code == 422
     assert db_client.get("/api/v1/layers/stress-risk", params={"month": 12}).status_code == 422
 
 

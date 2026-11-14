@@ -6,7 +6,7 @@ import httpx
 from fastapi import APIRouter, Depends, Query, Request
 
 from clients.cache import Cache
-from core.deps import ModelInfo, get_cache, get_http, get_model_info
+from core.deps import get_cache, get_http
 from models.common import ErrorOut
 from models.conditions import ConditionsOut
 from services import conditions as service
@@ -26,8 +26,7 @@ async def get_conditions(
     years: int = Query(default=30, ge=5, le=40),
     http: httpx.AsyncClient = Depends(get_http),
     cache: Cache = Depends(get_cache),
-    info: ModelInfo = Depends(get_model_info),
 ) -> ConditionsOut:
     return await service.get_conditions(
-        field_id, years, http, cache, request.app.state.session_factory, info
+        field_id, years, http, cache, request.app.state.session_factory
     )

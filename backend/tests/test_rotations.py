@@ -8,7 +8,7 @@ import respx
 from clients import power
 from models.rotations import Constraints
 from services import rotation
-from services.rotation import explain, generate, score
+from services.rotation import explain, generate, present, score
 from services.rotation.catalog import load_catalog
 from testing import power_responder
 
@@ -158,6 +158,8 @@ def test_compare(db_client, pilot_field):
     current = strategies[0]
     assert current["id"] == "current" and current["is_current"] and current["vs_current"] is None
     assert current["headline"] == "Your rotation: spring barley every year"
+    assert body["same_crop_note"]["text"].startswith("You grow spring barley every year.")
+    assert body["same_crop_note"]["source"] == "teagasc_rotation"
     assert current["explanation"]["why_suggested"] == "Baseline for comparison."
     assert "Fits your malting barley contract" in current["explanation"]["benefits"]
     assert any("wild oats" in risk for risk in current["explanation"]["risks_needing_local_review"])
@@ -247,3 +249,27 @@ def test_compare_still_answers_when_weather_is_down(db_client, pilot_field, monk
 def test_unknown_field(db_client):
     r = db_client.post(URL, json=_body("f_00000000"))
     assert r.status_code == 404 and r.json()["code"] == "field_not_found"
+
+
+# ---------- "the same crop every year" note ----------
+
+
+@pytest.mark.parametrize(
+    "sequence, source, words",
+    [
+        (["spring_barley"] * 4, "teagasc_rotation", "You grow spring barley every year."),
+        (["maize_silage"] * 3, None, "You grow maize silage every year."),
+        (["spring_barley", "spring_barley", "winter_wheat"], None, None),  # already a rotation
+        (["grass_clover_ley"] * 4, None, None),  # grass every year is normal
+        (["spring_barley"], None, None),  # one year tells us nothing
+    ],
+)
+def test_same_crop_note(catalog, sequence, source, words):
+    note = present.same_crop_note(generate.Candidate("current", "x", sequence), catalog)
+    if words is None:
+        assert note is None
+        return
+    assert note.text.startswith(words) and note.source == source
+    assert not any(ch.isdigit() for ch in note.text) and "%" not in note.text  # no numbers
+    # only the sourced (cereal) note claims that yields fall
+    assert ("yields often fall" in note.text) is (source is not None)

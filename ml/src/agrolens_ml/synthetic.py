@@ -21,13 +21,20 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-from agrolens_ml.config import MIN_VALID_FRAC, MONTHS, STRESS_Z
-from agrolens_ml.contract import CONTRACT_VERSION
+from agrolens_ml.config import (
+    MIN_VALID_FRAC,
+    MONTHS,
+    RISK_EXAMPLE_YEARS,
+    RISK_RECENT_YEARS,
+    STRESS_Z,
+)
+from agrolens_ml.contract import CONTRACT_VERSION, RISK_TYPES
 from agrolens_ml.features.build import FEATURE_NAMES, STATIC_FROM_CELL, month_angle
 from agrolens_ml.model.stub import STUB_VERSION, StubModel, stub_stress_types
 from agrolens_ml.schemas import (
     CELL_MONTH_SCHEMA,
     GRID_CELLS_SCHEMA,
+    RISK_COUNTS_SCHEMA,
     RISK_GRID_SCHEMA,
     feature_names_sha256,
 )
@@ -211,8 +218,43 @@ def _risk_grid(cm: pd.DataFrame, model: StubModel) -> pd.DataFrame:
     return agg
 
 
+# Invented years-hit out of 25 per stress type and month, ONLY to drive layouts and tests.
+_COUNT_YEARS = np.arange(2001, 2026)
+_COUNT_BASE = {
+    "drought": {6: 3, 7: 6, 8: 3},
+    "waterlogging": {3: 5, 9: 2, 10: 7},
+    "heat": {7: 2},
+    "frost": {3: 15, 4: 8, 5: 2},
+}
+
+
+def _risk_counts(cells: pd.DataFrame, rng: np.random.Generator) -> pd.DataFrame:
+    rows = []
+    total = len(_COUNT_YEARS)
+    for cell_id in cells["cell_id"]:
+        for month in MONTHS:
+            for stress_type in RISK_TYPES:
+                base = _COUNT_BASE[stress_type].get(month, 0)
+                hit = int(np.clip(base + rng.integers(-1, 2), 0, total)) if base else 0
+                years = np.sort(rng.choice(_COUNT_YEARS, size=hit, replace=False))[::-1]
+                recent = int((years > _COUNT_YEARS[-1] - RISK_RECENT_YEARS).sum())
+                rows.append(
+                    {
+                        "cell_id": cell_id,
+                        "calendar_month": month,
+                        "stress_type": stress_type,
+                        "years_hit": hit,
+                        "years_total": total,
+                        "frequency": hit / total,
+                        "recent_frequency": recent / RISK_RECENT_YEARS,
+                        "example_years": [int(y) for y in years[:RISK_EXAMPLE_YEARS]],
+                    }
+                )
+    return pd.DataFrame(rows)
+
+
 def make_synthetic_tables(grid_csv: str | Path, out_dir: str | Path, seed: int = 7) -> Path:
-    """Write grid_cells, cell_month_features, risk_grid (.parquet) + _MANIFEST.json to out_dir."""
+    """Write grid_cells, cell_month_features, risk_grid, risk_counts + _MANIFEST.json to out_dir."""
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     rng = np.random.default_rng(seed)
@@ -225,6 +267,8 @@ def make_synthetic_tables(grid_csv: str | Path, out_dir: str | Path, seed: int =
     _write(cells, GRID_CELLS_SCHEMA, out / "grid_cells.parquet")
     _write(cm, CELL_MONTH_SCHEMA, out / "cell_month_features.parquet")
     _write(risk, RISK_GRID_SCHEMA, out / "risk_grid.parquet")
+    counts = _risk_counts(cells, np.random.default_rng(seed + 1))
+    _write(counts, RISK_COUNTS_SCHEMA, out / "risk_counts.parquet")
 
     manifest = {
         "source": "synthetic",
@@ -234,7 +278,12 @@ def make_synthetic_tables(grid_csv: str | Path, out_dir: str | Path, seed: int =
         "ml_version": STUB_VERSION,
         "seed": seed,
         "years": list(YEARS),
-        "rows": {"grid_cells": len(cells), "cell_month_features": len(cm), "risk_grid": len(risk)},
+        "rows": {
+            "grid_cells": len(cells),
+            "cell_month_features": len(cm),
+            "risk_grid": len(risk),
+            "risk_counts": len(counts),
+        },
     }
     (out / "_MANIFEST.json").write_text(json.dumps(manifest, indent=2) + "\n")
     return out

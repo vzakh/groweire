@@ -38,8 +38,6 @@ services:
     build: &api-build
       context: .
       dockerfile: deploy/docker/api.Dockerfile
-      args:
-        MODEL_VERSION: ${MODEL_VERSION:-stub_v0} # `make build` passes ml/artifacts/CURRENT
     command: alembic -c /srv/alembic.ini upgrade head
     working_dir: /srv
     restart: "no"

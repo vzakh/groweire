@@ -30,6 +30,23 @@ too_words:         # "... it is too {word}."
   heat: hot
   frost: frosty
 
+# "{Month} {words} here in N of the last M years" (the counted evidence sentence).
+was_words:
+  drought: was too dry
+  waterlogging: was too wet
+  heat: was too hot
+  frost: had frost
+evidence_years: 3    # how many example years the sentence names
+
+# "Your soil" card. Drainage words follow the classes of the EPA / Teagasc soil map.
+drainage_words:
+  1: Drains very fast
+  2: Drains well
+  3: Drains moderately
+  4: Drains poorly
+  5: Drains very poorly
+greenness_lowest_years: 3
+
 default_crop_words: crops
 
 # A driver text from ML that contains any of these is dropped (never shown to a farmer).

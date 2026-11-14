@@ -18,17 +18,14 @@ TEST_URL = ADMIN_URL.rsplit("/", 1)[0] + "/" + TEST_DB
 
 os.environ["APP_ENV"] = "test"
 os.environ["DATABASE_URL"] = TEST_URL  # never the dev or prod database
-os.environ.setdefault("ALLOW_STUB_MODEL", "true")
-# Unit tests always run on the committed stub (plan 20), whatever ml/artifacts/CURRENT promotes.
-# The real bundle is exercised by the task 28 integration tests.
-os.environ["MODEL_DIR"] = str(Path(__file__).resolve().parents[2] / "ml" / "artifacts" / "stub_v0")
+os.environ.setdefault("ALLOW_STUB_MODEL", "true")  # = allow synthetic tables (no model is loaded)
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 from sqlalchemy import create_engine, text  # noqa: E402
 from sqlalchemy.exc import OperationalError  # noqa: E402
 
-from agrolens_ml import load_bundle, make_synthetic_tables  # noqa: E402
+from agrolens_ml import make_synthetic_tables  # noqa: E402
 from clients.cache import Cache  # noqa: E402
 from core.config import REPO_ROOT, get_settings  # noqa: E402
 from testing import FakeRedis  # noqa: E402
@@ -36,12 +33,6 @@ from testing import FakeRedis  # noqa: E402
 BACKEND = REPO_ROOT / "backend"
 GRID_CSV = REPO_ROOT / "ml" / "pipelines" / "config" / "grid_005deg.csv"
 TEST_BBOX = (-7.6, 52.3, -6.4, 53.1)  # lon_min, lat_min, lon_max, lat_max: Carlow / Kilkenny
-
-
-@pytest.fixture(scope="session")
-def stub_model():
-    """The SAME stub ML ships (task 05), pinned through MODEL_DIR. Not a hand-made mock."""
-    return load_bundle(get_settings().resolved_model_dir())
 
 
 @pytest.fixture

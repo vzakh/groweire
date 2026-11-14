@@ -62,6 +62,20 @@ RISK_GRID_SCHEMA = pa.schema(
     ]
 )
 
+# Counted monthly risks (PLAN_40): one row per cell x calendar month (3..10) x stress type.
+RISK_COUNTS_SCHEMA = pa.schema(
+    [
+        pa.field("cell_id", pa.string(), nullable=False),
+        pa.field("calendar_month", pa.int8(), nullable=False),  # 3..10
+        pa.field("stress_type", pa.string(), nullable=False),  # drought|waterlogging|heat|frost
+        pa.field("years_hit", pa.int16(), nullable=False),
+        pa.field("years_total", pa.int16(), nullable=False),
+        pa.field("frequency", _F32),  # years_hit / years_total
+        pa.field("recent_frequency", _F32),  # same, last 10 years
+        pa.field("example_years", pa.list_(pa.int16())),  # hit years, worst first (max 5)
+    ]
+)
+
 MANIFEST_KEYS: tuple[str, ...] = (
     "source",  # "synthetic" | "real"
     "contract_version",
@@ -74,6 +88,7 @@ TABLE_SCHEMAS: dict[str, str] = {
     "grid_cells": "GRID_CELLS_SCHEMA",
     "cell_month_features": "CELL_MONTH_SCHEMA",
     "risk_grid": "RISK_GRID_SCHEMA",
+    "risk_counts": "RISK_COUNTS_SCHEMA",
 }
 
 

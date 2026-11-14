@@ -43,6 +43,15 @@ def power_daily_to_monthly(daily: pd.DataFrame, elev_m: float, lat: float) -> pd
     Returns one row per calendar month with exactly MONTHLY_INPUT_COLUMNS (`month` = Period[M]).
     `elev_m` [m] and `lat` [deg] feed FAO-56 ET0 (pressure and extraterrestrial radiation).
     """
+    df = power_daily_with_et0(daily, elev_m, lat)
+    return _monthly_aggregates(df)
+
+
+def power_daily_with_et0(daily: pd.DataFrame, elev_m: float, lat: float) -> pd.DataFrame:
+    """Cleaned POWER daily frame (DatetimeIndex, fill values -> NaN) plus an `ET0` column [mm/day].
+
+    The one place daily ET0 is computed: the monthly aggregates and the counted risks both use it.
+    """
     df = _daily_frame(daily)
     df["ET0"] = et0_penman_monteith(
         df["T2M_MAX"],
@@ -54,6 +63,10 @@ def power_daily_to_monthly(daily: pd.DataFrame, elev_m: float, lat: float) -> pd
         lat,
         df.index.day_of_year,
     )
+    return df
+
+
+def _monthly_aggregates(df: pd.DataFrame) -> pd.DataFrame:
     month = df.index.to_period("M")
     g = df.groupby(month)
 

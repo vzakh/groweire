@@ -12,7 +12,18 @@ from pathlib import Path
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0])
-    ap.add_argument("step", choices=["power-monthly", "grid", "labels", "features", "train", "risk-grid"])
+    ap.add_argument(
+        "step",
+        choices=[
+            "power-monthly",
+            "grid",
+            "labels",
+            "features",
+            "train",
+            "risk-grid",
+            "risk-counts",
+        ],
+    )
     ap.add_argument("--out", default="ml/artifacts/stress_lgbm_v1", help="train: bundle directory")
     ap.add_argument("--splits", type=int, default=5, help="train: GroupKFold splits by year")
     ap.add_argument("--config", default="ml/pipelines/config")
@@ -47,6 +58,12 @@ def main() -> None:
         from agrolens_ml.risk_grid import write_risk_grid  # pylint: disable=import-outside-toplevel
 
         out = write_risk_grid(data / "processed", Path(args.out))
+    elif args.step == "risk-counts":
+        from agrolens_ml.risk_counts import (
+            write_risk_counts,
+        )  # pylint: disable=import-outside-toplevel
+
+        out = write_risk_counts(data / "processed")
     print(f"{args.step}: wrote {out} in {time.perf_counter() - t0:.1f}s")
 
 

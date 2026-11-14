@@ -8,9 +8,8 @@ from __future__ import annotations
 import httpx
 from starlette.concurrency import run_in_threadpool
 
-from agrolens_ml import StressModel
 from clients.cache import Cache
-from core.deps import ModelInfo
+from core.deps import is_synthetic
 from core.errors import AppError, UpstreamError
 from models.common import SYNTHETIC_DATA, InformationGap, provenance
 from models.rotations import CompareIn, CompareOut, CoverCropUse, Metrics, Strategy
@@ -69,8 +68,6 @@ def select(scored: list[tuple], n_alternatives: int) -> list[tuple]:
 async def compare(
     body: CompareIn,
     *,
-    model: StressModel,
-    info: ModelInfo,
     catalog: Catalog,
     http: httpx.AsyncClient,
     cache: Cache,
@@ -88,9 +85,7 @@ async def compare(
         market_contracts=tuple(body.constraints.market_contracts),
     )
     try:
-        profile = await risk.field_profile(
-            ctx, "seasonal_profile", model, http, cache, session_factory
-        )
+        profile = await risk.field_profile(ctx, http, cache, session_factory)
         env.risk = {
             m.month: (m.probability, plain.dominant_type(m.stress_types)) for m in profile.months
         }
@@ -125,7 +120,7 @@ async def compare(
                 text="Weather history was not available. Water use and erosion are not compared.",
             )
         )
-    if info.kind == "stub" or (ctx.pilot and ctx.data_source != "real"):
+    if ctx.pilot and is_synthetic(ctx.data_source):
         quality.append(SYNTHETIC_DATA)
     gaps.append(
         InformationGap(
@@ -192,6 +187,7 @@ async def compare(
 
     return CompareOut(
         field_id=body.field_id,
+        same_crop_note=present.same_crop_note(current, catalog),
         strategies=strategies,
         weights_used=weight_by_criterion,
         data_quality=list(dict.fromkeys(quality)),

@@ -31,10 +31,8 @@ COPY --from=build --chown=app:app /srv/.venv /srv/.venv
 COPY --from=build --chown=app:app /src/backend/app /srv/app
 COPY --from=build --chown=app:app /src/backend/alembic /srv/alembic
 COPY --from=build --chown=app:app /src/backend/alembic.ini /srv/alembic.ini
-# Only the promoted bundle goes into the image: a model change is a new image tag.
-ARG MODEL_VERSION
-COPY --chown=app:app ml/artifacts/${MODEL_VERSION}/ /srv/model/
-ENV PATH=/srv/.venv/bin:$PATH PYTHONPATH=/srv/app MODEL_DIR=/srv/model \
+# No model bundle in the image: the risk is counted from weather history (PLAN_40, contract 2.0).
+ENV PATH=/srv/.venv/bin:$PATH PYTHONPATH=/srv/app \
     PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
 USER app
 EXPOSE 8080

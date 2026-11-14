@@ -32,7 +32,8 @@ def main() -> None:
     for fobj in earthaccess.open(results):
         ds = xr.open_dataset(fobj, group="Grid", engine="h5netcdf")
         sub = ds["precipitation"].sel(lon=slice(x0, x1), lat=slice(y0, y1)).load()
-        t = pd.Timestamp(np.asarray(ds["time"].values)[0])
+        # IMERG time uses a julian calendar (needs `cftime`); its text form parses as a date.
+        t = pd.Timestamp(str(np.asarray(ds["time"].values)[0]))
         hours = calendar.monthrange(t.year, t.month)[1] * 24
         vals = sub.isel(time=0).sel(lon=xr.DataArray(cells.lon), lat=xr.DataArray(cells.lat),
                                     method="nearest").values * hours  # mm/hr -> mm/month

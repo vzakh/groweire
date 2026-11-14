@@ -13,11 +13,20 @@ from starlette.concurrency import run_in_threadpool
 
 from clients import soilgrids
 from clients.cache import Cache
-from core.deps import ModelInfo, is_synthetic
+from core.deps import is_synthetic
 from core.errors import UpstreamError
 from models.common import OUTSIDE_PILOT, SYNTHETIC_DATA, InformationGap, provenance
-from models.conditions import Climate, ClimateMonth, ConditionsOut, Series, Soil, Trends
-from services import context
+from models.conditions import (
+    Climate,
+    ClimateMonth,
+    ConditionsOut,
+    GreennessHistory,
+    Series,
+    Soil,
+    SoilFact,
+    Trends,
+)
+from services import context, plain
 from services.context import FieldContext
 
 SERIES_YEARS = 10
@@ -27,6 +36,16 @@ _SERIES = text("""
     SELECT cell_id, month, ndvi, ndvi_z, sm_rootzone FROM cell_month
     WHERE cell_id = ANY(:ids) AND month >= :since ORDER BY month
     """)
+
+
+# Mean NDVI of June-August per cell and year; a summer needs at least two months with data.
+_SUMMER_NDVI = text("""
+    SELECT cell_id, EXTRACT(YEAR FROM month)::int AS year, avg(ndvi) AS ndvi, count(ndvi) AS n
+    FROM cell_month
+    WHERE cell_id = ANY(:ids) AND EXTRACT(MONTH FROM month) IN (6, 7, 8)
+    GROUP BY cell_id, EXTRACT(YEAR FROM month)
+    """)
+MIN_SUMMER_MONTHS = 2
 
 
 def _num(value, digits: int = 1) -> float | None:
@@ -100,13 +119,32 @@ def _series(session_factory, ctx: FieldContext, since: date) -> Series | None:
     return out
 
 
+def _greenness(session_factory, ctx: FieldContext) -> GreennessHistory | None:
+    with session_factory() as db:
+        rows = db.execute(_SUMMER_NDVI, {"ids": list(ctx.weights)}).mappings().all()
+    by_year: dict[int, dict[str, float | None]] = {}
+    for r in rows:
+        value = r["ndvi"] if r["n"] >= MIN_SUMMER_MONTHS else None
+        by_year.setdefault(r["year"], {})[r["cell_id"]] = value
+    if not by_year:
+        return None
+    years = sorted(by_year)
+    values = [_num(context.weighted(by_year[y], ctx.weights), 3) for y in years]
+    known = sorted((v, y) for v, y in zip(values, years, strict=True) if v is not None)
+    lowest = [y for _, y in known[: plain.config()["greenness_lowest_years"]]]
+    if len(known) <= len(lowest):  # too few summers to call any of them "the least green"
+        lowest = []
+    return GreennessHistory(
+        years=years, summer_ndvi=values, lowest_years=lowest, text=plain.greenness_text(lowest)
+    )
+
+
 async def get_conditions(
     field_id: str,
     years: int,
     http: httpx.AsyncClient,
     cache: Cache,
     session_factory,
-    info: ModelInfo,
 ) -> ConditionsOut:
     ctx: FieldContext = await run_in_threadpool(context.load_context, session_factory, field_id)
     gaps: list[InformationGap] = []
@@ -157,6 +195,7 @@ async def get_conditions(
                 )
             )
     if soil is not None:
+        soil.plain = [SoilFact(label=label, text=text_) for label, text_ in plain.soil_facts(soil)]
         gaps.append(
             InformationGap(
                 code="no_soil_test",
@@ -182,12 +221,21 @@ async def get_conditions(
         )
 
     # --- satellite series (pilot only) ---
-    series = None
+    series = greenness = None
     if ctx.pilot:
         since = date(context.today().year - SERIES_YEARS, 1, 1)
         series = await run_in_threadpool(_series, session_factory, ctx, since)
+        greenness = await run_in_threadpool(_greenness, session_factory, ctx)
+        if greenness is not None:
+            gaps.append(
+                InformationGap(
+                    code="greenness_is_area_not_field",
+                    text="The satellite sees squares of about 250 metres, so this is the land "
+                    "around your field, not only your field.",
+                )
+            )
         sources += ["modis_ndvi", "smap"]
-        if is_synthetic(info, ctx.data_source):
+        if is_synthetic(ctx.data_source):
             quality.append(SYNTHETIC_DATA)
     else:
         quality.append(OUTSIDE_PILOT)
@@ -206,6 +254,7 @@ async def get_conditions(
         trends=trends,
         soil=soil,
         series=series,
+        greenness_history=greenness,
         data_quality=quality,
         information_gaps=gaps,
         provenance=provenance(*sources),

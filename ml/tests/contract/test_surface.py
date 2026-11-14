@@ -15,6 +15,9 @@ EXPECTED_ALL = {
     "CONTRACT_VERSION",
     "FEATURE_NAMES",
     "STRESS_TYPES",
+    "RISK_TYPES",
+    "RISK_RULES_VERSION",
+    "count_risks",
     "POWER_DAILY_PARAMETERS",
     "CELL_STATIC_KEYS",
     "MONTHLY_INPUT_COLUMNS",
@@ -33,6 +36,7 @@ EXPECTED_SIGNATURES = {
     "power_daily_to_monthly": ["daily", "elev_m", "lat"],
     "build_feature_row": ["cell_static", "monthly_history", "target_month"],
     "attribute_stress": ["row"],
+    "count_risks": ["daily", "elev_m", "lat", "drainage_class", "monthly_rain_mm"],
     "load_bundle": ["model_dir"],
     "make_stub_bundle": ["out_dir"],
     "make_synthetic_tables": ["grid_csv", "out_dir", "seed"],
@@ -40,7 +44,9 @@ EXPECTED_SIGNATURES = {
 
 
 def test_contract_version():
-    assert agrolens_ml.CONTRACT_VERSION == "1.0"
+    assert agrolens_ml.CONTRACT_VERSION == "2.0"
+    assert agrolens_ml.RISK_RULES_VERSION.startswith("counted-")
+    assert agrolens_ml.RISK_TYPES == ("drought", "waterlogging", "heat", "frost")
 
 
 def test_all_is_exactly_the_surface():
@@ -128,5 +134,11 @@ def test_stress_model_interface():
 
 
 def test_schemas_module():
-    for name in ("GRID_CELLS_SCHEMA", "CELL_MONTH_SCHEMA", "RISK_GRID_SCHEMA", "MANIFEST_KEYS"):
+    for name in (
+        "GRID_CELLS_SCHEMA",
+        "CELL_MONTH_SCHEMA",
+        "RISK_GRID_SCHEMA",
+        "RISK_COUNTS_SCHEMA",
+        "MANIFEST_KEYS",
+    ):
         assert hasattr(agrolens_ml.schemas, name), name

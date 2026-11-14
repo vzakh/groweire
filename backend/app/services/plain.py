@@ -68,18 +68,66 @@ def riskiest_month(months: Sequence[dict]) -> int | None:
 
 
 def headline(months: Sequence[dict], crop_name: str | None) -> str:
-    """One sentence for the answer screen. `months`: [{month, risk, stress_types}]."""
+    """One sentence for the answer screen. `months`: [{month, risk, stress_types, frequency?}].
+
+    `risk` (crop-weighted when a crop is chosen) picks the month; the words "N years in 10"
+    describe `frequency`, the counted weather, so the sentence can be checked against memory.
+    """
     crop = crop_words(crop_name)
     top_month = riskiest_month(months)
     top = next((m for m in months if m["month"] == top_month), None)
     if top is None or level(top["risk"]) == "low":
         return f"No month stands out as risky for {crop} here."
     start = f"{month_name(top['month'])} is the riskiest month for {crop} here."
-    often = frequency_text(top["risk"])
+    often = frequency_text(top.get("frequency", top["risk"]))
     kind = dominant_type(top["stress_types"])
     if kind == "other":
         return f"{start} In {often} crops here do worse than normal, cause unclear."
     return f"{start} In {often} it is too {config()['too_words'][kind]}."
+
+
+def join_years(years: Sequence[int]) -> str:
+    """[2018, 2006, 2022] -> "2018, 2006 and 2022"."""
+    words = [str(y) for y in years]
+    return words[0] if len(words) == 1 else f"{', '.join(words[:-1])} and {words[-1]}"
+
+
+def evidence_text(month: int, kind: str, hit: int, total: int, years: Sequence[int]) -> str:
+    """The counted fact behind a month: a sentence the farmer can check against memory."""
+    cfg = config()
+    start = f"{month_name(month)} {cfg['was_words'][kind]} here in {hit} of the last {total} years"
+    shown = list(years)[: cfg["evidence_years"]]
+    if not shown:
+        return f"{start}."
+    if hit <= len(shown):
+        return f"{start}: {join_years(shown)}."
+    return f"{start}, for example {join_years(shown)}."
+
+
+def soil_facts(soil) -> list[tuple[str, str]]:
+    """(label, text) pairs for the "Your soil" card: what the maps say, with no judgement."""
+    facts = []
+    words = config()["drainage_words"].get(soil.drainage_class)
+    if words:
+        facts.append(("Drainage", words))
+    if soil.clay is not None and soil.sand is not None:
+        facts.append(
+            ("Soil mix", f"About {soil.clay:.0f} parts clay and {soil.sand:.0f} parts sand in 100")
+        )
+    if soil.phh2o is not None:
+        facts.append(("Acidity", f"pH about {soil.phh2o:.1f} (7 is neutral, lower is more acid)"))
+    if soil.slope_deg is not None:
+        facts.append(("Slope", f"About {soil.slope_deg:.0f} degrees"))
+    return facts
+
+
+def greenness_text(lowest_years: Sequence[int]) -> str:
+    """Caption of the summer greenness chart."""
+    start = "How green the land around your field was each summer, seen by NASA satellites."
+    if not lowest_years:
+        return start
+    word = "summer was" if len(lowest_years) == 1 else "summers were"
+    return f"{start} The least green {word} {join_years(lowest_years)}."
 
 
 def aria_label(
@@ -88,14 +136,23 @@ def aria_label(
     month_label: str,
     often: str,
     interval: tuple[float, float],
+    kind: str | None = None,
 ) -> str:
-    """Screen-reader text for one month tile. The only place a percentage is spoken."""
-    ok = config()["labels"]["ok"]
+    """Screen-reader text for one month tile. The only place a percentage is spoken.
+
+    `kind` is the counted stress type of the month and `often` how often it was counted;
+    None means no risky weather was counted in any year.
+    """
+    cfg = config()
+    ok = cfg["labels"]["ok"]
     word = month_label if month_label == ok else month_label.lower()
+    start = f"{month_name(month)}, {crop_words(crop_name)}: {word}."
+    if kind not in cfg["too_words"]:
+        return f"{start} No risky weather was counted here."
     low, high = (round(100 * x) for x in interval)
     return (
-        f"{month_name(month)}, {crop_words(crop_name)}: {word}. "
-        f"In {often} there is crop stress here. Uncertainty {low} to {high} percent."
+        f"{start} In {often} it is too {cfg['too_words'][kind]} here. "
+        f"Uncertainty {low} to {high} percent."
     )
 
 

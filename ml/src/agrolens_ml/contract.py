@@ -1,4 +1,8 @@
-"""ML -> Backend contract constants and types (brief §13.2, CONTRACT_VERSION 1.0).
+"""ML -> Backend contract constants and types (brief §13.2, CONTRACT_VERSION 2.0).
+
+2.0 (PLAN_40): the risk shown to the farmer is COUNTED from weather history (count_risks,
+risk_counts table). The model types below stay for the optional ML add-on; the backend's main
+path no longer loads a bundle.
 
 Changing anything in this module is a contract change (brief rule 4): bump CONTRACT_VERSION,
 update brief §13.2, the stub and ml/tests/contract/ in one commit.
@@ -10,7 +14,12 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TypedDict
 
-CONTRACT_VERSION: str = "1.0"
+CONTRACT_VERSION: str = "2.0"
+
+# Counted risk (PLAN_40). RISK_RULES_VERSION names the rule set in config.py; bump it when a
+# threshold changes, so a response can always be traced to the rules that produced it.
+RISK_TYPES: tuple[str, ...] = ("drought", "waterlogging", "heat", "frost")
+RISK_RULES_VERSION: str = "counted-1"
 
 STRESS_TYPES: tuple[str, ...] = ("drought", "waterlogging", "heat", "frost", "other")
 

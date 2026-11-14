@@ -1,5 +1,5 @@
 {
-  "_fixture_source": "stub-0",
+  "_fixture_source": "counted-1",
   "_request": {
     "method": "POST",
     "path": "/api/v1/predict/stress-risk",
@@ -11,347 +11,464 @@
   },
   "field_id": "f_00000003",
   "mode": "seasonal_profile",
+  "method": "counted_history",
   "crop_id": null,
-  "model_version": "stub-0",
+  "model_version": "counted-1",
   "calibrated_region": "IE",
   "pilot_coverage": false,
-  "headline": "July is the riskiest month for crops here. In about 2 years in 10 it is too dry.",
+  "headline": "No month stands out as risky for crops here.",
   "months": [
     {
       "month": 3,
-      "year": null,
-      "probability": 0.0519,
+      "probability": 0.0,
       "interval": [
-        0.0019,
-        0.1019
+        0.0,
+        0.0803
       ],
-      "stress_types": [
-        "other"
-      ],
-      "drivers": [
+      "years_hit": 0,
+      "years_total": 31,
+      "stress_types": [],
+      "counts": [
         {
-          "feature": "p_minus_et0_3m_l1_z",
-          "value": 0.9215346894535824,
-          "contribution": 0.04,
-          "text": "The last 3 months were wetter than usual for this place"
+          "stress_type": "drought",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         },
         {
-          "feature": "tmax_l1_z",
-          "value": 0.9874339760698242,
-          "contribution": 0.02,
-          "text": "Last month's days were warmer than usual"
+          "stress_type": "waterlogging",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         },
         {
-          "feature": "ndvi_z_l1",
-          "value": null,
-          "contribution": 0.01,
-          "text": "Recent weather at this place"
+          "stress_type": "heat",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "frost",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         }
       ],
+      "drivers": [],
       "crop_sensitivity": null,
       "crop_weighted_risk": null,
       "level": "low",
       "label": "OK",
-      "frequency_text": "about 1 year in 20",
-      "aria_label": "March, crops: OK. In about 1 year in 20 there is crop stress here. Uncertainty 0 to 10 percent."
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "March, crops: OK. No risky weather was counted here."
     },
     {
       "month": 4,
-      "year": null,
-      "probability": 0.0719,
+      "probability": 0.0,
       "interval": [
-        0.0219,
-        0.1219
+        0.0,
+        0.0803
       ],
-      "stress_types": [
-        "other"
-      ],
-      "drivers": [
+      "years_hit": 0,
+      "years_total": 31,
+      "stress_types": [],
+      "counts": [
         {
-          "feature": "p_minus_et0_3m_l1_z",
-          "value": 0.7797369839715121,
-          "contribution": 0.04,
-          "text": "The last 3 months were wetter than usual for this place"
+          "stress_type": "drought",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         },
         {
-          "feature": "tmax_l1_z",
-          "value": 0.6887385882737461,
-          "contribution": 0.02,
-          "text": "Last month's days were warmer than usual"
+          "stress_type": "waterlogging",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         },
         {
-          "feature": "ndvi_z_l1",
-          "value": null,
-          "contribution": 0.01,
-          "text": "Recent weather at this place"
+          "stress_type": "heat",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "frost",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         }
       ],
+      "drivers": [],
       "crop_sensitivity": null,
       "crop_weighted_risk": null,
       "level": "low",
       "label": "OK",
-      "frequency_text": "about 1 year in 20",
-      "aria_label": "April, crops: OK. In about 1 year in 20 there is crop stress here. Uncertainty 2 to 12 percent."
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "April, crops: OK. No risky weather was counted here."
     },
     {
       "month": 5,
-      "year": null,
-      "probability": 0.1119,
+      "probability": 0.0,
       "interval": [
-        0.0619,
-        0.1619
+        0.0,
+        0.0803
       ],
-      "stress_types": [
-        "other"
-      ],
-      "drivers": [
+      "years_hit": 0,
+      "years_total": 31,
+      "stress_types": [],
+      "counts": [
         {
-          "feature": "p_minus_et0_3m_l1_z",
-          "value": -0.23184413456350467,
-          "contribution": 0.04,
-          "text": "The last 3 months were drier than usual for this place"
+          "stress_type": "drought",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         },
         {
-          "feature": "tmax_l1_z",
-          "value": 1.0793133943064455,
-          "contribution": 0.02,
-          "text": "Last month's days were warmer than usual"
+          "stress_type": "waterlogging",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         },
         {
-          "feature": "ndvi_z_l1",
-          "value": null,
-          "contribution": 0.01,
-          "text": "Recent weather at this place"
+          "stress_type": "heat",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "frost",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         }
       ],
-      "crop_sensitivity": null,
-      "crop_weighted_risk": null,
-      "level": "medium",
-      "label": "Unclear",
-      "frequency_text": "about 1 year in 10",
-      "aria_label": "May, crops: unclear. In about 1 year in 10 there is crop stress here. Uncertainty 6 to 16 percent."
-    },
-    {
-      "month": 6,
-      "year": null,
-      "probability": 0.1719,
-      "interval": [
-        0.1219,
-        0.2219
-      ],
-      "stress_types": [
-        "drought"
-      ],
-      "drivers": [
-        {
-          "feature": "p_minus_et0_3m_l1_z",
-          "value": 0.05841385109398065,
-          "contribution": 0.04,
-          "text": "The last 3 months were wetter than usual for this place"
-        },
-        {
-          "feature": "tmax_l1_z",
-          "value": -0.9660178194983476,
-          "contribution": 0.02,
-          "text": "Last month's days were cooler than usual"
-        },
-        {
-          "feature": "ndvi_z_l1",
-          "value": null,
-          "contribution": 0.01,
-          "text": "Recent weather at this place"
-        }
-      ],
-      "crop_sensitivity": null,
-      "crop_weighted_risk": null,
-      "level": "medium",
-      "label": "Dry",
-      "frequency_text": "about 2 years in 10",
-      "aria_label": "June, crops: dry. In about 2 years in 10 there is crop stress here. Uncertainty 12 to 22 percent."
-    },
-    {
-      "month": 7,
-      "year": null,
-      "probability": 0.2319,
-      "interval": [
-        0.1819,
-        0.2819
-      ],
-      "stress_types": [
-        "drought"
-      ],
-      "drivers": [
-        {
-          "feature": "p_minus_et0_3m_l1_z",
-          "value": 0.4926210788855337,
-          "contribution": 0.04,
-          "text": "The last 3 months were wetter than usual for this place"
-        },
-        {
-          "feature": "tmax_l1_z",
-          "value": -0.7442943738449045,
-          "contribution": 0.02,
-          "text": "Last month's days were cooler than usual"
-        },
-        {
-          "feature": "ndvi_z_l1",
-          "value": null,
-          "contribution": 0.01,
-          "text": "Recent weather at this place"
-        }
-      ],
-      "crop_sensitivity": null,
-      "crop_weighted_risk": null,
-      "level": "medium",
-      "label": "Dry",
-      "frequency_text": "about 2 years in 10",
-      "aria_label": "July, crops: dry. In about 2 years in 10 there is crop stress here. Uncertainty 18 to 28 percent."
-    },
-    {
-      "month": 8,
-      "year": null,
-      "probability": 0.1619,
-      "interval": [
-        0.1119,
-        0.2119
-      ],
-      "stress_types": [
-        "drought"
-      ],
-      "drivers": [
-        {
-          "feature": "p_minus_et0_3m_l1_z",
-          "value": -0.8971864345010142,
-          "contribution": 0.04,
-          "text": "The last 3 months were drier than usual for this place"
-        },
-        {
-          "feature": "tmax_l1_z",
-          "value": -0.5469095858916546,
-          "contribution": 0.02,
-          "text": "Last month's days were cooler than usual"
-        },
-        {
-          "feature": "ndvi_z_l1",
-          "value": null,
-          "contribution": 0.01,
-          "text": "Recent weather at this place"
-        }
-      ],
-      "crop_sensitivity": null,
-      "crop_weighted_risk": null,
-      "level": "medium",
-      "label": "Dry",
-      "frequency_text": "about 2 years in 10",
-      "aria_label": "August, crops: dry. In about 2 years in 10 there is crop stress here. Uncertainty 11 to 21 percent."
-    },
-    {
-      "month": 9,
-      "year": null,
-      "probability": 0.0919,
-      "interval": [
-        0.0419,
-        0.1419
-      ],
-      "stress_types": [
-        "other"
-      ],
-      "drivers": [
-        {
-          "feature": "p_minus_et0_3m_l1_z",
-          "value": -2.115929890789652,
-          "contribution": 0.04,
-          "text": "The last 3 months were drier than usual for this place"
-        },
-        {
-          "feature": "tmax_l1_z",
-          "value": -0.9630816156227933,
-          "contribution": 0.02,
-          "text": "Last month's days were cooler than usual"
-        },
-        {
-          "feature": "ndvi_z_l1",
-          "value": null,
-          "contribution": 0.01,
-          "text": "Recent weather at this place"
-        }
-      ],
+      "drivers": [],
       "crop_sensitivity": null,
       "crop_weighted_risk": null,
       "level": "low",
       "label": "OK",
-      "frequency_text": "about 1 year in 20",
-      "aria_label": "September, crops: OK. In about 1 year in 20 there is crop stress here. Uncertainty 4 to 14 percent."
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "May, crops: OK. No risky weather was counted here."
+    },
+    {
+      "month": 6,
+      "probability": 0.0,
+      "interval": [
+        0.0,
+        0.0803
+      ],
+      "years_hit": 0,
+      "years_total": 31,
+      "stress_types": [],
+      "counts": [
+        {
+          "stress_type": "drought",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "waterlogging",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "heat",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "frost",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        }
+      ],
+      "drivers": [],
+      "crop_sensitivity": null,
+      "crop_weighted_risk": null,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "June, crops: OK. No risky weather was counted here."
+    },
+    {
+      "month": 7,
+      "probability": 0.0,
+      "interval": [
+        0.0,
+        0.0803
+      ],
+      "years_hit": 0,
+      "years_total": 31,
+      "stress_types": [],
+      "counts": [
+        {
+          "stress_type": "drought",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "waterlogging",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "heat",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "frost",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        }
+      ],
+      "drivers": [],
+      "crop_sensitivity": null,
+      "crop_weighted_risk": null,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "July, crops: OK. No risky weather was counted here."
+    },
+    {
+      "month": 8,
+      "probability": 0.0,
+      "interval": [
+        0.0,
+        0.0803
+      ],
+      "years_hit": 0,
+      "years_total": 31,
+      "stress_types": [],
+      "counts": [
+        {
+          "stress_type": "drought",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "waterlogging",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "heat",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "frost",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        }
+      ],
+      "drivers": [],
+      "crop_sensitivity": null,
+      "crop_weighted_risk": null,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "August, crops: OK. No risky weather was counted here."
+    },
+    {
+      "month": 9,
+      "probability": 0.0,
+      "interval": [
+        0.0,
+        0.0803
+      ],
+      "years_hit": 0,
+      "years_total": 31,
+      "stress_types": [],
+      "counts": [
+        {
+          "stress_type": "drought",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "waterlogging",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "heat",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "frost",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        }
+      ],
+      "drivers": [],
+      "crop_sensitivity": null,
+      "crop_weighted_risk": null,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "September, crops: OK. No risky weather was counted here."
     },
     {
       "month": 10,
-      "year": null,
-      "probability": 0.1319,
+      "probability": 0.0,
       "interval": [
-        0.0819,
-        0.1819
+        0.0,
+        0.0803
       ],
-      "stress_types": [
-        "waterlogging"
-      ],
-      "drivers": [
+      "years_hit": 0,
+      "years_total": 31,
+      "stress_types": [],
+      "counts": [
         {
-          "feature": "p_minus_et0_3m_l1_z",
-          "value": -1.6040567231578569,
-          "contribution": 0.04,
-          "text": "The last 3 months were drier than usual for this place"
+          "stress_type": "drought",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         },
         {
-          "feature": "tmax_l1_z",
-          "value": 0.910707282611746,
-          "contribution": 0.02,
-          "text": "Last month's days were warmer than usual"
+          "stress_type": "waterlogging",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         },
         {
-          "feature": "ndvi_z_l1",
-          "value": null,
-          "contribution": 0.01,
-          "text": "Recent weather at this place"
+          "stress_type": "heat",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
+        },
+        {
+          "stress_type": "frost",
+          "years_hit": 0,
+          "years_total": 31,
+          "frequency": 0.0,
+          "recent_frequency": 0.0,
+          "example_years": []
         }
       ],
+      "drivers": [],
       "crop_sensitivity": null,
       "crop_weighted_risk": null,
-      "level": "medium",
-      "label": "Wet",
-      "frequency_text": "about 1 year in 10",
-      "aria_label": "October, crops: wet. In about 1 year in 10 there is crop stress here. Uncertainty 8 to 18 percent."
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "October, crops: OK. No risky weather was counted here."
     }
   ],
-  "riskiest_month": 7,
+  "riskiest_month": 3,
   "trend": null,
   "data_quality": [
     "outside_pilot",
-    "synthetic_data"
+    "drainage_unknown"
   ],
   "information_gaps": [
     {
-      "code": "trend_unavailable",
-      "text": "We cannot show a long-term trend for this place."
+      "code": "outside_pilot",
+      "text": "The risk rules were made for Irish soils and weather. Use this as a rough guide only."
     },
     {
-      "code": "outside_pilot",
-      "text": "The risk model is not calibrated here. It was built for Ireland. Use this as a rough guide only."
+      "code": "drainage_unknown",
+      "text": "We do not know how well this field drains. We assumed average drainage, so the wet months are a rough guide."
+    },
+    {
+      "code": "risk_rules_unverified",
+      "text": "How many dry, wet, hot or frosty days make a bad month is our own rule. It has not been checked by an advisor yet."
     }
   ],
   "needs_local_review": true,
   "disclaimer": "This tool supports, not replaces, your judgment and local agronomic advice.",
   "provenance": [
     {
-      "dataset_id": "soilgrids",
-      "description": "ISRIC SoilGrids v2.0 (global soil model, 250 m)",
-      "url": "https://soilgrids.org/",
-      "period": null
-    },
-    {
       "dataset_id": "power",
       "description": "NASA POWER daily weather (MERRA-2 / CERES), about 50 km grid",
       "url": "https://power.larc.nasa.gov/",
       "period": "1981–present"
+    },
+    {
+      "dataset_id": "met_eireann_smd",
+      "description": "Met Éireann / Teagasc soil moisture deficit model (Schulte et al. 2005), run on NASA POWER weather",
+      "url": "https://www.met.ie/climate/services/agri-meteorological-data",
+      "period": null
     }
   ]
 }

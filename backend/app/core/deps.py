@@ -3,22 +3,17 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
-from dataclasses import dataclass
 
 import httpx
 from fastapi import Depends, Request
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from agrolens_ml import StressModel
 from core.config import get_settings
 
 __all__ = [
-    "ModelInfo",
     "get_settings",
     "get_db",
-    "get_model",
-    "get_model_info",
     "get_http",
     "get_redis",
     "get_cache",
@@ -28,29 +23,12 @@ __all__ = [
 ]
 
 
-@dataclass(frozen=True)
-class ModelInfo:
-    """What the bundle folder says about itself (model_card.json + example.json)."""
-
-    version: str
-    kind: str
-    example: dict
-
-
 def get_db(request: Request) -> Iterator[Session]:
     session: Session = request.app.state.session_factory()
     try:
         yield session
     finally:
         session.close()
-
-
-def get_model(request: Request) -> StressModel:
-    return request.app.state.stress_model
-
-
-def get_model_info(request: Request) -> ModelInfo:
-    return request.app.state.model_info
 
 
 def get_http(request: Request) -> httpx.AsyncClient:
@@ -78,6 +56,6 @@ def get_data_source(db: Session = Depends(get_db)) -> str | None:
     return read_data_source(db)
 
 
-def is_synthetic(info: ModelInfo, data_source: str | None) -> bool:
-    """True when a response is built on the stub model or on synthetic tables (brief §8.8)."""
-    return info.kind == "stub" or data_source != "real"
+def is_synthetic(data_source: str | None) -> bool:
+    """True when a response is built on synthetic tables (brief §8.8)."""
+    return data_source != "real"
