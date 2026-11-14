@@ -23,3 +23,16 @@ ml/artifacts/_scratch/
 # Env files: only .envs/.example/ is committed (brief §12.7)
 .envs/.dev/
 .envs/.prod/
+
+# Claude Code: keep the shared shadcn-vue skill, ignore each person's local tools and settings
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/shadcn-vue/
+CLAUDE.md
+skills-lock.json
+
+# Local tool output (may contain credentials or screenshots)
+.playwright/
+.playwright-cli/
+.impeccable/
