@@ -297,7 +297,14 @@ def load_pilot(engine: Engine, data_dir: Path) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("data_dir", type=Path, help="data/synthetic or data/processed")
+    parser.add_argument(
+        "data_dir", type=Path, nargs="?", help="data/synthetic or data/processed"
+    )
+    parser.add_argument(
+        "--gazetteer-only",
+        action="store_true",
+        help="load only the GeoNames gazetteer and leave the pilot tables alone",
+    )
     parser.add_argument(
         "--geonames",
         type=Path,
@@ -305,14 +312,17 @@ def main(argv: list[str] | None = None) -> int:
         help="folder with the GeoNames IE.txt / GB.txt dumps (optional)",
     )
     args = parser.parse_args(argv)
+    if args.data_dir is None and not args.gazetteer_only:
+        parser.error("data_dir is required unless --gazetteer-only is given")
     engine = make_engine(get_settings().database_url)
-    started = time.perf_counter()
-    try:
-        result = load_pilot(engine, args.data_dir)
-    except LoadError as exc:
-        print(f"REFUSED: {exc}", file=sys.stderr)
-        return 2
-    print(f"loaded {result} in {time.perf_counter() - started:.1f}s")
+    if not args.gazetteer_only:
+        started = time.perf_counter()
+        try:
+            result = load_pilot(engine, args.data_dir)
+        except LoadError as exc:
+            print(f"REFUSED: {exc}", file=sys.stderr)
+            return 2
+        print(f"loaded {result} in {time.perf_counter() - started:.1f}s")
     places = load_gazetteer(engine, args.geonames)
     if places is None:
         print(

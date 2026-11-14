@@ -1,0 +1,14 @@
+.git
+.claude
+.idea
+.vscode
+**/.venv
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+data/
+.envs/.dev
+.envs/.prod
+ml/notebooks
+ml/artifacts/_scratch
+frontend/dist
