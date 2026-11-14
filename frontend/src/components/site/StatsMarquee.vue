@@ -55,7 +55,7 @@ const note = (c: Country) =>
         Built on global NASA Earth observations across
         <span class="text-emerald">180+ countries</span>
         — tailored for
-        <span class="text-emerald">Irish fields and advisers</span>
+        <span class="text-emerald"><span class="underline decoration-[0.08em] underline-offset-[0.14em]">Irish fields</span> and advisers</span>
         <IrishFlag class="ml-3 inline-block align-[0.05em]" />
       </h2>
 
