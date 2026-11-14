@@ -26,7 +26,7 @@ def main() -> None:
     )
     ap.add_argument("--out", default="ml/artifacts/stress_lgbm_v1", help="train: bundle directory")
     ap.add_argument("--splits", type=int, default=5, help="train: GroupKFold splits by year")
-    ap.add_argument("--config", default="ml/pipelines/config")
+    ap.add_argument("--config", default="ml/config")
     ap.add_argument("--data", default="data", help="data root containing raw/ and processed/")
     args = ap.parse_args()
     data = Path(args.data)

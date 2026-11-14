@@ -31,7 +31,7 @@ from core.config import REPO_ROOT, get_settings  # noqa: E402
 from testing import FakeRedis  # noqa: E402
 
 BACKEND = REPO_ROOT / "backend"
-GRID_CSV = REPO_ROOT / "ml" / "pipelines" / "config" / "grid_005deg.csv"
+GRID_CSV = REPO_ROOT / "ml" / "config" / "grid_005deg.csv"
 TEST_BBOX = (-7.6, 52.3, -6.4, 53.1)  # lon_min, lat_min, lon_max, lat_max: Carlow / Kilkenny
 
 

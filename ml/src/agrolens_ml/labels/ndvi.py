@@ -1,7 +1,7 @@
 """NDVI labels: QA filter -> monthly max-value composite (Terra + Aqua) -> cell mean -> z -> label.
 
 Source: MOD13Q1 / MYD13Q1 v6.1 tiles (h17v03 covers all of Ireland), downloaded directly
-(ml/pipelines/download/13_direct_ndvi.py) or via AppEEARS. The core works on per-pixel arrays,
+from NASA Earthdata or via AppEEARS. The core works on per-pixel arrays,
 so either source can feed it.
 
   QA         keep pixel reliability 0 (good) and 1 (marginal); drop 2 (snow/ice), 3 (cloudy), fill

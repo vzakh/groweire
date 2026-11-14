@@ -99,7 +99,7 @@ The repository is a **monorepo** with three deployable parts:
 
 - `frontend/` is a Vue 3 single-page app.
 - `backend/` is a FastAPI service backed by PostGIS and Redis.
-- `ml/` is the `agrolens_ml` Python package. It holds the risk rules, feature code and offline pipelines.
+- `ml/` is the `agrolens_ml` Python package. It holds the risk rules, feature code and the offline processing steps.
 
 `backend` and `ml` are members of one **uv workspace** and share one `uv.lock`. As a result, the counting code the API runs on a live point is byte-for-byte the code that built the pilot tables.
 
@@ -139,7 +139,7 @@ flowchart LR
     C --> OSM
 
     subgraph Offline["Offline, on a laptop (not deployed)"]
-        DL["ml/pipelines/download<br/>POWER · AppEEARS · IMERG · SoilGrids · Met Éireann · GeoNames"]
+        DL["data/raw · data/processed<br/>POWER · MODIS · IMERG · SoilGrids · soil map (downloaded by hand)"]
         CLI["python -m agrolens_ml.cli<br/>grid · labels · features · risk-counts"]
         PQ[/"data/processed/*.parquet<br/>+ _MANIFEST.json"/]
         DL --> CLI --> PQ
@@ -298,7 +298,7 @@ The crop catalogue ([`crops_ie.json`](backend/app/data/crops_ie.json)) covers 11
 | **GeoNames** IE + GB | GeoNames (CC BY 4.0) | — | Dump download | Place-search fallback (`gazetteer` table) | Offline |
 | **OpenFreeMap** "liberty" style | OpenFreeMap / OSM | vector | Browser, direct | Basemap (falls back to MapLibre demo tiles) | Live |
 
-The full list, with DOIs, licences and the exact attribution wording, is in [`ml/pipelines/download/REFERENCES.md`](ml/pipelines/download/REFERENCES.md). Every API response that contains derived data carries a `provenance` list naming the datasets it used.
+The full list, with DOIs, licences and the exact attribution wording, is in [`REFERENCES.md`](REFERENCES.md). Every API response that contains derived data carries a `provenance` list naming the datasets it used.
 
 **Known data caveats**, which the app also shows the farmer:
 
@@ -332,9 +332,7 @@ That is why field-level outputs are *risk indicators*, not measurements.
 │   └── tests/                   unit, contract, integration + fixtures/api/*.json (recorded responses)
 ├── ml/                          uv member `agrolens-ml`
 │   ├── src/agrolens_ml/         contract · config · risk_counts · features/ · labels/ · model/ · grid · pipeline · synthetic · cli
-│   ├── pipelines/
-│   │   ├── config/              Ireland outline + 0.05° / 0.1° / 0.25° grids
-│   │   └── download/            data download scripts (POWER, SoilGrids, Met Éireann, GeoNames, AppEEARS, IMERG)
+│   ├── config/                  Ireland outline + 0.05° / 0.1° / 0.25° analysis grids
 │   ├── artifacts/               stress_lgbm_v1 (earlier model, metrics, model card) · stub_v0 · reports/
 │   └── tests/                   unit tests + contract/ (ML → Backend)
 ├── frontend/                    Vue 3 SPA (npm project)
@@ -351,6 +349,8 @@ That is why field-level outputs are *risk indicators*, not measurements.
 ├── compose.yaml                 local stack: db, redis, migrate, api (+ load-pilot under profile `ops`)
 ├── .envs/.example/.api          environment template (copy to .envs/.dev/.api, never commit real values)
 ├── Makefile                     every common task (see below)
+├── REFERENCES.md                every source, with DOIs, licences and acknowledgement wording
+├── LICENSE                      MIT
 ├── pyproject.toml · uv.lock     uv workspace root (Python 3.12)
 └── .mcp.json · .claude/skills/  shadcn-vue MCP server and agent skill for Claude Code
 ```
@@ -469,7 +469,7 @@ The API reads **environment variables only**; it does not read a `.env` file. Th
 
 **Frontend.** `npm run dev:mock` loads `frontend/.env.mock` (`VITE_MOCK=1`). In development, Vite proxies `/api` to `http://localhost:8080`. In production, the SPA expects the API on the **same origin**.
 
-**Data pipeline.** Earthdata credentials (`EARTHDATA_USERNAME`, `EARTHDATA_PASSWORD`) go in `ml/pipelines/.env`, created from `ml/pipelines/download/.env.example`. Optional overrides are `AGROLENS_YEAR_START`, `AGROLENS_YEAR_END`, `AGROLENS_RAW` and `AGROLENS_PROCESSED`. Never commit `.env` or `.netrc`.
+**Earthdata credentials.** Never commit `.env`, `.netrc` or Earthdata credentials.
 
 ---
 
@@ -565,15 +565,30 @@ make contract BUNDLE=ml/artifacts/stub_v0 DATA=data/synthetic # ML → Backend c
 
 ## Building the real pilot data
 
-The pilot data is built offline on a laptop. It needs a free [Earthdata Login](https://urs.earthdata.nasa.gov/users/new) for AppEEARS and earthaccess, and the training extras: `uv sync --all-packages --all-extras`. All outputs go to `data/raw/` and `data/processed/`.
+The pilot data is built offline on a laptop. The source datasets were downloaded by hand from the providers listed in [`REFERENCES.md`](REFERENCES.md); a free [Earthdata Login](https://urs.earthdata.nasa.gov/users/new) is needed for the NASA ones. Processing needs the training extras: `uv sync --all-packages --all-extras`.
+
+**Inputs.** Place the downloads in the gitignored `data/` folder. The analysis grid and the Ireland outline are committed in [`ml/config/`](ml/config/).
+
+| Path | Contents |
+|---|---|
+| `data/raw/power/*.json` | NASA POWER daily responses, one per POWER node (AG community, 2001–2025) |
+| `data/processed/power_daily.parquet` | The same POWER data as one table (`node_id`, date, parameters) |
+| `data/processed/cell_to_power_node.csv` | Which POWER node each 0.05° cell reads |
+| `data/processed/soil_cell.parquet` | SoilGrids 0–30 cm values at each cell centroid |
+| `data/processed/imerg_cell_month.parquet` | GPM IMERG monthly rain per cell (`cell_id`, `month`, `precip_mm`) |
+| `data/raw/direct/mcd12q1/*.hdf` | MODIS MCD12Q1 land cover, tile h17v03 |
+| `data/raw/direct/srtmgl1/*.hgt.zip` | SRTMGL1 elevation tiles |
+| `data/raw/appeears/agrolens_M?D13Q1_*/` | MODIS MOD13Q1 / MYD13Q1 NDVI (AppEEARS bundles) |
+| `data/raw/irish_sis/**/soils_ie_f1.shp` | EPA / Teagasc national soil map (drainage) |
+| `data/raw/geonames/` | GeoNames `IE.txt`, `GB.txt` (`make geonames` fetches them) |
 
 ```mermaid
 flowchart TB
-    A["01_power.py<br/>POWER daily per node, 2001–2025"] --> P1["power_daily.parquet<br/>power_nodes.csv · cell_to_power_node.csv"]
-    B["02_soilgrids.py<br/>SoilGrids at 4,533 centroids"] --> P2["soil_cell.parquet"]
-    C["10/11_appeears_*.py · 12_direct_landcover_srtm.py<br/>MODIS NDVI · MCD12Q1 · SRTM · SMAP"] --> R1["data/raw/appeears · data/raw/direct"]
-    D["20_imerg.py<br/>GPM IMERG monthly"] --> P3["imerg_cell_month.parquet"]
-    E["Irish SIS drainage (manual)"] --> R2["data/raw/irish_sis"]
+    A["NASA POWER daily"] --> P1["power_daily.parquet<br/>cell_to_power_node.csv"]
+    B["ISRIC SoilGrids"] --> P2["soil_cell.parquet"]
+    C["MODIS NDVI · MCD12Q1 · SRTM"] --> R1["data/raw/appeears · data/raw/direct"]
+    D["GPM IMERG monthly"] --> P3["imerg_cell_month.parquet"]
+    E["EPA / Teagasc soil map"] --> R2["data/raw/irish_sis"]
     P1 & P2 & R1 & R2 --> G["cli grid → grid_cells.parquet<br/>(cells ≥ 30% agricultural)"]
     R1 --> L["cli labels → ndvi_cell_month.parquet"]
     P1 --> PM["cli power-monthly"]
@@ -583,18 +598,6 @@ flowchart TB
 ```
 
 ```bash
-# Downloads (submit AppEEARS first: its queue can take hours)
-cp ml/pipelines/download/.env.example ml/pipelines/.env     # add Earthdata credentials
-uv run python ml/pipelines/download/10_appeears_submit.py   # MODIS NDVI, land cover, SRTM, SMAP
-uv run python ml/pipelines/download/01_power.py             # ~5–15 min, no login
-uv run python ml/pipelines/download/02_soilgrids.py         # ~10–30 min, no login
-uv run python ml/pipelines/download/03_met_eireann.py       # station ground truth
-uv run python ml/pipelines/download/04_geonames.py
-uv run python ml/pipelines/download/20_imerg.py             # optional but recommended (rain rescaling)
-uv run python ml/pipelines/download/12_direct_landcover_srtm.py   # faster than the AppEEARS land-cover/SRTM jobs
-uv run python ml/pipelines/download/11_appeears_download.py --wait
-uv run python ml/pipelines/download/99_check.py             # what is on disk
-
 # Processing
 uv run --package agrolens-ml python -m agrolens_ml.cli power-monthly
 uv run --package agrolens-ml python -m agrolens_ml.cli grid
@@ -606,7 +609,7 @@ make risk-counts
 make load-pilot DATA=data/processed
 ```
 
-The Irish Soil Information System drainage map (EPA GIS downloads, *Soils*) is a manual download. Northern Ireland cells keep `drainage_class = null` and use the *moderate* parameters, which the app reports as an information gap. The download folder's own [README](ml/pipelines/download/README.md) (in Russian) has troubleshooting notes for AppEEARS and SoilGrids.
+Northern Ireland cells keep `drainage_class = null`, because the soil map covers the Republic only. They use the *moderate* parameters, which the app reports as an information gap.
 
 ---
 
@@ -736,6 +739,8 @@ See [Getting started](#getting-started) for the three ways to start it.
 - **Claude Code.** `.mcp.json` registers the shadcn-vue MCP server, and `.claude/skills/shadcn-vue/` holds its skill for adding UI components consistently.
 
 ## Acknowledgements and data attribution
+
+The full list of every dataset, method, guideline and software package, with DOIs and licences, is in **[`REFERENCES.md`](REFERENCES.md)**. The short version, with the wording each provider asks for:
 
 - **NASA POWER:** *These data were obtained from the NASA Langley Research Center (LaRC) POWER Project funded through the NASA Earth Science/Applied Science Program.*
 - **NASA GIBS:** *We acknowledge the use of imagery provided by services from NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS).*
