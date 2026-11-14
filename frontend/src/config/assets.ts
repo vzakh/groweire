@@ -16,13 +16,3 @@ export const HERO_IMAGE_ALT =
  */
 export const HOW_IT_WORKS_SCREENSHOT: string | null = null
 export const HOW_IT_WORKS_SCREENSHOT_ALT = 'The GrowÉire field workspace'
-
-/**
- * Signed-in user shown in the header's right corner. There is no login yet, so this is a
- * placeholder profile. `avatar`: an image in public/img/ (e.g. '/img/avatar.jpg'), or null to
- * show the user's initials instead.
- */
-export const CURRENT_USER: { nickname: string; avatar: string | null } = {
-  nickname: 'Demo farmer',
-  avatar: null,
-}

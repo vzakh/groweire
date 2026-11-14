@@ -106,6 +106,10 @@
 }
 
 
+/* A+ text-size control: rem-based sizing scales the page */
+html.text-125 { font-size: 125%; }
+html.text-150 { font-size: 150%; }
+
 /* Buttons */
 @layer components {
   .btn {
@@ -245,3 +249,11 @@ html.is-static *, html.is-static *::before, html.is-static *::after {
     text-wrap: balance;
   }
 }
+
+/*
+ * Large-text safeguards for the A+ button (125–150%). Tailwind breakpoints are measured in
+ * browser-default rems, so two-column layouts kick in before there is room for larger text.
+ */
+html.text-150 .hiw-top { grid-template-columns: minmax(0, 1fr); }
+html:is(.text-125, .text-150) :is(h1, h2, h3, p, li) { overflow-wrap: anywhere; hyphens: auto; }
+html:is(.text-125, .text-150) #coverage .whitespace-nowrap { white-space: normal; }

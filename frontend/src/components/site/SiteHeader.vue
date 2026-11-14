@@ -1,16 +1,16 @@
 <script setup lang="ts">
 /**
- * Top bar, ported from final-header/groweire-v7.3 (`header.top`). The right corner shows the
- * user profile (nickname + picture) from config/assets.ts.
+ * Top bar, ported from final-header/groweire-v7.3 (`header.top`). Right corner: the A+ text-size
+ * button (100 / 125 / 150%) and the Find my field button (desing-reference/desired.jpg).
  * Fixed; dark gradient over the hero photo, solid deep green after 70% of a screen of scroll.
  * The link for the section currently in view is underlined in lime.
  * Links point at the matching parts of this page.
  */
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { CURRENT_USER } from '@/config/assets'
+import { useTextScale } from '@/composables/useTextScale'
 
-const initials = CURRENT_USER.nickname.trim().split(' ').filter(Boolean).map((w) => w.charAt(0)).join('').slice(0, 2).toUpperCase()
+const { cycle, label } = useTextScale()
 
 const links = [
   { to: '/#how-it-works', label: 'How it works', ch: 'how-it-works' },
@@ -103,32 +103,19 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
         </ol>
       </nav>
       <div style="display:flex;gap:.6rem;align-items:center">
-        <RouterLink
-          class="user"
-          to="/app"
-          :aria-label="`Your profile: ${CURRENT_USER.nickname}`"
+        <button
+          type="button"
+          class="aplus"
+          :aria-label="label"
+          @click="cycle"
         >
-          <img
-            v-if="CURRENT_USER.avatar"
-            class="avatar"
-            :src="CURRENT_USER.avatar"
-            alt=""
-          >
-          <span
-            v-else
-            class="avatar avatar--initials"
-            aria-hidden="true"
-          >{{ initials }}</span>
-          <span
-            class="nick"
-            aria-hidden="true"
-          >{{ CURRENT_USER.nickname }}</span>
-        </RouterLink>
+          A+
+        </button>
         <RouterLink
-          class="btn btn-primary top-cta"
           to="/app"
+          class="btn btn-primary btn-sm find"
         >
-          Check my field
+          Find my field
         </RouterLink>
       </div>
     </div>
@@ -207,62 +194,53 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
 }
 .navl a[aria-current='true'] { border-bottom-color: #c8f36b; }
 
-/* User profile (right corner) */
-.user {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
+/* A+ and Find my field (reference: desing-reference/desired.jpg) */
+.aplus {
+  min-width: 3.25rem;
   min-height: 3rem;
-  padding: 0 1rem 0 0.4rem;
+  margin: 0 0.25rem;
   border-radius: 999px;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  background: rgba(5, 17, 13, 0.35);
+  border: 2px solid currentColor;
+  background: transparent;
   color: inherit;
-  font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1rem;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: border-color 0.18s;
+  font-size: 1.0625rem;
+  cursor: pointer;
+  transition: background-color 0.18s;
 }
-.user:hover { border-color: #ffffff; }
-.avatar {
-  width: 2.1rem;
-  height: 2.1rem;
-  border-radius: 999px;
-  object-fit: cover;
-  flex: 0 0 auto;
-}
-.avatar--initials {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #c8f36b;
-  color: #122b23;
-  font-family: 'Manrope', system-ui, sans-serif;
-  font-size: 0.875rem;
-  font-weight: 700;
-}
-
-/* Header button (v7.3: shown only when the links collapse) */
-.top .top-cta { display: none; }
+.aplus:hover { background: rgba(246, 245, 239, 0.16); }
+.find { white-space: nowrap; }
 
 @media (max-width: 1060px) {
   .top .wrap { padding: 0 1.25rem; }
   .top nav { display: none; }
-  .top .top-cta {
-    display: inline-flex;
-    min-height: 3rem;
-    padding: 0 1rem;
-    font-size: 1rem;
-  }
 }
-@media (max-width: 640px) {
-  .top .top-cta { display: none !important; }
+@media (max-width: 370px) {
+  .top .wrap { gap: 0.5rem; }
+  .aplus { margin: 0; }
+  .find { padding: 0 0.8rem; }
 }
-@media (max-width: 380px) {
-  .user { padding-right: 0.4rem; }
-  .user .nick { display: none; }
+</style>
+
+<style>
+/* Unscoped on purpose: keys off the A+ text-size class on <html>.
+   Larger text needs more room, so the links collapse earlier and the bar never wraps. */
+@media (max-width: 1360px) { html.text-125 header.top nav { display: none; } }
+@media (max-width: 1640px) { html.text-150 header.top nav { display: none; } }
+/* Small phones at large text: keep the header controls at their 100% size so they fit;
+   the rest of the page still scales */
+@media (max-width: 520px) {
+  html:is(.text-125, .text-150) header.top .wrap { min-height: 72px; padding: 0 20px; gap: 12px; }
+  html:is(.text-125, .text-150) header.top .wordmark { min-height: 48px; font-size: 24px; }
+  html:is(.text-125, .text-150) header.top .aplus { min-width: 52px; min-height: 48px; font-size: 17px; }
+  html:is(.text-125, .text-150) header.top .find { min-height: 48px; padding: 0 17.6px; font-size: 17px; border-width: 2px; }
+}
+@media (max-width: 370px) {
+  html:is(.text-125, .text-150) header.top .wrap { padding: 0 12px; gap: 8px; }
+  html:is(.text-125, .text-150) header.top .wordmark { font-size: 21px; }
+  html:is(.text-125, .text-150) header.top .aplus { margin: 0; }
+  html:is(.text-125, .text-150) header.top .find { padding: 0 12.8px; }
 }
 </style>
 
