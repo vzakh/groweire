@@ -1,0 +1,202 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "GET",
+    "path": "/api/v1/fields/f_00000003/conditions",
+    "body": null,
+    "status": 200
+  },
+  "field_id": "f_00000003",
+  "pilot_coverage": false,
+  "climate": {
+    "period": "1996–2026",
+    "months": [
+      {
+        "month": 1,
+        "precip_mm": 50.0,
+        "tmax_c": 20.4,
+        "tmin_c": 11.4,
+        "et0_mm": 90.2,
+        "p_minus_et0_mm": -40.2,
+        "frost_days": 0.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 2,
+        "precip_mm": 48.2,
+        "tmax_c": 19.7,
+        "tmin_c": 10.8,
+        "et0_mm": 78.5,
+        "p_minus_et0_mm": -30.3,
+        "frost_days": 0.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 3,
+        "precip_mm": 61.2,
+        "tmax_c": 17.5,
+        "tmin_c": 9.0,
+        "et0_mm": 72.8,
+        "p_minus_et0_mm": -11.7,
+        "frost_days": 0.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 4,
+        "precip_mm": 70.6,
+        "tmax_c": 14.3,
+        "tmin_c": 6.3,
+        "et0_mm": 53.5,
+        "p_minus_et0_mm": 17.2,
+        "frost_days": 0.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 5,
+        "precip_mm": 85.1,
+        "tmax_c": 11.1,
+        "tmin_c": 3.5,
+        "et0_mm": 40.1,
+        "p_minus_et0_mm": 45.0,
+        "frost_days": 0.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 6,
+        "precip_mm": 92.1,
+        "tmax_c": 8.6,
+        "tmin_c": 1.4,
+        "et0_mm": 29.7,
+        "p_minus_et0_mm": 62.4,
+        "frost_days": 3.2,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 7,
+        "precip_mm": 99.5,
+        "tmax_c": 7.6,
+        "tmin_c": 0.6,
+        "et0_mm": 27.3,
+        "p_minus_et0_mm": 72.1,
+        "frost_days": 9.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 8,
+        "precip_mm": 95.7,
+        "tmax_c": 8.3,
+        "tmin_c": 1.2,
+        "et0_mm": 29.9,
+        "p_minus_et0_mm": 65.8,
+        "frost_days": 4.6,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 9,
+        "precip_mm": 84.7,
+        "tmax_c": 10.6,
+        "tmin_c": 3.1,
+        "et0_mm": 37.3,
+        "p_minus_et0_mm": 47.4,
+        "frost_days": 0.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 10,
+        "precip_mm": 75.4,
+        "tmax_c": 13.8,
+        "tmin_c": 5.8,
+        "et0_mm": 52.7,
+        "p_minus_et0_mm": 22.6,
+        "frost_days": 0.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 11,
+        "precip_mm": 60.6,
+        "tmax_c": 17.0,
+        "tmin_c": 8.6,
+        "et0_mm": 67.2,
+        "p_minus_et0_mm": -6.6,
+        "frost_days": 0.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      },
+      {
+        "month": 12,
+        "precip_mm": 53.8,
+        "tmax_c": 19.5,
+        "tmin_c": 10.6,
+        "et0_mm": 83.5,
+        "p_minus_et0_mm": -29.8,
+        "frost_days": 0.0,
+        "hot_days": 0.0,
+        "heavy_rain_days": 0.0
+      }
+    ]
+  },
+  "trends": {
+    "precip_mm_per_decade": 0.4,
+    "tmax_c_per_decade": -0.0,
+    "frost_days_per_decade": 0.0,
+    "n_years": 29
+  },
+  "soil": {
+    "source": "soilgrids",
+    "clay": 22.0,
+    "sand": 40.0,
+    "soc": 35.0,
+    "phh2o": 6.4,
+    "bdod": 1.2,
+    "drainage_class": null,
+    "elev_m": 60.0,
+    "slope_deg": null,
+    "uncertainty": {
+      "clay": 2.2,
+      "sand": 4.0,
+      "silt": 3.8,
+      "soc": 3.5,
+      "phh2o": 0.6,
+      "bdod": 0.12
+    }
+  },
+  "series": null,
+  "data_quality": [
+    "outside_pilot"
+  ],
+  "information_gaps": [
+    {
+      "code": "no_soil_test",
+      "text": "Soil values are estimates from a global map, not a test of your field."
+    },
+    {
+      "code": "outside_pilot",
+      "text": "Satellite crop history is only ready for Ireland. Here you see weather and soil only."
+    }
+  ],
+  "provenance": [
+    {
+      "dataset_id": "power",
+      "description": "NASA POWER daily weather (MERRA-2 / CERES), about 50 km grid",
+      "url": "https://power.larc.nasa.gov/",
+      "period": "1981–present"
+    },
+    {
+      "dataset_id": "soilgrids",
+      "description": "ISRIC SoilGrids v2.0 (global soil model, 250 m)",
+      "url": "https://soilgrids.org/",
+      "period": null
+    }
+  ],
+  "disclaimer": "This tool supports, not replaces, your judgment and local agronomic advice."
+}

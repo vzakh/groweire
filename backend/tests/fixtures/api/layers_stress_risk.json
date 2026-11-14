@@ -1,0 +1,2378 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "GET",
+    "path": "/api/v1/layers/stress-risk?month=7",
+    "body": null,
+    "status": 200
+  },
+  "type": "FeatureCollection",
+  "month": 7,
+  "features": [
+    {
+      "type": "Feature",
+      "id": "c00000",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.8,
+              51.45
+            ],
+            [
+              -9.75,
+              51.45
+            ],
+            [
+              -9.75,
+              51.5
+            ],
+            [
+              -9.8,
+              51.5
+            ],
+            [
+              -9.8,
+              51.45
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00000",
+        "p": 0.22,
+        "p_lo": 0.17,
+        "p_hi": 0.27,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00001",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.75,
+              51.45
+            ],
+            [
+              -9.7,
+              51.45
+            ],
+            [
+              -9.7,
+              51.5
+            ],
+            [
+              -9.75,
+              51.5
+            ],
+            [
+              -9.75,
+              51.45
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00001",
+        "p": 0.234,
+        "p_lo": 0.184,
+        "p_hi": 0.284,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00002",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.4,
+              51.45
+            ],
+            [
+              -9.35,
+              51.45
+            ],
+            [
+              -9.35,
+              51.5
+            ],
+            [
+              -9.4,
+              51.5
+            ],
+            [
+              -9.4,
+              51.45
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00002",
+        "p": 0.262,
+        "p_lo": 0.212,
+        "p_hi": 0.312,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00003",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.75,
+              51.5
+            ],
+            [
+              -9.7,
+              51.5
+            ],
+            [
+              -9.7,
+              51.55
+            ],
+            [
+              -9.75,
+              51.55
+            ],
+            [
+              -9.75,
+              51.5
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00003",
+        "p": 0.224,
+        "p_lo": 0.174,
+        "p_hi": 0.274,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00004",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.7,
+              51.5
+            ],
+            [
+              -9.65,
+              51.5
+            ],
+            [
+              -9.65,
+              51.55
+            ],
+            [
+              -9.7,
+              51.55
+            ],
+            [
+              -9.7,
+              51.5
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00004",
+        "p": 0.245,
+        "p_lo": 0.195,
+        "p_hi": 0.295,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00005",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.65,
+              51.5
+            ],
+            [
+              -9.6,
+              51.5
+            ],
+            [
+              -9.6,
+              51.55
+            ],
+            [
+              -9.65,
+              51.55
+            ],
+            [
+              -9.65,
+              51.5
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00005",
+        "p": 0.216,
+        "p_lo": 0.166,
+        "p_hi": 0.266,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00006",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.6,
+              51.5
+            ],
+            [
+              -9.55,
+              51.5
+            ],
+            [
+              -9.55,
+              51.55
+            ],
+            [
+              -9.6,
+              51.55
+            ],
+            [
+              -9.6,
+              51.5
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00006",
+        "p": 0.213,
+        "p_lo": 0.163,
+        "p_hi": 0.263,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00007",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.4,
+              51.5
+            ],
+            [
+              -9.35,
+              51.5
+            ],
+            [
+              -9.35,
+              51.55
+            ],
+            [
+              -9.4,
+              51.55
+            ],
+            [
+              -9.4,
+              51.5
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00007",
+        "p": 0.266,
+        "p_lo": 0.216,
+        "p_hi": 0.316,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00008",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.35,
+              51.5
+            ],
+            [
+              -9.3,
+              51.5
+            ],
+            [
+              -9.3,
+              51.55
+            ],
+            [
+              -9.35,
+              51.55
+            ],
+            [
+              -9.35,
+              51.5
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00008",
+        "p": 0.231,
+        "p_lo": 0.181,
+        "p_hi": 0.281,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00009",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.3,
+              51.5
+            ],
+            [
+              -9.25,
+              51.5
+            ],
+            [
+              -9.25,
+              51.55
+            ],
+            [
+              -9.3,
+              51.55
+            ],
+            [
+              -9.3,
+              51.5
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00009",
+        "p": 0.239,
+        "p_lo": 0.189,
+        "p_hi": 0.289,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00010",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.25,
+              51.5
+            ],
+            [
+              -9.2,
+              51.5
+            ],
+            [
+              -9.2,
+              51.55
+            ],
+            [
+              -9.25,
+              51.55
+            ],
+            [
+              -9.25,
+              51.5
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00010",
+        "p": 0.26,
+        "p_lo": 0.21,
+        "p_hi": 0.31,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00011",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.2,
+              51.5
+            ],
+            [
+              -9.15,
+              51.5
+            ],
+            [
+              -9.15,
+              51.55
+            ],
+            [
+              -9.2,
+              51.55
+            ],
+            [
+              -9.2,
+              51.5
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00011",
+        "p": 0.215,
+        "p_lo": 0.165,
+        "p_hi": 0.265,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00012",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.8,
+              51.55
+            ],
+            [
+              -9.75,
+              51.55
+            ],
+            [
+              -9.75,
+              51.6
+            ],
+            [
+              -9.8,
+              51.6
+            ],
+            [
+              -9.8,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00012",
+        "p": 0.248,
+        "p_lo": 0.198,
+        "p_hi": 0.298,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00013",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.75,
+              51.55
+            ],
+            [
+              -9.7,
+              51.55
+            ],
+            [
+              -9.7,
+              51.6
+            ],
+            [
+              -9.75,
+              51.6
+            ],
+            [
+              -9.75,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00013",
+        "p": 0.231,
+        "p_lo": 0.181,
+        "p_hi": 0.281,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00014",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.65,
+              51.55
+            ],
+            [
+              -9.6,
+              51.55
+            ],
+            [
+              -9.6,
+              51.6
+            ],
+            [
+              -9.65,
+              51.6
+            ],
+            [
+              -9.65,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00014",
+        "p": 0.249,
+        "p_lo": 0.199,
+        "p_hi": 0.299,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00015",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.6,
+              51.55
+            ],
+            [
+              -9.55,
+              51.55
+            ],
+            [
+              -9.55,
+              51.6
+            ],
+            [
+              -9.6,
+              51.6
+            ],
+            [
+              -9.6,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00015",
+        "p": 0.223,
+        "p_lo": 0.173,
+        "p_hi": 0.273,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00016",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.55,
+              51.55
+            ],
+            [
+              -9.5,
+              51.55
+            ],
+            [
+              -9.5,
+              51.6
+            ],
+            [
+              -9.55,
+              51.6
+            ],
+            [
+              -9.55,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00016",
+        "p": 0.243,
+        "p_lo": 0.193,
+        "p_hi": 0.293,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00017",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.5,
+              51.55
+            ],
+            [
+              -9.45,
+              51.55
+            ],
+            [
+              -9.45,
+              51.6
+            ],
+            [
+              -9.5,
+              51.6
+            ],
+            [
+              -9.5,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00017",
+        "p": 0.227,
+        "p_lo": 0.177,
+        "p_hi": 0.277,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00018",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.45,
+              51.55
+            ],
+            [
+              -9.4,
+              51.55
+            ],
+            [
+              -9.4,
+              51.6
+            ],
+            [
+              -9.45,
+              51.6
+            ],
+            [
+              -9.45,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00018",
+        "p": 0.251,
+        "p_lo": 0.201,
+        "p_hi": 0.301,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00019",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.4,
+              51.55
+            ],
+            [
+              -9.35,
+              51.55
+            ],
+            [
+              -9.35,
+              51.6
+            ],
+            [
+              -9.4,
+              51.6
+            ],
+            [
+              -9.4,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00019",
+        "p": 0.222,
+        "p_lo": 0.172,
+        "p_hi": 0.272,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00020",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.35,
+              51.55
+            ],
+            [
+              -9.3,
+              51.55
+            ],
+            [
+              -9.3,
+              51.6
+            ],
+            [
+              -9.35,
+              51.6
+            ],
+            [
+              -9.35,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00020",
+        "p": 0.217,
+        "p_lo": 0.167,
+        "p_hi": 0.267,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00021",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.3,
+              51.55
+            ],
+            [
+              -9.25,
+              51.55
+            ],
+            [
+              -9.25,
+              51.6
+            ],
+            [
+              -9.3,
+              51.6
+            ],
+            [
+              -9.3,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00021",
+        "p": 0.216,
+        "p_lo": 0.166,
+        "p_hi": 0.266,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00022",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.25,
+              51.55
+            ],
+            [
+              -9.2,
+              51.55
+            ],
+            [
+              -9.2,
+              51.6
+            ],
+            [
+              -9.25,
+              51.6
+            ],
+            [
+              -9.25,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00022",
+        "p": 0.234,
+        "p_lo": 0.184,
+        "p_hi": 0.284,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00023",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.2,
+              51.55
+            ],
+            [
+              -9.15,
+              51.55
+            ],
+            [
+              -9.15,
+              51.6
+            ],
+            [
+              -9.2,
+              51.6
+            ],
+            [
+              -9.2,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00023",
+        "p": 0.213,
+        "p_lo": 0.163,
+        "p_hi": 0.263,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00024",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.15,
+              51.55
+            ],
+            [
+              -9.1,
+              51.55
+            ],
+            [
+              -9.1,
+              51.6
+            ],
+            [
+              -9.15,
+              51.6
+            ],
+            [
+              -9.15,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00024",
+        "p": 0.228,
+        "p_lo": 0.178,
+        "p_hi": 0.278,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00025",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.1,
+              51.55
+            ],
+            [
+              -9.05,
+              51.55
+            ],
+            [
+              -9.05,
+              51.6
+            ],
+            [
+              -9.1,
+              51.6
+            ],
+            [
+              -9.1,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00025",
+        "p": 0.263,
+        "p_lo": 0.213,
+        "p_hi": 0.313,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00026",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.05,
+              51.55
+            ],
+            [
+              -9,
+              51.55
+            ],
+            [
+              -9,
+              51.6
+            ],
+            [
+              -9.05,
+              51.6
+            ],
+            [
+              -9.05,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00026",
+        "p": 0.213,
+        "p_lo": 0.163,
+        "p_hi": 0.263,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00027",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9,
+              51.55
+            ],
+            [
+              -8.95,
+              51.55
+            ],
+            [
+              -8.95,
+              51.6
+            ],
+            [
+              -9,
+              51.6
+            ],
+            [
+              -9,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00027",
+        "p": 0.228,
+        "p_lo": 0.178,
+        "p_hi": 0.278,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00028",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -8.95,
+              51.55
+            ],
+            [
+              -8.9,
+              51.55
+            ],
+            [
+              -8.9,
+              51.6
+            ],
+            [
+              -8.95,
+              51.6
+            ],
+            [
+              -8.95,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00028",
+        "p": 0.23,
+        "p_lo": 0.18,
+        "p_hi": 0.28,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00029",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -8.9,
+              51.55
+            ],
+            [
+              -8.85,
+              51.55
+            ],
+            [
+              -8.85,
+              51.6
+            ],
+            [
+              -8.9,
+              51.6
+            ],
+            [
+              -8.9,
+              51.55
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00029",
+        "p": 0.252,
+        "p_lo": 0.202,
+        "p_hi": 0.302,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00030",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -10.1,
+              51.6
+            ],
+            [
+              -10.05,
+              51.6
+            ],
+            [
+              -10.05,
+              51.65
+            ],
+            [
+              -10.1,
+              51.65
+            ],
+            [
+              -10.1,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00030",
+        "p": 0.213,
+        "p_lo": 0.163,
+        "p_hi": 0.263,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00031",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -10.05,
+              51.6
+            ],
+            [
+              -10,
+              51.6
+            ],
+            [
+              -10,
+              51.65
+            ],
+            [
+              -10.05,
+              51.65
+            ],
+            [
+              -10.05,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00031",
+        "p": 0.258,
+        "p_lo": 0.208,
+        "p_hi": 0.308,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00032",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -10,
+              51.6
+            ],
+            [
+              -9.95,
+              51.6
+            ],
+            [
+              -9.95,
+              51.65
+            ],
+            [
+              -10,
+              51.65
+            ],
+            [
+              -10,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00032",
+        "p": 0.229,
+        "p_lo": 0.179,
+        "p_hi": 0.279,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00033",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.9,
+              51.6
+            ],
+            [
+              -9.85,
+              51.6
+            ],
+            [
+              -9.85,
+              51.65
+            ],
+            [
+              -9.9,
+              51.65
+            ],
+            [
+              -9.9,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00033",
+        "p": 0.262,
+        "p_lo": 0.212,
+        "p_hi": 0.312,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00034",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.65,
+              51.6
+            ],
+            [
+              -9.6,
+              51.6
+            ],
+            [
+              -9.6,
+              51.65
+            ],
+            [
+              -9.65,
+              51.65
+            ],
+            [
+              -9.65,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00034",
+        "p": 0.22,
+        "p_lo": 0.17,
+        "p_hi": 0.27,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00035",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.6,
+              51.6
+            ],
+            [
+              -9.55,
+              51.6
+            ],
+            [
+              -9.55,
+              51.65
+            ],
+            [
+              -9.6,
+              51.65
+            ],
+            [
+              -9.6,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00035",
+        "p": 0.27,
+        "p_lo": 0.22,
+        "p_hi": 0.32,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00036",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.55,
+              51.6
+            ],
+            [
+              -9.5,
+              51.6
+            ],
+            [
+              -9.5,
+              51.65
+            ],
+            [
+              -9.55,
+              51.65
+            ],
+            [
+              -9.55,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00036",
+        "p": 0.24,
+        "p_lo": 0.19,
+        "p_hi": 0.29,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00037",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.5,
+              51.6
+            ],
+            [
+              -9.45,
+              51.6
+            ],
+            [
+              -9.45,
+              51.65
+            ],
+            [
+              -9.5,
+              51.65
+            ],
+            [
+              -9.5,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00037",
+        "p": 0.254,
+        "p_lo": 0.204,
+        "p_hi": 0.304,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00038",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.45,
+              51.6
+            ],
+            [
+              -9.4,
+              51.6
+            ],
+            [
+              -9.4,
+              51.65
+            ],
+            [
+              -9.45,
+              51.65
+            ],
+            [
+              -9.45,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00038",
+        "p": 0.22,
+        "p_lo": 0.17,
+        "p_hi": 0.27,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00039",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.4,
+              51.6
+            ],
+            [
+              -9.35,
+              51.6
+            ],
+            [
+              -9.35,
+              51.65
+            ],
+            [
+              -9.4,
+              51.65
+            ],
+            [
+              -9.4,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00039",
+        "p": 0.229,
+        "p_lo": 0.179,
+        "p_hi": 0.279,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00040",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.35,
+              51.6
+            ],
+            [
+              -9.3,
+              51.6
+            ],
+            [
+              -9.3,
+              51.65
+            ],
+            [
+              -9.35,
+              51.65
+            ],
+            [
+              -9.35,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00040",
+        "p": 0.268,
+        "p_lo": 0.218,
+        "p_hi": 0.318,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00041",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.3,
+              51.6
+            ],
+            [
+              -9.25,
+              51.6
+            ],
+            [
+              -9.25,
+              51.65
+            ],
+            [
+              -9.3,
+              51.65
+            ],
+            [
+              -9.3,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00041",
+        "p": 0.246,
+        "p_lo": 0.196,
+        "p_hi": 0.296,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00042",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.25,
+              51.6
+            ],
+            [
+              -9.2,
+              51.6
+            ],
+            [
+              -9.2,
+              51.65
+            ],
+            [
+              -9.25,
+              51.65
+            ],
+            [
+              -9.25,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00042",
+        "p": 0.262,
+        "p_lo": 0.212,
+        "p_hi": 0.312,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00043",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.2,
+              51.6
+            ],
+            [
+              -9.15,
+              51.6
+            ],
+            [
+              -9.15,
+              51.65
+            ],
+            [
+              -9.2,
+              51.65
+            ],
+            [
+              -9.2,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00043",
+        "p": 0.266,
+        "p_lo": 0.216,
+        "p_hi": 0.316,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00044",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.15,
+              51.6
+            ],
+            [
+              -9.1,
+              51.6
+            ],
+            [
+              -9.1,
+              51.65
+            ],
+            [
+              -9.15,
+              51.65
+            ],
+            [
+              -9.15,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00044",
+        "p": 0.269,
+        "p_lo": 0.219,
+        "p_hi": 0.319,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00045",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.1,
+              51.6
+            ],
+            [
+              -9.05,
+              51.6
+            ],
+            [
+              -9.05,
+              51.65
+            ],
+            [
+              -9.1,
+              51.65
+            ],
+            [
+              -9.1,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00045",
+        "p": 0.219,
+        "p_lo": 0.169,
+        "p_hi": 0.269,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00046",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.05,
+              51.6
+            ],
+            [
+              -9,
+              51.6
+            ],
+            [
+              -9,
+              51.65
+            ],
+            [
+              -9.05,
+              51.65
+            ],
+            [
+              -9.05,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00046",
+        "p": 0.261,
+        "p_lo": 0.211,
+        "p_hi": 0.311,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00047",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9,
+              51.6
+            ],
+            [
+              -8.95,
+              51.6
+            ],
+            [
+              -8.95,
+              51.65
+            ],
+            [
+              -9,
+              51.65
+            ],
+            [
+              -9,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00047",
+        "p": 0.255,
+        "p_lo": 0.205,
+        "p_hi": 0.305,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00048",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -8.95,
+              51.6
+            ],
+            [
+              -8.9,
+              51.6
+            ],
+            [
+              -8.9,
+              51.65
+            ],
+            [
+              -8.95,
+              51.65
+            ],
+            [
+              -8.95,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00048",
+        "p": 0.218,
+        "p_lo": 0.168,
+        "p_hi": 0.268,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00049",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -8.9,
+              51.6
+            ],
+            [
+              -8.85,
+              51.6
+            ],
+            [
+              -8.85,
+              51.65
+            ],
+            [
+              -8.9,
+              51.65
+            ],
+            [
+              -8.9,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00049",
+        "p": 0.244,
+        "p_lo": 0.194,
+        "p_hi": 0.294,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00050",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -8.85,
+              51.6
+            ],
+            [
+              -8.8,
+              51.6
+            ],
+            [
+              -8.8,
+              51.65
+            ],
+            [
+              -8.85,
+              51.65
+            ],
+            [
+              -8.85,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00050",
+        "p": 0.256,
+        "p_lo": 0.206,
+        "p_hi": 0.306,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00051",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -8.8,
+              51.6
+            ],
+            [
+              -8.75,
+              51.6
+            ],
+            [
+              -8.75,
+              51.65
+            ],
+            [
+              -8.8,
+              51.65
+            ],
+            [
+              -8.8,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00051",
+        "p": 0.212,
+        "p_lo": 0.162,
+        "p_hi": 0.262,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00052",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -8.75,
+              51.6
+            ],
+            [
+              -8.7,
+              51.6
+            ],
+            [
+              -8.7,
+              51.65
+            ],
+            [
+              -8.75,
+              51.65
+            ],
+            [
+              -8.75,
+              51.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00052",
+        "p": 0.215,
+        "p_lo": 0.165,
+        "p_hi": 0.265,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00053",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -10.05,
+              51.65
+            ],
+            [
+              -10,
+              51.65
+            ],
+            [
+              -10,
+              51.7
+            ],
+            [
+              -10.05,
+              51.7
+            ],
+            [
+              -10.05,
+              51.65
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00053",
+        "p": 0.241,
+        "p_lo": 0.191,
+        "p_hi": 0.291,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00054",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -10,
+              51.65
+            ],
+            [
+              -9.95,
+              51.65
+            ],
+            [
+              -9.95,
+              51.7
+            ],
+            [
+              -10,
+              51.7
+            ],
+            [
+              -10,
+              51.65
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00054",
+        "p": 0.223,
+        "p_lo": 0.173,
+        "p_hi": 0.273,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00055",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.95,
+              51.65
+            ],
+            [
+              -9.9,
+              51.65
+            ],
+            [
+              -9.9,
+              51.7
+            ],
+            [
+              -9.95,
+              51.7
+            ],
+            [
+              -9.95,
+              51.65
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00055",
+        "p": 0.223,
+        "p_lo": 0.173,
+        "p_hi": 0.273,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00056",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.9,
+              51.65
+            ],
+            [
+              -9.85,
+              51.65
+            ],
+            [
+              -9.85,
+              51.7
+            ],
+            [
+              -9.9,
+              51.7
+            ],
+            [
+              -9.9,
+              51.65
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00056",
+        "p": 0.23,
+        "p_lo": 0.18,
+        "p_hi": 0.28,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00057",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.85,
+              51.65
+            ],
+            [
+              -9.8,
+              51.65
+            ],
+            [
+              -9.8,
+              51.7
+            ],
+            [
+              -9.85,
+              51.7
+            ],
+            [
+              -9.85,
+              51.65
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00057",
+        "p": 0.267,
+        "p_lo": 0.217,
+        "p_hi": 0.317,
+        "dominant_type": "drought",
+        "level": "high"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00058",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.8,
+              51.65
+            ],
+            [
+              -9.75,
+              51.65
+            ],
+            [
+              -9.75,
+              51.7
+            ],
+            [
+              -9.8,
+              51.7
+            ],
+            [
+              -9.8,
+              51.65
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00058",
+        "p": 0.244,
+        "p_lo": 0.194,
+        "p_hi": 0.294,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "c00059",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.75,
+              51.65
+            ],
+            [
+              -9.7,
+              51.65
+            ],
+            [
+              -9.7,
+              51.7
+            ],
+            [
+              -9.75,
+              51.7
+            ],
+            [
+              -9.75,
+              51.65
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "cell_id": "c00059",
+        "p": 0.228,
+        "p_lo": 0.178,
+        "p_hi": 0.278,
+        "dominant_type": "drought",
+        "level": "medium"
+      }
+    }
+  ],
+  "data_quality": [
+    "synthetic_data"
+  ],
+  "disclaimer": "This tool supports, not replaces, your judgment and local agronomic advice.",
+  "provenance": [
+    {
+      "dataset_id": "modis_ndvi",
+      "description": "MOD13Q1/MYD13Q1 v6.1 NDVI",
+      "url": "https://doi.org/10.5067/MODIS/MOD13Q1.061",
+      "period": "2001–present"
+    },
+    {
+      "dataset_id": "power",
+      "description": "NASA POWER daily weather (MERRA-2 / CERES), about 50 km grid",
+      "url": "https://power.larc.nasa.gov/",
+      "period": "1981–present"
+    },
+    {
+      "dataset_id": "smap",
+      "description": "SMAP L4 root-zone soil moisture (SPL4SMGP)",
+      "url": "https://nsidc.org/data/spl4smgp",
+      "period": "2015–present"
+    }
+  ],
+  "_truncated_from": 4533
+}

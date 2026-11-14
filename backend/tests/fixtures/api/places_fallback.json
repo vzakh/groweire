@@ -1,0 +1,20 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "GET",
+    "path": "/api/v1/places?q=bagenalstwn",
+    "body": null,
+    "status": 200
+  },
+  "results": [
+    {
+      "name": "Bagenalstown, Carlow",
+      "lon": -6.96,
+      "lat": 52.7,
+      "bbox": null,
+      "kind": "village"
+    }
+  ],
+  "attribution": "GeoNames (CC BY 4.0)",
+  "source": "geonames"
+}

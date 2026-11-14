@@ -1,0 +1,65 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "GET",
+    "path": "/api/v1/glossary",
+    "body": null,
+    "status": 200
+  },
+  "terms": [
+    {
+      "id": "ndvi",
+      "title": "Crop greenness from satellite",
+      "term": "NDVI",
+      "text": "A satellite greenness score from 0 to 1. Healthy, dense crops score high. Bare soil scores low."
+    },
+    {
+      "id": "ndvi_anomaly",
+      "title": "Greener or browner than normal",
+      "term": "NDVI anomaly",
+      "text": "How much greener or browner a place is than its own normal for that month. Much browner than normal is our sign of crop stress."
+    },
+    {
+      "id": "evapotranspiration",
+      "title": "The thirst of the weather",
+      "term": "Evapotranspiration (ET, ET0)",
+      "text": "Water leaving the field: evaporation from the soil plus water used by plants. ET0 is how much water a well-watered grass would use in that weather."
+    },
+    {
+      "id": "water_balance",
+      "title": "Rain minus the weather's thirst",
+      "term": "Water balance (P − ET0)",
+      "text": "Rain minus the weather's thirst. Below zero the land is drying. Above zero there is spare water. In Ireland that often means waterlogged ground."
+    },
+    {
+      "id": "soil_moisture_anomaly",
+      "title": "Wetter or drier soil than usual",
+      "term": "Soil-moisture anomaly",
+      "text": "Soil that is wetter or drier than usual for that place and month. Measured by the SMAP satellite in squares of about 9 km."
+    },
+    {
+      "id": "frost_risk",
+      "title": "Chance of frost",
+      "term": "Frost risk",
+      "text": "The chance that the air falls to 0 °C or below in the spring months, when young crops are easily hurt."
+    },
+    {
+      "id": "crop_stress",
+      "title": "Crop stress",
+      "term": "Vegetation stress event",
+      "text": "A month when crops in an area are clearly less green than normal for that month. The cause can be drought, wet ground, heat or frost."
+    },
+    {
+      "id": "uncertainty",
+      "title": "How sure we are",
+      "term": "Uncertainty interval",
+      "text": "The range our models give for a risk. A wide range means we are less sure. Your own knowledge of the field matters most there."
+    },
+    {
+      "id": "satellite_vs_ground",
+      "title": "Satellite data and ground data",
+      "term": "Satellite vs ground data",
+      "text": "Satellites see every field, every week, for more than 20 years, but only roughly and from far away. Ground data, like a soil test or your own records, is exact but local. Using both gives wide cover and better accuracy."
+    }
+  ]
+}

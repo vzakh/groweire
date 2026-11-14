@@ -1,0 +1,385 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "POST",
+    "path": "/api/v1/predict/stress-risk",
+    "body": {
+      "field_id": "f_00000001",
+      "mode": "seasonal_profile",
+      "crop_id": "spring_barley"
+    },
+    "status": 200
+  },
+  "field_id": "f_00000001",
+  "mode": "seasonal_profile",
+  "crop_id": "spring_barley",
+  "model_version": "stub-0",
+  "calibrated_region": "IE",
+  "pilot_coverage": true,
+  "headline": "July is the riskiest month for spring barley here. In about 2 years in 10 it is too dry.",
+  "months": [
+    {
+      "month": 3,
+      "year": null,
+      "probability": 0.0544,
+      "interval": [
+        0.0044,
+        0.1044
+      ],
+      "stress_types": [
+        "other"
+      ],
+      "drivers": [
+        {
+          "feature": "p_minus_et0_3m_l1_z",
+          "value": 1.5618897676467896,
+          "contribution": 0.04,
+          "text": "The last 3 months were wetter than usual for this place"
+        },
+        {
+          "feature": "tmax_l1_z",
+          "value": 0.8741015195846558,
+          "contribution": 0.02,
+          "text": "Last month's days were warmer than usual"
+        },
+        {
+          "feature": "ndvi_z_l1",
+          "value": 0.9650319218635559,
+          "contribution": 0.01,
+          "text": "Crops here were greener than normal last month (seen from space)"
+        }
+      ],
+      "crop_sensitivity": null,
+      "crop_weighted_risk": null,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "about 1 year in 20",
+      "aria_label": "March, spring barley: OK. In about 1 year in 20 there is crop stress here. Uncertainty 0 to 10 percent."
+    },
+    {
+      "month": 4,
+      "year": null,
+      "probability": 0.0744,
+      "interval": [
+        0.0244,
+        0.1244
+      ],
+      "stress_types": [
+        "other"
+      ],
+      "drivers": [
+        {
+          "feature": "p_minus_et0_3m_l1_z",
+          "value": 1.4230217933654785,
+          "contribution": 0.04,
+          "text": "The last 3 months were wetter than usual for this place"
+        },
+        {
+          "feature": "tmax_l1_z",
+          "value": -1.5569041967391968,
+          "contribution": 0.02,
+          "text": "Last month's days were cooler than usual"
+        },
+        {
+          "feature": "ndvi_z_l1",
+          "value": -0.15107545256614685,
+          "contribution": 0.01,
+          "text": "Crops here were less green than normal last month (seen from space)"
+        }
+      ],
+      "crop_sensitivity": null,
+      "crop_weighted_risk": null,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "about 1 year in 20",
+      "aria_label": "April, spring barley: OK. In about 1 year in 20 there is crop stress here. Uncertainty 2 to 12 percent."
+    },
+    {
+      "month": 5,
+      "year": null,
+      "probability": 0.1144,
+      "interval": [
+        0.0644,
+        0.1644
+      ],
+      "stress_types": [
+        "other"
+      ],
+      "drivers": [
+        {
+          "feature": "p_minus_et0_3m_l1_z",
+          "value": 1.8662248849868774,
+          "contribution": 0.04,
+          "text": "The last 3 months were wetter than usual for this place"
+        },
+        {
+          "feature": "tmax_l1_z",
+          "value": 1.1647928953170776,
+          "contribution": 0.02,
+          "text": "Last month's days were warmer than usual"
+        },
+        {
+          "feature": "ndvi_z_l1",
+          "value": 0.07272154837846756,
+          "contribution": 0.01,
+          "text": "Crops here were greener than normal last month (seen from space)"
+        }
+      ],
+      "crop_sensitivity": null,
+      "crop_weighted_risk": null,
+      "level": "medium",
+      "label": "Unclear",
+      "frequency_text": "about 1 year in 10",
+      "aria_label": "May, spring barley: unclear. In about 1 year in 10 there is crop stress here. Uncertainty 6 to 16 percent."
+    },
+    {
+      "month": 6,
+      "year": null,
+      "probability": 0.1744,
+      "interval": [
+        0.1244,
+        0.2244
+      ],
+      "stress_types": [
+        "drought"
+      ],
+      "drivers": [
+        {
+          "feature": "p_minus_et0_3m_l1_z",
+          "value": 1.9283933639526367,
+          "contribution": 0.04,
+          "text": "The last 3 months were wetter than usual for this place"
+        },
+        {
+          "feature": "tmax_l1_z",
+          "value": -0.6185207962989807,
+          "contribution": 0.02,
+          "text": "Last month's days were cooler than usual"
+        },
+        {
+          "feature": "ndvi_z_l1",
+          "value": -0.6808430552482605,
+          "contribution": 0.01,
+          "text": "Crops here were less green than normal last month (seen from space)"
+        }
+      ],
+      "crop_sensitivity": 0.8,
+      "crop_weighted_risk": 0.1395,
+      "level": "medium",
+      "label": "Dry",
+      "frequency_text": "about 1 year in 10",
+      "aria_label": "June, spring barley: dry. In about 1 year in 10 there is crop stress here. Uncertainty 12 to 22 percent."
+    },
+    {
+      "month": 7,
+      "year": null,
+      "probability": 0.2344,
+      "interval": [
+        0.1844,
+        0.2844
+      ],
+      "stress_types": [
+        "drought"
+      ],
+      "drivers": [
+        {
+          "feature": "p_minus_et0_3m_l1_z",
+          "value": -0.07503700256347656,
+          "contribution": 0.04,
+          "text": "The last 3 months were drier than usual for this place"
+        },
+        {
+          "feature": "tmax_l1_z",
+          "value": -2.073349714279175,
+          "contribution": 0.02,
+          "text": "Last month's days were cooler than usual"
+        },
+        {
+          "feature": "ndvi_z_l1",
+          "value": -0.5026037693023682,
+          "contribution": 0.01,
+          "text": "Crops here were less green than normal last month (seen from space)"
+        }
+      ],
+      "crop_sensitivity": 0.8,
+      "crop_weighted_risk": 0.1875,
+      "level": "medium",
+      "label": "Dry",
+      "frequency_text": "about 2 years in 10",
+      "aria_label": "July, spring barley: dry. In about 2 years in 10 there is crop stress here. Uncertainty 18 to 28 percent."
+    },
+    {
+      "month": 8,
+      "year": null,
+      "probability": 0.1644,
+      "interval": [
+        0.1144,
+        0.2144
+      ],
+      "stress_types": [
+        "drought"
+      ],
+      "drivers": [
+        {
+          "feature": "p_minus_et0_3m_l1_z",
+          "value": -0.7324351072311401,
+          "contribution": 0.04,
+          "text": "The last 3 months were drier than usual for this place"
+        },
+        {
+          "feature": "tmax_l1_z",
+          "value": 0.16221220791339874,
+          "contribution": 0.02,
+          "text": "Last month's days were warmer than usual"
+        },
+        {
+          "feature": "ndvi_z_l1",
+          "value": 0.03595724329352379,
+          "contribution": 0.01,
+          "text": "Crops here were greener than normal last month (seen from space)"
+        }
+      ],
+      "crop_sensitivity": 0.3,
+      "crop_weighted_risk": 0.0493,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "August, spring barley: OK. In less than 1 year in 20 there is crop stress here. Uncertainty 11 to 21 percent."
+    },
+    {
+      "month": 9,
+      "year": null,
+      "probability": 0.0944,
+      "interval": [
+        0.0444,
+        0.1444
+      ],
+      "stress_types": [
+        "other"
+      ],
+      "drivers": [
+        {
+          "feature": "p_minus_et0_3m_l1_z",
+          "value": -1.9072394371032715,
+          "contribution": 0.04,
+          "text": "The last 3 months were drier than usual for this place"
+        },
+        {
+          "feature": "tmax_l1_z",
+          "value": 0.23310308158397675,
+          "contribution": 0.02,
+          "text": "Last month's days were warmer than usual"
+        },
+        {
+          "feature": "ndvi_z_l1",
+          "value": -0.493745893239975,
+          "contribution": 0.01,
+          "text": "Crops here were less green than normal last month (seen from space)"
+        }
+      ],
+      "crop_sensitivity": null,
+      "crop_weighted_risk": null,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "about 1 year in 20",
+      "aria_label": "September, spring barley: OK. In about 1 year in 20 there is crop stress here. Uncertainty 4 to 14 percent."
+    },
+    {
+      "month": 10,
+      "year": null,
+      "probability": 0.1344,
+      "interval": [
+        0.0844,
+        0.1844
+      ],
+      "stress_types": [
+        "waterlogging"
+      ],
+      "drivers": [
+        {
+          "feature": "p_minus_et0_3m_l1_z",
+          "value": -0.17735710740089417,
+          "contribution": 0.04,
+          "text": "The last 3 months were drier than usual for this place"
+        },
+        {
+          "feature": "tmax_l1_z",
+          "value": -0.7360360622406006,
+          "contribution": 0.02,
+          "text": "Last month's days were cooler than usual"
+        },
+        {
+          "feature": "ndvi_z_l1",
+          "value": 0.5828147530555725,
+          "contribution": 0.01,
+          "text": "Crops here were greener than normal last month (seen from space)"
+        }
+      ],
+      "crop_sensitivity": 0.0,
+      "crop_weighted_risk": 0.0,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "October, spring barley: OK. In less than 1 year in 20 there is crop stress here. Uncertainty 8 to 18 percent."
+    }
+  ],
+  "riskiest_month": 7,
+  "trend": {
+    "per_decade": 0.0,
+    "direction": "stable",
+    "months_affected": []
+  },
+  "data_quality": [
+    "synthetic_data"
+  ],
+  "information_gaps": [
+    {
+      "code": "crop_sensitivity_unverified",
+      "text": "How much spring barley suffers in each month is our first estimate. It has not been checked against field trials."
+    },
+    {
+      "code": "crop_sensitivity_unknown",
+      "text": "For some months we do not know how this crop reacts. Those months show the general risk for crops."
+    }
+  ],
+  "needs_local_review": true,
+  "disclaimer": "This tool supports, not replaces, your judgment and local agronomic advice.",
+  "provenance": [
+    {
+      "dataset_id": "modis_ndvi",
+      "description": "MOD13Q1/MYD13Q1 v6.1 NDVI",
+      "url": "https://doi.org/10.5067/MODIS/MOD13Q1.061",
+      "period": "2001–present"
+    },
+    {
+      "dataset_id": "power",
+      "description": "NASA POWER daily weather (MERRA-2 / CERES), about 50 km grid",
+      "url": "https://power.larc.nasa.gov/",
+      "period": "1981–present"
+    },
+    {
+      "dataset_id": "smap",
+      "description": "SMAP L4 root-zone soil moisture (SPL4SMGP)",
+      "url": "https://nsidc.org/data/spl4smgp",
+      "period": "2015–present"
+    },
+    {
+      "dataset_id": "soilgrids",
+      "description": "ISRIC SoilGrids v2.0 (global soil model, 250 m)",
+      "url": "https://soilgrids.org/",
+      "period": null
+    },
+    {
+      "dataset_id": "srtm",
+      "description": "SRTMGL1 elevation and slope",
+      "url": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+      "period": null
+    },
+    {
+      "dataset_id": "crops_ie",
+      "description": "AgroLens crop catalogue (FAO-56 crop coefficients, Teagasc guidance)",
+      "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+      "period": null
+    }
+  ]
+}

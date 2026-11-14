@@ -1,0 +1,526 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "POST",
+    "path": "/api/v1/rotations/compare",
+    "body": {
+      "field_id": "f_00000001",
+      "current_rotation": [
+        "spring_barley",
+        "spring_barley",
+        "spring_barley",
+        "spring_barley"
+      ],
+      "priorities": [
+        "income_stability",
+        "simplicity",
+        "soil_cover"
+      ],
+      "constraints": {
+        "has_livestock": false,
+        "irrigation": false,
+        "equipment": null,
+        "excluded_crops": [
+          "potatoes"
+        ],
+        "must_include": [],
+        "market_contracts": [
+          "malting_barley"
+        ]
+      },
+      "n_alternatives": 3
+    },
+    "status": 200
+  },
+  "field_id": "f_00000001",
+  "strategies": [
+    {
+      "id": "current",
+      "label": "Your current rotation",
+      "sequence": [
+        "spring_barley",
+        "spring_barley",
+        "spring_barley",
+        "spring_barley"
+      ],
+      "cover_crops": [],
+      "is_current": true,
+      "headline": "Your rotation: spring barley every year",
+      "one_line_why": "This is what you grow now. We compare the others against it.",
+      "vs_current": null,
+      "score": 0.621,
+      "criteria": {
+        "climate_risk": 0.0,
+        "income_stability": 0.727,
+        "simplicity": 1.0,
+        "soil_cover": 0.167,
+        "water_use": 0.924,
+        "forage_value": 0.158,
+        "nitrogen_fixing": 0.0,
+        "pest_break": 0.0,
+        "market_suitability": 1.0
+      },
+      "metrics": {
+        "bare_months_per_year": 7.0,
+        "crop_weighted_stress": 0.569,
+        "water_demand_mm": 446.0,
+        "workability_risk": 0.0,
+        "erosion_index": 0.0,
+        "n_fixing_years": 0,
+        "pest_break_score": 0.0,
+        "organic_matter_score": 0.5,
+        "forage_score": 0.1,
+        "market_score": 1.0,
+        "rule_compliance": {
+          "ie_crop_rotation_2_of_4": false,
+          "two_crop_rule_10_30ha": null
+        }
+      },
+      "explanation": {
+        "why_suggested": "Baseline for comparison.",
+        "evidence": [
+          {
+            "claim": "Continuous cereals accumulate take-all and grass-weed pressure",
+            "source": "teagasc_rotation"
+          },
+          {
+            "claim": "Irish conditionality asks for crop rotation on arable land",
+            "source": "dafm_conditionality"
+          },
+          {
+            "claim": "Crop water demand is estimated from FAO-56 crop coefficients and local reference evapotranspiration",
+            "source": "fao56_table12"
+          },
+          {
+            "claim": "Bare soil for 7.0 months a year, from the crop calendars",
+            "source": "bare_months_per_year"
+          }
+        ],
+        "benefits": [
+          "Familiar operations",
+          "Fits your malting barley contract"
+        ],
+        "information_gaps": [
+          "How much each crop suffers in each month is a first estimate, not yet checked.",
+          "We do not know your tillage area, so we did not check the two-crop rule.",
+          "We did not ask which machinery you have.",
+          "No field-level soil test provided (soil values are map estimates)."
+        ],
+        "risks_needing_local_review": [
+          "Wheat or barley after wheat or barley can build up take-all.",
+          "Herbicide-resistant wild oats risk in continuous spring barley.",
+          "One crop every year may not meet the crop rotation rule for arable land.",
+          "Some of these crops are in a sensitive stage in the dry-risk months.",
+          "Local soil, weather and markets can change which rotation suits this field."
+        ]
+      },
+      "advisor_questions": [
+        "Is take-all a problem in back-to-back wheat or barley on this farm?",
+        "Is there wild oat resistance on this farm? Should we test for it?",
+        "Does this rotation meet the crop rotation rule for my farm?",
+        "Could a soil test (pH, P, K) change which crops suit this field?"
+      ]
+    },
+    {
+      "id": "current_plus_winter_oilseed_rape",
+      "label": "Your rotation with winter oilseed rape",
+      "sequence": [
+        "spring_barley",
+        "spring_barley",
+        "spring_barley",
+        "winter_oilseed_rape"
+      ],
+      "cover_crops": [
+        {
+          "after_year": 1,
+          "crop_id": "cover_oats_vetch"
+        },
+        {
+          "after_year": 2,
+          "crop_id": "cover_oats_vetch"
+        },
+        {
+          "after_year": 4,
+          "crop_id": "cover_oats_vetch"
+        }
+      ],
+      "is_current": false,
+      "headline": "Add winter oilseed rape in year 4",
+      "one_line_why": "Spreads your income over more crops. Less bare soil.",
+      "vs_current": {
+        "risk": "same",
+        "bare_soil": "less",
+        "workload": "more"
+      },
+      "score": 0.786,
+      "criteria": {
+        "climate_risk": 0.522,
+        "income_stability": 1.0,
+        "simplicity": 0.615,
+        "soil_cover": 0.75,
+        "water_use": 0.924,
+        "forage_value": 0.0,
+        "nitrogen_fixing": 0.0,
+        "pest_break": 0.5,
+        "market_suitability": 0.75
+      },
+      "metrics": {
+        "bare_months_per_year": 1.0,
+        "crop_weighted_stress": 0.542,
+        "water_demand_mm": 446.0,
+        "workability_risk": 0.0,
+        "erosion_index": 0.0,
+        "n_fixing_years": 0,
+        "pest_break_score": 0.5,
+        "organic_matter_score": 0.69,
+        "forage_score": 0.08,
+        "market_score": 0.75,
+        "rule_compliance": {
+          "ie_crop_rotation_2_of_4": true,
+          "two_crop_rule_10_30ha": null
+        }
+      },
+      "explanation": {
+        "why_suggested": "Suggested because it does better than your current rotation on: income spread over more crops and less bare soil.",
+        "evidence": [
+          {
+            "claim": "Continuous cereals accumulate take-all and grass-weed pressure",
+            "source": "teagasc_rotation"
+          },
+          {
+            "claim": "Wheat and barley grown after a break crop avoid the take-all build-up seen in continuous cereals",
+            "source": "teagasc_rotation"
+          },
+          {
+            "claim": "Cover crops keep the soil covered over winter and take up leftover nitrogen",
+            "source": "teagasc_cover_crops"
+          },
+          {
+            "claim": "Crop water demand is estimated from FAO-56 crop coefficients and local reference evapotranspiration",
+            "source": "fao56_table12"
+          },
+          {
+            "claim": "Bare soil for 1.0 months a year, from the crop calendars",
+            "source": "bare_months_per_year"
+          }
+        ],
+        "benefits": [
+          "Bare soil months drop from 7.0 to 1.0 a year",
+          "2 of 4 crop changes break a disease cycle",
+          "Meets the crop rotation rule for arable land"
+        ],
+        "information_gaps": [
+          "How much each crop suffers in each month is a first estimate, not yet checked.",
+          "No water-use figures for: winter oilseed rape.",
+          "We do not know your tillage area, so we did not check the two-crop rule.",
+          "We did not ask which machinery you have.",
+          "No field-level soil test provided (soil values are map estimates)."
+        ],
+        "risks_needing_local_review": [
+          "Wheat or barley after wheat or barley can build up take-all.",
+          "Some of these crops are in a sensitive stage in the dry-risk months.",
+          "Check there is a buyer for winter oilseed rape near you.",
+          "Local soil, weather and markets can change which rotation suits this field."
+        ]
+      },
+      "advisor_questions": [
+        "Is take-all a problem in back-to-back wheat or barley on this farm?",
+        "What can I do in a dry summer to protect these crops?",
+        "Is there a buyer near me for the new crop, and on what terms?",
+        "Could a soil test (pH, P, K) change which crops suit this field?"
+      ]
+    },
+    {
+      "id": "t_sb_beans_oats",
+      "label": "Barley, barley, beans, oats",
+      "sequence": [
+        "spring_barley",
+        "spring_barley",
+        "spring_beans",
+        "spring_oats"
+      ],
+      "cover_crops": [
+        {
+          "after_year": 1,
+          "crop_id": "cover_oats_vetch"
+        },
+        {
+          "after_year": 2,
+          "crop_id": "cover_oats_vetch"
+        },
+        {
+          "after_year": 3,
+          "crop_id": "cover_oats_vetch"
+        },
+        {
+          "after_year": 4,
+          "crop_id": "cover_oats_vetch"
+        }
+      ],
+      "is_current": false,
+      "headline": "Bring in beans and spring oats",
+      "one_line_why": "Spreads your income over more crops. Less bare soil.",
+      "vs_current": {
+        "risk": "same",
+        "bare_soil": "less",
+        "workload": "more"
+      },
+      "score": 0.692,
+      "criteria": {
+        "climate_risk": 0.293,
+        "income_stability": 1.0,
+        "simplicity": 0.359,
+        "soil_cover": 0.833,
+        "water_use": 0.762,
+        "forage_value": 0.789,
+        "nitrogen_fixing": 0.75,
+        "pest_break": 0.75,
+        "market_suitability": 0.5
+      },
+      "metrics": {
+        "bare_months_per_year": 1.0,
+        "crop_weighted_stress": 0.554,
+        "water_demand_mm": 455.0,
+        "workability_risk": 0.0,
+        "erosion_index": 0.0,
+        "n_fixing_years": 1,
+        "pest_break_score": 0.75,
+        "organic_matter_score": 0.75,
+        "forage_score": 0.2,
+        "market_score": 0.5,
+        "rule_compliance": {
+          "ie_crop_rotation_2_of_4": true,
+          "two_crop_rule_10_30ha": null
+        }
+      },
+      "explanation": {
+        "why_suggested": "Suggested because it does better than your current rotation on: income spread over more crops and less bare soil.",
+        "evidence": [
+          {
+            "claim": "Continuous cereals accumulate take-all and grass-weed pressure",
+            "source": "teagasc_rotation"
+          },
+          {
+            "claim": "Beans and oats break the cereal disease cycle while keeping spring work.",
+            "source": "teagasc_rotation"
+          },
+          {
+            "claim": "Wheat and barley grown after a break crop avoid the take-all build-up seen in continuous cereals",
+            "source": "teagasc_rotation"
+          },
+          {
+            "claim": "Legumes such as beans and clover fix nitrogen from the air",
+            "source": "teagasc_crops"
+          },
+          {
+            "claim": "Cover crops keep the soil covered over winter and take up leftover nitrogen",
+            "source": "teagasc_cover_crops"
+          },
+          {
+            "claim": "Crop water demand is estimated from FAO-56 crop coefficients and local reference evapotranspiration",
+            "source": "fao56_table12"
+          },
+          {
+            "claim": "Bare soil for 1.0 months a year, from the crop calendars",
+            "source": "bare_months_per_year"
+          }
+        ],
+        "benefits": [
+          "Bare soil months drop from 7.0 to 1.0 a year",
+          "3 of 4 crop changes break a disease cycle",
+          "A nitrogen-fixing crop in 1 of 4 years",
+          "More feed for livestock",
+          "Meets the crop rotation rule for arable land"
+        ],
+        "information_gaps": [
+          "How much each crop suffers in each month is a first estimate, not yet checked.",
+          "We do not know your tillage area, so we did not check the two-crop rule.",
+          "We did not ask which machinery you have.",
+          "No field-level soil test provided (soil values are map estimates)."
+        ],
+        "risks_needing_local_review": [
+          "Wheat or barley after wheat or barley can build up take-all.",
+          "Some of these crops are in a sensitive stage in the dry-risk months.",
+          "Check there is a buyer for spring field beans and spring oats near you.",
+          "Local soil, weather and markets can change which rotation suits this field."
+        ]
+      },
+      "advisor_questions": [
+        "Is take-all a problem in back-to-back wheat or barley on this farm?",
+        "What can I do in a dry summer to protect these crops?",
+        "Is there a buyer near me for the new crop, and on what terms?",
+        "Could a soil test (pH, P, K) change which crops suit this field?"
+      ]
+    },
+    {
+      "id": "current_cover",
+      "label": "Your crops, with winter cover crops",
+      "sequence": [
+        "spring_barley",
+        "spring_barley",
+        "spring_barley",
+        "spring_barley"
+      ],
+      "cover_crops": [
+        {
+          "after_year": 1,
+          "crop_id": "cover_oats_vetch"
+        },
+        {
+          "after_year": 2,
+          "crop_id": "cover_oats_vetch"
+        },
+        {
+          "after_year": 3,
+          "crop_id": "cover_oats_vetch"
+        },
+        {
+          "after_year": 4,
+          "crop_id": "cover_oats_vetch"
+        }
+      ],
+      "is_current": false,
+      "headline": "Keep your crops and add a winter cover crop",
+      "one_line_why": "Less bare soil.",
+      "vs_current": {
+        "risk": "same",
+        "bare_soil": "less",
+        "workload": "more"
+      },
+      "score": 0.68,
+      "criteria": {
+        "climate_risk": 0.0,
+        "income_stability": 0.727,
+        "simplicity": 0.872,
+        "soil_cover": 0.833,
+        "water_use": 0.924,
+        "forage_value": 0.158,
+        "nitrogen_fixing": 0.0,
+        "pest_break": 0.0,
+        "market_suitability": 1.0
+      },
+      "metrics": {
+        "bare_months_per_year": 1.0,
+        "crop_weighted_stress": 0.569,
+        "water_demand_mm": 446.0,
+        "workability_risk": 0.0,
+        "erosion_index": 0.0,
+        "n_fixing_years": 0,
+        "pest_break_score": 0.0,
+        "organic_matter_score": 0.75,
+        "forage_score": 0.1,
+        "market_score": 1.0,
+        "rule_compliance": {
+          "ie_crop_rotation_2_of_4": false,
+          "two_crop_rule_10_30ha": null
+        }
+      },
+      "explanation": {
+        "why_suggested": "Suggested because it does better than your current rotation on: less bare soil.",
+        "evidence": [
+          {
+            "claim": "Continuous cereals accumulate take-all and grass-weed pressure",
+            "source": "teagasc_rotation"
+          },
+          {
+            "claim": "Irish conditionality asks for crop rotation on arable land",
+            "source": "dafm_conditionality"
+          },
+          {
+            "claim": "Cover crops keep the soil covered over winter and take up leftover nitrogen",
+            "source": "teagasc_cover_crops"
+          },
+          {
+            "claim": "Crop water demand is estimated from FAO-56 crop coefficients and local reference evapotranspiration",
+            "source": "fao56_table12"
+          },
+          {
+            "claim": "Bare soil for 1.0 months a year, from the crop calendars",
+            "source": "bare_months_per_year"
+          }
+        ],
+        "benefits": [
+          "Bare soil months drop from 7.0 to 1.0 a year"
+        ],
+        "information_gaps": [
+          "How much each crop suffers in each month is a first estimate, not yet checked.",
+          "We do not know your tillage area, so we did not check the two-crop rule.",
+          "We did not ask which machinery you have.",
+          "No field-level soil test provided (soil values are map estimates)."
+        ],
+        "risks_needing_local_review": [
+          "Wheat or barley after wheat or barley can build up take-all.",
+          "Herbicide-resistant wild oats risk in continuous spring barley.",
+          "One crop every year may not meet the crop rotation rule for arable land.",
+          "Some of these crops are in a sensitive stage in the dry-risk months.",
+          "Local soil, weather and markets can change which rotation suits this field."
+        ]
+      },
+      "advisor_questions": [
+        "Is take-all a problem in back-to-back wheat or barley on this farm?",
+        "Is there wild oat resistance on this farm? Should we test for it?",
+        "Does this rotation meet the crop rotation rule for my farm?",
+        "Could a soil test (pH, P, K) change which crops suit this field?"
+      ]
+    }
+  ],
+  "weights_used": {
+    "climate_risk": 1,
+    "income_stability": 3,
+    "simplicity": 2,
+    "soil_cover": 1
+  },
+  "data_quality": [
+    "synthetic_data"
+  ],
+  "information_gaps": [
+    {
+      "code": "crop_sensitivity_unverified",
+      "text": "How much each crop suffers in each month is our first estimate. It has not been checked against field trials."
+    },
+    {
+      "code": "no_soil_test",
+      "text": "Soil values are estimates from a map, not a test of your field."
+    }
+  ],
+  "needs_local_review": true,
+  "disclaimer": "This tool supports, not replaces, your judgment and local agronomic advice.",
+  "provenance": [
+    {
+      "dataset_id": "crops_ie",
+      "description": "AgroLens crop catalogue (FAO-56 crop coefficients, Teagasc guidance)",
+      "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+      "period": null
+    },
+    {
+      "dataset_id": "modis_ndvi",
+      "description": "MOD13Q1/MYD13Q1 v6.1 NDVI",
+      "url": "https://doi.org/10.5067/MODIS/MOD13Q1.061",
+      "period": "2001–present"
+    },
+    {
+      "dataset_id": "power",
+      "description": "NASA POWER daily weather (MERRA-2 / CERES), about 50 km grid",
+      "url": "https://power.larc.nasa.gov/",
+      "period": "1981–present"
+    },
+    {
+      "dataset_id": "smap",
+      "description": "SMAP L4 root-zone soil moisture (SPL4SMGP)",
+      "url": "https://nsidc.org/data/spl4smgp",
+      "period": "2015–present"
+    },
+    {
+      "dataset_id": "soilgrids",
+      "description": "ISRIC SoilGrids v2.0 (global soil model, 250 m)",
+      "url": "https://soilgrids.org/",
+      "period": null
+    },
+    {
+      "dataset_id": "srtm",
+      "description": "SRTMGL1 elevation and slope",
+      "url": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+      "period": null
+    }
+  ]
+}

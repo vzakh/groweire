@@ -1,0 +1,214 @@
+{
+  "_note": "DRAFT catalogue (brief §10.1). Every number carries a source id from sources.json or is null. Kc and stage lengths are FAO-56 values for the closest listed crop and planting date; stress_sensitivity is a first estimate (source draft_unverified) and must be checked before any real use.",
+  "crops": [
+    {
+      "id": "spring_barley", "name": "Spring barley", "family": "cereal", "season": "spring", "role": "main",
+      "calendar": {"sow_months": [3, 4], "harvest_months": [8, 9], "ground_cover_months": [4, 5, 6, 7, 8], "source": "teagasc_crops"},
+      "n_fixing": false, "rooting": "medium",
+      "kc": {"ini": 0.3, "mid": 1.15, "end": 0.25, "stage_days": [20, 25, 60, 30], "source": "fao56_table12", "stage_source": "fao56_table11", "note": "Barley/oats/wheat, March-April planting, 35-45 deg latitude"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0, 0.2, 0.6, 0.8, 0.8, 0.3, 0, 0, 0, 0],
+        "waterlogging": [0, 0, 0.6, 0.6, 0.3, 0.2, 0.2, 0.5, 0.5, 0, 0, 0],
+        "heat": [0, 0, 0, 0, 0.2, 0.6, 0.6, 0.2, 0, 0, 0, 0],
+        "frost": [0, 0, 0.3, 0.4, 0.2, 0, 0, 0, 0, 0, 0, 0],
+        "source": "draft_unverified"},
+      "disease_groups": ["take_all"], "pest_break_for": [],
+      "forage_value": "low", "market": ["malting_barley", "feed_grain"], "residue_om": "medium",
+      "equipment": ["drill", "sprayer", "combine"], "requires_livestock": false,
+      "source": ["teagasc_crops", "fao56_table12"]
+    },
+    {
+      "id": "winter_wheat", "name": "Winter wheat", "family": "cereal", "season": "winter", "role": "main",
+      "calendar": {"sow_months": [10, 11], "harvest_months": [8, 9], "ground_cover_months": [11, 12, 1, 2, 3, 4, 5, 6, 7, 8], "source": "teagasc_crops"},
+      "n_fixing": false, "rooting": "deep",
+      "kc": {"ini": 0.7, "mid": 1.15, "end": 0.25, "stage_days": [160, 75, 75, 25], "source": "fao56_table12", "stage_source": "fao56_table11", "note": "Winter wheat, non-frozen soils; October planting stage lengths"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0.1, 0.3, 0.6, 0.8, 0.6, 0.2, 0, 0.1, 0.1, 0],
+        "waterlogging": [0.4, 0.4, 0.4, 0.3, 0.2, 0.2, 0.3, 0.5, 0.4, 0.7, 0.6, 0.4],
+        "heat": [0, 0, 0, 0, 0.2, 0.6, 0.5, 0.1, 0, 0, 0, 0],
+        "frost": [0.1, 0.1, 0.2, 0.3, 0.3, 0, 0, 0, 0, 0, 0.1, 0.1],
+        "source": "draft_unverified"},
+      "disease_groups": ["take_all"], "pest_break_for": [],
+      "forage_value": "low", "market": ["feed_grain", "milling_wheat"], "residue_om": "medium",
+      "equipment": ["drill", "sprayer", "combine"], "requires_livestock": false,
+      "source": ["teagasc_crops", "fao56_table12"]
+    },
+    {
+      "id": "winter_barley", "name": "Winter barley", "family": "cereal", "season": "winter", "role": "main",
+      "calendar": {"sow_months": [9, 10], "harvest_months": [7], "ground_cover_months": [10, 11, 12, 1, 2, 3, 4, 5, 6, 7], "source": "teagasc_crops"},
+      "n_fixing": false, "rooting": "medium",
+      "kc": {"ini": 0.3, "mid": 1.15, "end": 0.25, "stage_days": [160, 75, 75, 25], "source": "fao56_table12", "stage_source": "fao56_table11", "note": "Barley Kc; winter cereal (October planting) stage lengths"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0.1, 0.4, 0.7, 0.7, 0.3, 0, 0, 0.1, 0.1, 0],
+        "waterlogging": [0.5, 0.5, 0.4, 0.3, 0.2, 0.2, 0.5, 0, 0.5, 0.7, 0.6, 0.5],
+        "heat": [0, 0, 0, 0, 0.3, 0.6, 0.3, 0, 0, 0, 0, 0],
+        "frost": [0.1, 0.1, 0.2, 0.4, 0.3, 0, 0, 0, 0, 0, 0.1, 0.1],
+        "source": "draft_unverified"},
+      "disease_groups": ["take_all"], "pest_break_for": [],
+      "forage_value": "low", "market": ["feed_grain"], "residue_om": "medium",
+      "equipment": ["drill", "sprayer", "combine"], "requires_livestock": false,
+      "source": ["teagasc_crops", "fao56_table12"]
+    },
+    {
+      "id": "spring_oats", "name": "Spring oats", "family": "cereal", "season": "spring", "role": "main",
+      "calendar": {"sow_months": [3, 4], "harvest_months": [8, 9], "ground_cover_months": [4, 5, 6, 7, 8], "source": "teagasc_crops"},
+      "n_fixing": false, "rooting": "medium",
+      "kc": {"ini": 0.3, "mid": 1.15, "end": 0.25, "stage_days": [20, 25, 60, 30], "source": "fao56_table12", "stage_source": "fao56_table11", "note": "Barley/oats/wheat, March-April planting, 35-45 deg latitude"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0, 0.2, 0.6, 0.8, 0.7, 0.3, 0, 0, 0, 0],
+        "waterlogging": [0, 0, 0.5, 0.5, 0.3, 0.2, 0.2, 0.5, 0.5, 0, 0, 0],
+        "heat": [0, 0, 0, 0, 0.2, 0.5, 0.5, 0.2, 0, 0, 0, 0],
+        "frost": [0, 0, 0.2, 0.3, 0.1, 0, 0, 0, 0, 0, 0, 0],
+        "source": "draft_unverified"},
+      "disease_groups": [], "pest_break_for": ["take_all"],
+      "forage_value": "low", "market": ["feed_grain", "food_oats"], "residue_om": "medium",
+      "equipment": ["drill", "sprayer", "combine"], "requires_livestock": false,
+      "source": ["teagasc_crops", "teagasc_rotation", "fao56_table12"]
+    },
+    {
+      "id": "winter_oats", "name": "Winter oats", "family": "cereal", "season": "winter", "role": "main",
+      "calendar": {"sow_months": [10], "harvest_months": [8], "ground_cover_months": [11, 12, 1, 2, 3, 4, 5, 6, 7, 8], "source": "teagasc_crops"},
+      "n_fixing": false, "rooting": "medium",
+      "kc": {"ini": 0.3, "mid": 1.15, "end": 0.25, "stage_days": [160, 75, 75, 25], "source": "fao56_table12", "stage_source": "fao56_table11", "note": "Oats Kc; winter cereal (October planting) stage lengths"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0.1, 0.3, 0.6, 0.8, 0.5, 0.1, 0, 0.1, 0.1, 0],
+        "waterlogging": [0.4, 0.4, 0.4, 0.3, 0.2, 0.2, 0.3, 0.5, 0, 0.7, 0.6, 0.4],
+        "heat": [0, 0, 0, 0, 0.2, 0.5, 0.4, 0.1, 0, 0, 0, 0],
+        "frost": [0.3, 0.3, 0.3, 0.3, 0.2, 0, 0, 0, 0, 0, 0.2, 0.3],
+        "source": "draft_unverified"},
+      "disease_groups": [], "pest_break_for": ["take_all"],
+      "forage_value": "low", "market": ["feed_grain", "food_oats"], "residue_om": "medium",
+      "equipment": ["drill", "sprayer", "combine"], "requires_livestock": false,
+      "source": ["teagasc_crops", "teagasc_rotation", "fao56_table12"]
+    },
+    {
+      "id": "spring_beans", "name": "Spring field beans", "family": "legume", "season": "spring", "role": "main",
+      "calendar": {"sow_months": [2, 3, 4], "harvest_months": [8, 9], "ground_cover_months": [4, 5, 6, 7, 8], "source": "teagasc_crops"},
+      "n_fixing": true, "rooting": "deep",
+      "kc": {"ini": 0.5, "mid": 1.15, "end": 0.3, "stage_days": [15, 25, 35, 15], "source": "fao56_table12", "stage_source": "fao56_table11", "note": "Faba bean, dry/seed"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0, 0, 0.3, 0.8, 0.8, 0.4, 0.1, 0, 0, 0],
+        "waterlogging": [0, 0.4, 0.6, 0.5, 0.3, 0.2, 0.2, 0.4, 0.5, 0, 0, 0],
+        "heat": [0, 0, 0, 0, 0.2, 0.7, 0.7, 0.3, 0, 0, 0, 0],
+        "frost": [0, 0.2, 0.3, 0.4, 0.3, 0, 0, 0, 0, 0, 0, 0],
+        "source": "draft_unverified"},
+      "disease_groups": ["sclerotinia", "chocolate_spot"], "pest_break_for": ["take_all"],
+      "forage_value": "medium", "market": ["feed_protein", "export"], "residue_om": "medium",
+      "equipment": ["drill", "sprayer", "combine"], "requires_livestock": false,
+      "source": ["teagasc_crops", "teagasc_rotation", "fao56_table12"]
+    },
+    {
+      "id": "winter_oilseed_rape", "name": "Winter oilseed rape", "family": "brassica", "season": "winter", "role": "main",
+      "calendar": {"sow_months": [8, 9], "harvest_months": [7, 8], "ground_cover_months": [9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7], "source": "teagasc_crops"},
+      "n_fixing": false, "rooting": "deep",
+      "kc": {"ini": 0.35, "mid": 1.15, "end": 0.35, "stage_days": null, "source": "fao56_table12", "stage_source": null, "note": "Rapeseed/canola (upper mid-season value). FAO-56 Table 11 lists no stage lengths for rapeseed"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0.2, 0.5, 0.7, 0.5, 0.2, 0.3, 0.4, 0.1, 0, 0],
+        "waterlogging": [0.5, 0.5, 0.4, 0.3, 0.2, 0.2, 0.4, 0.5, 0.6, 0.6, 0.5, 0.5],
+        "heat": [0, 0, 0, 0.1, 0.4, 0.5, 0.2, 0, 0, 0, 0, 0],
+        "frost": [0.2, 0.2, 0.3, 0.5, 0.4, 0, 0, 0, 0, 0, 0.1, 0.2],
+        "source": "draft_unverified"},
+      "disease_groups": ["sclerotinia", "clubroot"], "pest_break_for": ["take_all"],
+      "forage_value": "none", "market": ["oilseed"], "residue_om": "medium",
+      "equipment": ["drill", "sprayer", "combine"], "requires_livestock": false,
+      "source": ["teagasc_crops", "teagasc_rotation", "fao56_table12"]
+    },
+    {
+      "id": "potatoes", "name": "Potatoes", "family": "solanaceae", "season": "spring", "role": "main",
+      "calendar": {"sow_months": [4, 5], "harvest_months": [9, 10], "ground_cover_months": [6, 7, 8, 9], "source": "teagasc_crops"},
+      "n_fixing": false, "rooting": "shallow",
+      "kc": {"ini": 0.5, "mid": 1.15, "end": 0.75, "stage_days": [30, 35, 50, 30], "source": "fao56_table12", "stage_source": "fao56_table11", "note": "Potato, April planting, Europe"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0, 0.1, 0.4, 0.8, 0.9, 0.8, 0.4, 0, 0, 0],
+        "waterlogging": [0, 0, 0, 0.6, 0.6, 0.4, 0.4, 0.4, 0.7, 0.8, 0, 0],
+        "heat": [0, 0, 0, 0, 0.2, 0.5, 0.7, 0.6, 0.1, 0, 0, 0],
+        "frost": [0, 0, 0, 0.4, 0.6, 0.1, 0, 0, 0, 0.2, 0, 0],
+        "source": "draft_unverified"},
+      "disease_groups": ["sclerotinia", "potato_blight"], "pest_break_for": ["take_all"],
+      "forage_value": "none", "market": ["ware_potatoes"], "residue_om": "low",
+      "equipment": ["planter", "sprayer", "potato_harvester", "store"], "requires_livestock": false,
+      "source": ["teagasc_crops", "fao56_table12"]
+    },
+    {
+      "id": "maize_silage", "name": "Maize silage", "family": "maize", "season": "spring", "role": "main",
+      "calendar": {"sow_months": [4, 5], "harvest_months": [9, 10], "ground_cover_months": [6, 7, 8, 9], "source": "teagasc_crops"},
+      "n_fixing": false, "rooting": "medium",
+      "kc": {"ini": 0.3, "mid": 1.2, "end": 0.6, "stage_days": [30, 40, 50, 30], "source": "fao56_table12", "stage_source": "fao56_table11", "note": "Field maize, harvested at high moisture; April planting"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0, 0, 0.3, 0.6, 0.9, 0.8, 0.4, 0, 0, 0],
+        "waterlogging": [0, 0, 0, 0.5, 0.6, 0.3, 0.2, 0.2, 0.5, 0.7, 0, 0],
+        "heat": [0, 0, 0, 0, 0, 0.2, 0.4, 0.3, 0, 0, 0, 0],
+        "frost": [0, 0, 0, 0.4, 0.7, 0.2, 0, 0, 0.2, 0.3, 0, 0],
+        "source": "draft_unverified"},
+      "disease_groups": [], "pest_break_for": ["take_all"],
+      "forage_value": "high", "market": ["forage"], "residue_om": "low",
+      "equipment": ["maize_drill", "sprayer", "forage_harvester"], "requires_livestock": true,
+      "source": ["teagasc_crops", "fao56_table12"]
+    },
+    {
+      "id": "grass_clover_ley", "name": "Grass-clover ley", "family": "ley", "season": "perennial", "role": "main",
+      "calendar": {"sow_months": [4, 5, 8], "harvest_months": [], "ground_cover_months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "source": "teagasc_grassland"},
+      "n_fixing": true, "rooting": "medium",
+      "kc": {"ini": null, "mid": 1.05, "end": null, "stage_days": null, "source": "fao56_table12", "stage_source": null, "note": "Rye grass hay, averaged cutting effects; used as one value for the whole year"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0.1, 0.3, 0.5, 0.7, 0.8, 0.7, 0.4, 0.1, 0, 0],
+        "waterlogging": [0.3, 0.3, 0.4, 0.4, 0.2, 0.1, 0.1, 0.2, 0.3, 0.5, 0.4, 0.3],
+        "heat": [0, 0, 0, 0, 0.1, 0.4, 0.5, 0.4, 0.1, 0, 0, 0],
+        "frost": [0, 0, 0.2, 0.2, 0.1, 0, 0, 0, 0, 0, 0, 0],
+        "source": "draft_unverified"},
+      "disease_groups": [], "pest_break_for": ["take_all", "sclerotinia"],
+      "forage_value": "high", "market": ["forage"], "residue_om": "high",
+      "equipment": ["drill", "mower"], "requires_livestock": true,
+      "source": ["teagasc_grassland", "fao56_table12"]
+    },
+    {
+      "id": "multispecies_sward", "name": "Multispecies sward", "family": "ley", "season": "perennial", "role": "main",
+      "calendar": {"sow_months": [4, 5, 8], "harvest_months": [], "ground_cover_months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "source": "teagasc_grassland"},
+      "n_fixing": true, "rooting": "deep",
+      "kc": {"ini": null, "mid": 1.05, "end": null, "stage_days": null, "source": "fao56_table12", "stage_source": null, "note": "Rye grass hay, averaged cutting effects, as the closest listed crop"},
+      "stress_sensitivity": {
+        "drought": [0, 0, 0.1, 0.2, 0.3, 0.5, 0.6, 0.5, 0.3, 0.1, 0, 0],
+        "waterlogging": [0.3, 0.3, 0.4, 0.4, 0.2, 0.1, 0.1, 0.2, 0.3, 0.5, 0.4, 0.3],
+        "heat": [0, 0, 0, 0, 0.1, 0.3, 0.4, 0.3, 0.1, 0, 0, 0],
+        "frost": [0, 0, 0.2, 0.2, 0.1, 0, 0, 0, 0, 0, 0, 0],
+        "source": "draft_unverified"},
+      "disease_groups": [], "pest_break_for": ["take_all", "sclerotinia"],
+      "forage_value": "high", "market": ["forage"], "residue_om": "high",
+      "equipment": ["drill", "mower"], "requires_livestock": true,
+      "source": ["teagasc_grassland", "fao56_table12"]
+    },
+    {
+      "id": "cover_oats_vetch", "name": "Oats and vetch cover crop", "family": "cover_mix", "season": "cover", "role": "cover",
+      "calendar": {"sow_months": [8, 9], "harvest_months": [2, 3], "ground_cover_months": [9, 10, 11, 12, 1, 2], "source": "teagasc_cover_crops"},
+      "n_fixing": true, "rooting": "medium",
+      "kc": {"ini": null, "mid": null, "end": null, "stage_days": null, "source": null, "stage_source": null, "note": "No FAO-56 value for this mix"},
+      "stress_sensitivity": {"drought": null, "waterlogging": null, "heat": null, "frost": null, "source": null},
+      "disease_groups": [], "pest_break_for": [],
+      "forage_value": "low", "market": [], "residue_om": "high",
+      "equipment": ["drill"], "requires_livestock": false,
+      "source": ["teagasc_cover_crops"]
+    },
+    {
+      "id": "cover_phacelia", "name": "Phacelia cover crop", "family": "boraginaceae", "season": "cover", "role": "cover",
+      "calendar": {"sow_months": [8, 9], "harvest_months": [2, 3], "ground_cover_months": [9, 10, 11, 12, 1, 2], "source": "teagasc_cover_crops"},
+      "n_fixing": false, "rooting": "medium",
+      "kc": {"ini": null, "mid": null, "end": null, "stage_days": null, "source": null, "stage_source": null, "note": "No FAO-56 value for phacelia"},
+      "stress_sensitivity": {"drought": null, "waterlogging": null, "heat": null, "frost": null, "source": null},
+      "disease_groups": [], "pest_break_for": [],
+      "forage_value": "none", "market": [], "residue_om": "high",
+      "equipment": ["drill"], "requires_livestock": false,
+      "source": ["teagasc_cover_crops"]
+    },
+    {
+      "id": "cover_mustard", "name": "Mustard cover crop", "family": "brassica", "season": "cover", "role": "cover",
+      "calendar": {"sow_months": [8, 9], "harvest_months": [2, 3], "ground_cover_months": [9, 10, 11, 12, 1, 2], "source": "teagasc_cover_crops"},
+      "n_fixing": false, "rooting": "medium",
+      "kc": {"ini": null, "mid": null, "end": null, "stage_days": null, "source": null, "stage_source": null, "note": "No FAO-56 value for a mustard cover crop"},
+      "stress_sensitivity": {"drought": null, "waterlogging": null, "heat": null, "frost": null, "source": null},
+      "disease_groups": ["clubroot"], "pest_break_for": [],
+      "forage_value": "none", "market": [], "residue_om": "medium",
+      "equipment": ["drill"], "requires_livestock": false,
+      "source": ["teagasc_cover_crops"]
+    }
+  ]
+}

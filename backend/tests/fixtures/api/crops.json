@@ -1,0 +1,365 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "GET",
+    "path": "/api/v1/crops?region=IE",
+    "body": null,
+    "status": 200
+  },
+  "region": "IE",
+  "crops": [
+    {
+      "id": "spring_barley",
+      "name": "Spring barley",
+      "family": "cereal",
+      "season": "spring",
+      "role": "main",
+      "sow_months": [
+        3,
+        4
+      ],
+      "harvest_months": [
+        8,
+        9
+      ],
+      "n_fixing": false,
+      "forage_value": "low",
+      "requires_livestock": false,
+      "market": [
+        "malting_barley",
+        "feed_grain"
+      ],
+      "sources": [
+        "teagasc_crops",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "winter_wheat",
+      "name": "Winter wheat",
+      "family": "cereal",
+      "season": "winter",
+      "role": "main",
+      "sow_months": [
+        10,
+        11
+      ],
+      "harvest_months": [
+        8,
+        9
+      ],
+      "n_fixing": false,
+      "forage_value": "low",
+      "requires_livestock": false,
+      "market": [
+        "feed_grain",
+        "milling_wheat"
+      ],
+      "sources": [
+        "teagasc_crops",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "winter_barley",
+      "name": "Winter barley",
+      "family": "cereal",
+      "season": "winter",
+      "role": "main",
+      "sow_months": [
+        9,
+        10
+      ],
+      "harvest_months": [
+        7
+      ],
+      "n_fixing": false,
+      "forage_value": "low",
+      "requires_livestock": false,
+      "market": [
+        "feed_grain"
+      ],
+      "sources": [
+        "teagasc_crops",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "spring_oats",
+      "name": "Spring oats",
+      "family": "cereal",
+      "season": "spring",
+      "role": "main",
+      "sow_months": [
+        3,
+        4
+      ],
+      "harvest_months": [
+        8,
+        9
+      ],
+      "n_fixing": false,
+      "forage_value": "low",
+      "requires_livestock": false,
+      "market": [
+        "feed_grain",
+        "food_oats"
+      ],
+      "sources": [
+        "teagasc_crops",
+        "teagasc_rotation",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "winter_oats",
+      "name": "Winter oats",
+      "family": "cereal",
+      "season": "winter",
+      "role": "main",
+      "sow_months": [
+        10
+      ],
+      "harvest_months": [
+        8
+      ],
+      "n_fixing": false,
+      "forage_value": "low",
+      "requires_livestock": false,
+      "market": [
+        "feed_grain",
+        "food_oats"
+      ],
+      "sources": [
+        "teagasc_crops",
+        "teagasc_rotation",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "spring_beans",
+      "name": "Spring field beans",
+      "family": "legume",
+      "season": "spring",
+      "role": "main",
+      "sow_months": [
+        2,
+        3,
+        4
+      ],
+      "harvest_months": [
+        8,
+        9
+      ],
+      "n_fixing": true,
+      "forage_value": "medium",
+      "requires_livestock": false,
+      "market": [
+        "feed_protein",
+        "export"
+      ],
+      "sources": [
+        "teagasc_crops",
+        "teagasc_rotation",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "winter_oilseed_rape",
+      "name": "Winter oilseed rape",
+      "family": "brassica",
+      "season": "winter",
+      "role": "main",
+      "sow_months": [
+        8,
+        9
+      ],
+      "harvest_months": [
+        7,
+        8
+      ],
+      "n_fixing": false,
+      "forage_value": "none",
+      "requires_livestock": false,
+      "market": [
+        "oilseed"
+      ],
+      "sources": [
+        "teagasc_crops",
+        "teagasc_rotation",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "potatoes",
+      "name": "Potatoes",
+      "family": "solanaceae",
+      "season": "spring",
+      "role": "main",
+      "sow_months": [
+        4,
+        5
+      ],
+      "harvest_months": [
+        9,
+        10
+      ],
+      "n_fixing": false,
+      "forage_value": "none",
+      "requires_livestock": false,
+      "market": [
+        "ware_potatoes"
+      ],
+      "sources": [
+        "teagasc_crops",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "maize_silage",
+      "name": "Maize silage",
+      "family": "maize",
+      "season": "spring",
+      "role": "main",
+      "sow_months": [
+        4,
+        5
+      ],
+      "harvest_months": [
+        9,
+        10
+      ],
+      "n_fixing": false,
+      "forage_value": "high",
+      "requires_livestock": true,
+      "market": [
+        "forage"
+      ],
+      "sources": [
+        "teagasc_crops",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "grass_clover_ley",
+      "name": "Grass-clover ley",
+      "family": "ley",
+      "season": "perennial",
+      "role": "main",
+      "sow_months": [
+        4,
+        5,
+        8
+      ],
+      "harvest_months": [],
+      "n_fixing": true,
+      "forage_value": "high",
+      "requires_livestock": true,
+      "market": [
+        "forage"
+      ],
+      "sources": [
+        "teagasc_grassland",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "multispecies_sward",
+      "name": "Multispecies sward",
+      "family": "ley",
+      "season": "perennial",
+      "role": "main",
+      "sow_months": [
+        4,
+        5,
+        8
+      ],
+      "harvest_months": [],
+      "n_fixing": true,
+      "forage_value": "high",
+      "requires_livestock": true,
+      "market": [
+        "forage"
+      ],
+      "sources": [
+        "teagasc_grassland",
+        "fao56_table12"
+      ]
+    },
+    {
+      "id": "cover_oats_vetch",
+      "name": "Oats and vetch cover crop",
+      "family": "cover_mix",
+      "season": "cover",
+      "role": "cover",
+      "sow_months": [
+        8,
+        9
+      ],
+      "harvest_months": [
+        2,
+        3
+      ],
+      "n_fixing": true,
+      "forage_value": "low",
+      "requires_livestock": false,
+      "market": [],
+      "sources": [
+        "teagasc_cover_crops"
+      ]
+    },
+    {
+      "id": "cover_phacelia",
+      "name": "Phacelia cover crop",
+      "family": "boraginaceae",
+      "season": "cover",
+      "role": "cover",
+      "sow_months": [
+        8,
+        9
+      ],
+      "harvest_months": [
+        2,
+        3
+      ],
+      "n_fixing": false,
+      "forage_value": "none",
+      "requires_livestock": false,
+      "market": [],
+      "sources": [
+        "teagasc_cover_crops"
+      ]
+    },
+    {
+      "id": "cover_mustard",
+      "name": "Mustard cover crop",
+      "family": "brassica",
+      "season": "cover",
+      "role": "cover",
+      "sow_months": [
+        8,
+        9
+      ],
+      "harvest_months": [
+        2,
+        3
+      ],
+      "n_fixing": false,
+      "forage_value": "none",
+      "requires_livestock": false,
+      "market": [],
+      "sources": [
+        "teagasc_cover_crops"
+      ]
+    }
+  ],
+  "disclaimer": "This tool supports, not replaces, your judgment and local agronomic advice.",
+  "provenance": [
+    {
+      "dataset_id": "crops_ie",
+      "description": "AgroLens crop catalogue (FAO-56 crop coefficients, Teagasc guidance)",
+      "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+      "period": null
+    }
+  ]
+}

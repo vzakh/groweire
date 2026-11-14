@@ -1,0 +1,22 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "POST",
+    "path": "/api/v1/fields",
+    "body": {
+      "name": "no shape"
+    },
+    "status": 422
+  },
+  "detail": "Send either point + area_ha, or geometry. Not both.",
+  "code": "field_input_ambiguous",
+  "errors": [
+    {
+      "loc": [
+        "body"
+      ],
+      "msg": "Value error, code=field_input_ambiguous: Send either point + area_ha, or geometry. Not both.",
+      "type": "value_error"
+    }
+  ]
+}

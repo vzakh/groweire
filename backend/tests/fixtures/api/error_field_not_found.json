@@ -1,0 +1,11 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "GET",
+    "path": "/api/v1/fields/f_ffffffff",
+    "body": null,
+    "status": 404
+  },
+  "detail": "We could not find that field.",
+  "code": "field_not_found"
+}

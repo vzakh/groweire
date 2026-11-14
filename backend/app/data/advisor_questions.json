@@ -1,0 +1,22 @@
+{
+  "shared_disease_sclerotinia": "Beans, oilseed rape and potatoes can share sclerotinia. How far apart should they be on this field?",
+  "shared_disease_clubroot": "Could a mustard cover crop raise the clubroot risk for oilseed rape here?",
+  "take_all_pressure": "Is take-all a problem in back-to-back wheat or barley on this farm?",
+  "wild_oat_resistance": "Is there wild oat resistance on this farm? Should we test for it?",
+  "rule_2_of_4": "Does this rotation meet the crop rotation rule for my farm?",
+  "wet_autumn_sowing": "Is this field dry enough to sow in a wet autumn? What is the fallback if not?",
+  "wet_harvest": "How would a wet harvest month affect these crops on this field?",
+  "dry_summer_risk": "What can I do in a dry summer to protect these crops?",
+  "market_access_new_crop": "Is there a buyer near me for the new crop, and on what terms?",
+  "new_equipment": "Do I need different machinery or a contractor for the new crop?",
+  "livestock_needed": "Could I use or sell the forage from this rotation?",
+  "outside_pilot": "This tool is built for Ireland. Which local advice should I use instead?",
+  "crop_sensitivity_unverified": "Do these risky months match what you see for these crops locally?",
+  "crop_parameter_missing": "Is there local data on water use for the crops we have no figures for?",
+  "climate_unavailable": "What do local weather records say about dry and wet months here?",
+  "tillage_area_unknown": "Does the crop diversification rule apply to the tillage area on my farm?",
+  "equipment_not_asked": "Which of these crops can I manage with the machinery I have?",
+  "livestock_not_asked": "Would a grass or forage break fit my farm?",
+  "no_soil_test": "Could a soil test (pH, P, K) change which crops suit this field?",
+  "local_fit": "Does this rotation suit the soil and weather on this farm?"
+}

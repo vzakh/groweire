@@ -1,0 +1,62 @@
+{
+  "_note": "GIBS entries were read from the WMTS GetCapabilities for EPSG:3857 'best' on 2026-11-14 (identifier, TileMatrixSet, format, default time). The browser fetches tiles straight from GIBS.",
+  "gibs_as_of": "2026-11-14",
+  "layers": [
+    {
+      "id": "true_colour",
+      "title": "Satellite photo",
+      "description": "What the land looked like from space on that day. Clouds often hide Ireland.",
+      "kind": "gibs_wmts",
+      "gibs_identifier": "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "url_template": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/{Time}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
+      "tile_matrix_set": "GoogleMapsCompatible_Level9",
+      "format": "image/jpeg",
+      "max_zoom": 9,
+      "time": {"default": "2026-11-14", "period": "P1D"},
+      "attribution": "NASA EOSDIS GIBS",
+      "dataset_id": "gibs"
+    },
+    {
+      "id": "ndvi",
+      "title": "Crop greenness",
+      "description": "How green the plants are, from satellite (NDVI). Dark green is dense, healthy growth.",
+      "kind": "gibs_wmts",
+      "gibs_identifier": "MODIS_Terra_L3_NDVI_16Day",
+      "url_template": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_L3_NDVI_16Day/default/{Time}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png",
+      "tile_matrix_set": "GoogleMapsCompatible_Level9",
+      "format": "image/png",
+      "max_zoom": 9,
+      "time": {"default": "2026-10-16", "period": "P16D"},
+      "attribution": "NASA EOSDIS GIBS",
+      "dataset_id": "gibs"
+    },
+    {
+      "id": "soil_moisture",
+      "title": "Soil wetness",
+      "description": "How wet the soil is around the roots, from the SMAP satellite. Each square is about 9 km.",
+      "kind": "gibs_wmts",
+      "gibs_identifier": "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+      "url_template": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/SMAP_L4_Analyzed_Root_Zone_Soil_Moisture/default/{Time}/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png",
+      "tile_matrix_set": "GoogleMapsCompatible_Level6",
+      "format": "image/png",
+      "max_zoom": 6,
+      "time": {"default": "2026-11-10", "period": "P1D"},
+      "attribution": "NASA EOSDIS GIBS",
+      "dataset_id": "gibs"
+    },
+    {
+      "id": "stress_risk",
+      "title": "Crop stress risk",
+      "description": "How often crops here do worse than normal in the chosen month. Built from 20+ years of NASA data. Ireland only.",
+      "kind": "geojson",
+      "gibs_identifier": null,
+      "url_template": "/api/v1/layers/stress-risk?month={month}",
+      "tile_matrix_set": null,
+      "format": "application/geo+json",
+      "max_zoom": null,
+      "time": {"default": "7", "period": "month 3..10"},
+      "attribution": "AgroLens",
+      "dataset_id": "modis_ndvi"
+    }
+  ]
+}

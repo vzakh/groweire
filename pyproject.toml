@@ -1,14 +1,19 @@
 # uv workspace root (virtual, no code). Brief §12.2.
-# `backend` joins `members` in PLAN_20 (uv rejects a member directory that does not exist yet).
 [tool.uv.workspace]
-members = ["ml"]
+members = ["backend", "ml"]
 
 [dependency-groups]
-dev = ["pytest>=8", "black>=24", "pylint>=3"]
+dev = ["pytest>=8", "pytest-asyncio", "respx", "black>=24", "pylint>=3"]
 
 [tool.pytest.ini_options]
-testpaths = ["ml/tests"]
-markers = ["contract: ML -> Backend contract tests (brief §13.2), parametrised by --bundle/--data"]
+testpaths = ["ml/tests", "backend/tests"]
+pythonpath = ["backend/app"]  # backend imports are `from core.config import ...` (brief rule 6)
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "contract: ML -> Backend contract tests (brief §13.2), parametrised by --bundle/--data",
+    "db: needs the local PostGIS from `make db-up` (skipped when it is not reachable)",
+]
 addopts = "-ra"
 
 [tool.black]

@@ -1,0 +1,2716 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AgroLens API",
+    "description": "Monthly crop-stress risk and rotation comparison for Irish farms. This tool supports, not replaces, your judgment and local agronomic advice.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/health/live": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Process is up",
+        "operationId": "live_api_v1_health_live_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health/ready": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "DB, cache and model are usable",
+        "operationId": "ready_api_v1_health_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/places": {
+      "get": {
+        "tags": [
+          "places"
+        ],
+        "summary": "Find a town, village or townland by name (Ireland and Northern Ireland)",
+        "operationId": "search_places_api_v1_places_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 100,
+              "examples": [
+                "Bagenalstown"
+              ],
+              "title": "Q"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlacesOut"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "code=place_search_busy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fields": {
+      "post": {
+        "tags": [
+          "fields"
+        ],
+        "summary": "Create a field from a point + approximate area, or from a drawn polygon",
+        "operationId": "create_field_api_v1_fields_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fields/{field_id}": {
+      "get": {
+        "tags": [
+          "fields"
+        ],
+        "summary": "Field metadata",
+        "operationId": "get_field_api_v1_fields__field_id__get",
+        "parameters": [
+          {
+            "name": "field_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Field Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fields/{field_id}/conditions": {
+      "get": {
+        "tags": [
+          "conditions"
+        ],
+        "summary": "Climate summary, trends, soil and satellite history for a field",
+        "operationId": "get_conditions_api_v1_fields__field_id__conditions_get",
+        "parameters": [
+          {
+            "name": "field_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Field Id"
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 40,
+              "minimum": 5,
+              "default": 30,
+              "title": "Years"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConditionsOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predict/stress-risk": {
+      "post": {
+        "tags": [
+          "predict"
+        ],
+        "summary": "Monthly probability of crop stress for a field, with uncertainty and reasons",
+        "operationId": "stress_risk_api_v1_predict_stress_risk_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/crops": {
+      "get": {
+        "tags": [
+          "crops"
+        ],
+        "summary": "Crops the tool knows about",
+        "operationId": "list_crops_api_v1_crops_get",
+        "parameters": [
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "IE",
+              "title": "Region"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CropsOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rotations/compare": {
+      "post": {
+        "tags": [
+          "rotations"
+        ],
+        "summary": "Compare the current rotation with alternatives, weighted by the farmer's priorities",
+        "operationId": "compare_api_v1_rotations_compare_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompareIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompareOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/layers": {
+      "get": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Map layers: NASA GIBS + our risk grid",
+        "operationId": "list_layers_api_v1_layers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LayersOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/layers/stress-risk": {
+      "get": {
+        "tags": [
+          "layers"
+        ],
+        "summary": "Pilot grid as GeoJSON with the stress risk per cell for one month",
+        "operationId": "stress_risk_layer_api_v1_layers_stress_risk_get",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 10,
+              "minimum": 3,
+              "description": "Calendar month, March (3) to October (10)",
+              "title": "Month"
+            },
+            "description": "Calendar month, March (3) to October (10)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StressRiskLayer"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/glossary": {
+      "get": {
+        "tags": [
+          "layers",
+          "glossary"
+        ],
+        "summary": "Plain-language terms",
+        "operationId": "glossary_api_v1_glossary_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlossaryOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Climate": {
+        "properties": {
+          "period": {
+            "type": "string",
+            "title": "Period",
+            "examples": [
+              "1996–2025"
+            ]
+          },
+          "months": {
+            "items": {
+              "$ref": "#/components/schemas/ClimateMonth"
+            },
+            "type": "array",
+            "title": "Months"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period",
+          "months"
+        ],
+        "title": "Climate"
+      },
+      "ClimateMonth": {
+        "properties": {
+          "month": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Month"
+          },
+          "precip_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Precip Mm"
+          },
+          "tmax_c": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tmax C"
+          },
+          "tmin_c": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tmin C"
+          },
+          "et0_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Et0 Mm",
+            "description": "Reference evapotranspiration (FAO-56)"
+          },
+          "p_minus_et0_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P Minus Et0 Mm",
+            "description": "Water balance: rain minus ET0"
+          },
+          "frost_days": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frost Days"
+          },
+          "hot_days": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hot Days"
+          },
+          "heavy_rain_days": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Heavy Rain Days"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "precip_mm",
+          "tmax_c",
+          "tmin_c",
+          "et0_mm",
+          "p_minus_et0_mm",
+          "frost_days",
+          "hot_days",
+          "heavy_rain_days"
+        ],
+        "title": "ClimateMonth"
+      },
+      "CompareIn": {
+        "properties": {
+          "field_id": {
+            "type": "string",
+            "title": "Field Id"
+          },
+          "current_rotation": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Current Rotation"
+          },
+          "priorities": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "income_stability",
+                "simplicity",
+                "soil_cover",
+                "water_use",
+                "forage_value",
+                "nitrogen_fixing",
+                "pest_break",
+                "market_suitability"
+              ]
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Priorities",
+            "description": "Ordered top-3; weights 3, 2, 1 (D18)"
+          },
+          "constraints": {
+            "$ref": "#/components/schemas/Constraints"
+          },
+          "n_alternatives": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "N Alternatives",
+            "default": 3
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "field_id",
+          "current_rotation"
+        ],
+        "title": "CompareIn",
+        "examples": [
+          {
+            "constraints": {
+              "excluded_crops": [
+                "potatoes"
+              ],
+              "has_livestock": true,
+              "irrigation": false,
+              "market_contracts": [
+                "malting_barley"
+              ],
+              "must_include": []
+            },
+            "current_rotation": [
+              "spring_barley",
+              "spring_barley",
+              "spring_barley",
+              "spring_barley"
+            ],
+            "field_id": "f_8c1e02ab",
+            "n_alternatives": 3,
+            "priorities": [
+              "income_stability",
+              "simplicity",
+              "soil_cover"
+            ]
+          }
+        ]
+      },
+      "CompareOut": {
+        "properties": {
+          "field_id": {
+            "type": "string",
+            "title": "Field Id"
+          },
+          "strategies": {
+            "items": {
+              "$ref": "#/components/schemas/Strategy"
+            },
+            "type": "array",
+            "title": "Strategies"
+          },
+          "weights_used": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Weights Used"
+          },
+          "data_quality": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Data Quality"
+          },
+          "information_gaps": {
+            "items": {
+              "$ref": "#/components/schemas/InformationGap"
+            },
+            "type": "array",
+            "title": "Information Gaps"
+          },
+          "needs_local_review": {
+            "type": "boolean",
+            "title": "Needs Local Review",
+            "default": true
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "This tool supports, not replaces, your judgment and local agronomic advice."
+          },
+          "provenance": {
+            "items": {
+              "$ref": "#/components/schemas/Provenance"
+            },
+            "type": "array",
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field_id",
+          "strategies",
+          "weights_used",
+          "data_quality",
+          "information_gaps",
+          "provenance"
+        ],
+        "title": "CompareOut"
+      },
+      "ConditionsOut": {
+        "properties": {
+          "field_id": {
+            "type": "string",
+            "title": "Field Id"
+          },
+          "pilot_coverage": {
+            "type": "boolean",
+            "title": "Pilot Coverage"
+          },
+          "climate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Climate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trends": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Trends"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "soil": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Soil"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "series": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Series"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "data_quality": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Data Quality"
+          },
+          "information_gaps": {
+            "items": {
+              "$ref": "#/components/schemas/InformationGap"
+            },
+            "type": "array",
+            "title": "Information Gaps"
+          },
+          "provenance": {
+            "items": {
+              "$ref": "#/components/schemas/Provenance"
+            },
+            "type": "array",
+            "title": "Provenance"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "This tool supports, not replaces, your judgment and local agronomic advice."
+          }
+        },
+        "type": "object",
+        "required": [
+          "field_id",
+          "pilot_coverage",
+          "climate",
+          "trends",
+          "soil",
+          "series",
+          "data_quality",
+          "information_gaps",
+          "provenance"
+        ],
+        "title": "ConditionsOut"
+      },
+      "Constraints": {
+        "properties": {
+          "has_livestock": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Has Livestock"
+          },
+          "irrigation": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Irrigation"
+          },
+          "equipment": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "maxItems": 30
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equipment"
+          },
+          "excluded_crops": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Excluded Crops"
+          },
+          "must_include": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 4,
+            "title": "Must Include"
+          },
+          "market_contracts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Market Contracts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Constraints",
+        "description": "`null` means \"not asked\": it becomes an information gap, not a filter."
+      },
+      "CoverCropUse": {
+        "properties": {
+          "after_year": {
+            "type": "integer",
+            "title": "After Year",
+            "description": "1-based year whose harvest the cover crop follows"
+          },
+          "crop_id": {
+            "type": "string",
+            "title": "Crop Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "after_year",
+          "crop_id"
+        ],
+        "title": "CoverCropUse"
+      },
+      "CropOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "examples": [
+              "spring_barley"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "examples": [
+              "Spring barley"
+            ]
+          },
+          "family": {
+            "type": "string",
+            "title": "Family"
+          },
+          "season": {
+            "type": "string",
+            "title": "Season",
+            "description": "spring | winter | perennial | cover"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "main | cover"
+          },
+          "sow_months": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Sow Months"
+          },
+          "harvest_months": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Harvest Months"
+          },
+          "n_fixing": {
+            "type": "boolean",
+            "title": "N Fixing"
+          },
+          "forage_value": {
+            "type": "string",
+            "title": "Forage Value"
+          },
+          "requires_livestock": {
+            "type": "boolean",
+            "title": "Requires Livestock"
+          },
+          "market": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Market"
+          },
+          "sources": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sources"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "family",
+          "season",
+          "role",
+          "sow_months",
+          "harvest_months",
+          "n_fixing",
+          "forage_value",
+          "requires_livestock",
+          "market",
+          "sources"
+        ],
+        "title": "CropOut"
+      },
+      "CropsOut": {
+        "properties": {
+          "region": {
+            "type": "string",
+            "title": "Region",
+            "default": "IE"
+          },
+          "crops": {
+            "items": {
+              "$ref": "#/components/schemas/CropOut"
+            },
+            "type": "array",
+            "title": "Crops"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "This tool supports, not replaces, your judgment and local agronomic advice."
+          },
+          "provenance": {
+            "items": {
+              "$ref": "#/components/schemas/Provenance"
+            },
+            "type": "array",
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "crops",
+          "provenance"
+        ],
+        "title": "CropsOut"
+      },
+      "Driver": {
+        "properties": {
+          "feature": {
+            "type": "string",
+            "title": "Feature"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "contribution": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contribution"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "Farmer words, written by the ML package"
+          }
+        },
+        "type": "object",
+        "required": [
+          "feature",
+          "value",
+          "contribution",
+          "text"
+        ],
+        "title": "Driver"
+      },
+      "ErrorOut": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail",
+          "code"
+        ],
+        "title": "ErrorOut"
+      },
+      "Evidence": {
+        "properties": {
+          "claim": {
+            "type": "string",
+            "title": "Claim"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "description": "Source id (see GET /glossary sources) or a metric name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "claim",
+          "source"
+        ],
+        "title": "Evidence"
+      },
+      "Explanation": {
+        "properties": {
+          "why_suggested": {
+            "type": "string",
+            "title": "Why Suggested"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "benefits": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Benefits"
+          },
+          "information_gaps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Information Gaps"
+          },
+          "risks_needing_local_review": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Risks Needing Local Review"
+          }
+        },
+        "type": "object",
+        "required": [
+          "why_suggested",
+          "evidence",
+          "benefits",
+          "information_gaps",
+          "risks_needing_local_review"
+        ],
+        "title": "Explanation",
+        "description": "The five blocks the challenge asks for (J2)."
+      },
+      "FieldCreate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "point": {
+            "anyOf": [
+              {
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Point",
+            "description": "[lon, lat]"
+          },
+          "area_ha": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Area Ha",
+            "description": "Approximate size, 0.1 to 2,000 ha"
+          },
+          "geometry": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolygonIn"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "FieldCreate",
+        "description": "EXACTLY ONE of {point + area_ha} (default, PRD DD-2) or {geometry}.",
+        "examples": [
+          {
+            "area_ha": 10,
+            "name": "Home field",
+            "point": [
+              -6.955,
+              52.705
+            ]
+          },
+          {
+            "geometry": {
+              "coordinates": [
+                [
+                  [
+                    -7.25,
+                    52.65
+                  ],
+                  [
+                    -7.24,
+                    52.65
+                  ],
+                  [
+                    -7.24,
+                    52.66
+                  ],
+                  [
+                    -7.25,
+                    52.66
+                  ],
+                  [
+                    -7.25,
+                    52.65
+                  ]
+                ]
+              ],
+              "type": "Polygon"
+            },
+            "name": "Home field"
+          }
+        ]
+      },
+      "FieldOut": {
+        "properties": {
+          "field_id": {
+            "type": "string",
+            "title": "Field Id",
+            "examples": [
+              "f_8c1e02ab"
+            ]
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "area_ha": {
+            "type": "number",
+            "title": "Area Ha"
+          },
+          "area_source": {
+            "type": "string",
+            "enum": [
+              "approximate",
+              "drawn"
+            ],
+            "title": "Area Source"
+          },
+          "centroid": {
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Centroid",
+            "description": "[lon, lat]"
+          },
+          "pilot_coverage": {
+            "type": "boolean",
+            "title": "Pilot Coverage",
+            "description": "True when the risk model is calibrated here (IE)"
+          },
+          "cell_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Cell Ids"
+          },
+          "geometry": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Geometry",
+            "description": "GeoJSON Polygon of the stored field (a circle if approximate)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field_id",
+          "area_ha",
+          "area_source",
+          "centroid",
+          "pilot_coverage",
+          "cell_ids",
+          "geometry"
+        ],
+        "title": "FieldOut"
+      },
+      "GlossaryOut": {
+        "properties": {
+          "terms": {
+            "items": {
+              "$ref": "#/components/schemas/GlossaryTerm"
+            },
+            "type": "array",
+            "title": "Terms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "terms"
+        ],
+        "title": "GlossaryOut"
+      },
+      "GlossaryTerm": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Farmer words, shown on the main path"
+          },
+          "term": {
+            "type": "string",
+            "title": "Term",
+            "description": "Technical term, shown in the glossary only"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "term",
+          "text"
+        ],
+        "title": "GlossaryTerm"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InformationGap": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "examples": [
+              "soil_from_global_model"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "text"
+        ],
+        "title": "InformationGap",
+        "description": "Something we do not know. Shown to the farmer as a gap, never guessed (hard rule 1)."
+      },
+      "Layer": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind",
+            "description": "gibs_wmts | geojson"
+          },
+          "gibs_identifier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gibs Identifier"
+          },
+          "url_template": {
+            "type": "string",
+            "title": "Url Template"
+          },
+          "tile_matrix_set": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tile Matrix Set"
+          },
+          "format": {
+            "type": "string",
+            "title": "Format"
+          },
+          "max_zoom": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Zoom"
+          },
+          "time": {
+            "$ref": "#/components/schemas/LayerTime"
+          },
+          "attribution": {
+            "type": "string",
+            "title": "Attribution"
+          },
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "kind",
+          "gibs_identifier",
+          "url_template",
+          "tile_matrix_set",
+          "format",
+          "max_zoom",
+          "time",
+          "attribution",
+          "dataset_id"
+        ],
+        "title": "Layer"
+      },
+      "LayerTime": {
+        "properties": {
+          "default": {
+            "type": "string",
+            "title": "Default"
+          },
+          "period": {
+            "type": "string",
+            "title": "Period"
+          }
+        },
+        "type": "object",
+        "required": [
+          "default",
+          "period"
+        ],
+        "title": "LayerTime"
+      },
+      "LayersOut": {
+        "properties": {
+          "gibs_as_of": {
+            "type": "string",
+            "title": "Gibs As Of"
+          },
+          "layers": {
+            "items": {
+              "$ref": "#/components/schemas/Layer"
+            },
+            "type": "array",
+            "title": "Layers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "gibs_as_of",
+          "layers"
+        ],
+        "title": "LayersOut"
+      },
+      "LiveOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "ok"
+          }
+        },
+        "type": "object",
+        "title": "LiveOut"
+      },
+      "Metrics": {
+        "properties": {
+          "bare_months_per_year": {
+            "type": "number",
+            "title": "Bare Months Per Year"
+          },
+          "crop_weighted_stress": {
+            "type": "number",
+            "title": "Crop Weighted Stress"
+          },
+          "water_demand_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Water Demand Mm"
+          },
+          "workability_risk": {
+            "type": "number",
+            "title": "Workability Risk"
+          },
+          "erosion_index": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Erosion Index"
+          },
+          "n_fixing_years": {
+            "type": "integer",
+            "title": "N Fixing Years"
+          },
+          "pest_break_score": {
+            "type": "number",
+            "title": "Pest Break Score"
+          },
+          "organic_matter_score": {
+            "type": "number",
+            "title": "Organic Matter Score"
+          },
+          "forage_score": {
+            "type": "number",
+            "title": "Forage Score"
+          },
+          "market_score": {
+            "type": "number",
+            "title": "Market Score"
+          },
+          "rule_compliance": {
+            "$ref": "#/components/schemas/RuleCompliance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bare_months_per_year",
+          "crop_weighted_stress",
+          "water_demand_mm",
+          "workability_risk",
+          "erosion_index",
+          "n_fixing_years",
+          "pest_break_score",
+          "organic_matter_score",
+          "forage_score",
+          "market_score",
+          "rule_compliance"
+        ],
+        "title": "Metrics"
+      },
+      "MonthRiskOut": {
+        "properties": {
+          "month": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Month"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year",
+            "description": "Only for mode=next_month"
+          },
+          "probability": {
+            "type": "number",
+            "title": "Probability"
+          },
+          "interval": {
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Interval"
+          },
+          "stress_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Stress Types"
+          },
+          "drivers": {
+            "items": {
+              "$ref": "#/components/schemas/Driver"
+            },
+            "type": "array",
+            "title": "Drivers"
+          },
+          "crop_sensitivity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crop Sensitivity"
+          },
+          "crop_weighted_risk": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crop Weighted Risk"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Level"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "OK | Dry | Wet | Heat | Frost | Unclear",
+            "examples": [
+              "Dry"
+            ]
+          },
+          "frequency_text": {
+            "type": "string",
+            "title": "Frequency Text",
+            "examples": [
+              "about 2 years in 10"
+            ]
+          },
+          "aria_label": {
+            "type": "string",
+            "title": "Aria Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "probability",
+          "interval",
+          "stress_types",
+          "drivers",
+          "crop_sensitivity",
+          "crop_weighted_risk",
+          "level",
+          "label",
+          "frequency_text",
+          "aria_label"
+        ],
+        "title": "MonthRiskOut"
+      },
+      "Place": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "examples": [
+              "Bagenalstown, County Carlow"
+            ]
+          },
+          "lon": {
+            "type": "number",
+            "title": "Lon"
+          },
+          "lat": {
+            "type": "number",
+            "title": "Lat"
+          },
+          "bbox": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bbox",
+            "description": "[west, south, east, north]"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind",
+            "examples": [
+              "town"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "lon",
+          "lat",
+          "kind"
+        ],
+        "title": "Place"
+      },
+      "PlacesOut": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/Place"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "attribution": {
+            "type": "string",
+            "title": "Attribution",
+            "examples": [
+              "© OpenStreetMap contributors"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "osm",
+              "geonames"
+            ],
+            "title": "Source"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results",
+          "attribution",
+          "source"
+        ],
+        "title": "PlacesOut"
+      },
+      "PolygonIn": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "examples": [
+              "Polygon"
+            ]
+          },
+          "coordinates": {
+            "items": {
+              "items": {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Coordinates"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "coordinates"
+        ],
+        "title": "PolygonIn",
+        "description": "GeoJSON Polygon in EPSG:4326. Checked in depth by services/fields.py."
+      },
+      "PredictIn": {
+        "properties": {
+          "field_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field Id"
+          },
+          "geometry": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolygonIn"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Instead of field_id: a polygon, stored as a new field"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "next_month",
+              "seasonal_profile"
+            ],
+            "title": "Mode",
+            "default": "seasonal_profile"
+          },
+          "crop_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crop Id",
+            "description": "Adds crop sensitivity weighting"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "PredictIn",
+        "examples": [
+          {
+            "crop_id": "spring_barley",
+            "field_id": "f_8c1e02ab",
+            "mode": "seasonal_profile"
+          }
+        ]
+      },
+      "PredictOut": {
+        "properties": {
+          "field_id": {
+            "type": "string",
+            "title": "Field Id"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "next_month",
+              "seasonal_profile"
+            ],
+            "title": "Mode"
+          },
+          "crop_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crop Id"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "calibrated_region": {
+            "type": "string",
+            "title": "Calibrated Region",
+            "default": "IE"
+          },
+          "pilot_coverage": {
+            "type": "boolean",
+            "title": "Pilot Coverage"
+          },
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "months": {
+            "items": {
+              "$ref": "#/components/schemas/MonthRiskOut"
+            },
+            "type": "array",
+            "title": "Months"
+          },
+          "riskiest_month": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Riskiest Month"
+          },
+          "trend": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Trend"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "data_quality": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Data Quality"
+          },
+          "information_gaps": {
+            "items": {
+              "$ref": "#/components/schemas/InformationGap"
+            },
+            "type": "array",
+            "title": "Information Gaps"
+          },
+          "needs_local_review": {
+            "type": "boolean",
+            "title": "Needs Local Review"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "This tool supports, not replaces, your judgment and local agronomic advice."
+          },
+          "provenance": {
+            "items": {
+              "$ref": "#/components/schemas/Provenance"
+            },
+            "type": "array",
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field_id",
+          "mode",
+          "crop_id",
+          "model_version",
+          "pilot_coverage",
+          "headline",
+          "months",
+          "riskiest_month",
+          "trend",
+          "data_quality",
+          "information_gaps",
+          "needs_local_review",
+          "provenance"
+        ],
+        "title": "PredictOut"
+      },
+      "Provenance": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period"
+          }
+        },
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "description",
+          "url"
+        ],
+        "title": "Provenance"
+      },
+      "ReadyOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "ok"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "model_kind": {
+            "type": "string",
+            "title": "Model Kind"
+          },
+          "data_source": {
+            "type": "string",
+            "title": "Data Source"
+          },
+          "contract_version": {
+            "type": "string",
+            "title": "Contract Version"
+          },
+          "cache": {
+            "type": "string",
+            "title": "Cache"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_version",
+          "model_kind",
+          "data_source",
+          "contract_version",
+          "cache"
+        ],
+        "title": "ReadyOut"
+      },
+      "RuleCompliance": {
+        "properties": {
+          "ie_crop_rotation_2_of_4": {
+            "type": "boolean",
+            "title": "Ie Crop Rotation 2 Of 4"
+          },
+          "two_crop_rule_10_30ha": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Two Crop Rule 10 30Ha",
+            "description": "null: the farm's tillage area is not known"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ie_crop_rotation_2_of_4"
+        ],
+        "title": "RuleCompliance"
+      },
+      "Series": {
+        "properties": {
+          "months": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Months",
+            "examples": [
+              [
+                "2024-03",
+                "2024-04"
+              ]
+            ]
+          },
+          "ndvi": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Ndvi"
+          },
+          "ndvi_z": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Ndvi Z"
+          },
+          "sm_rootzone": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Sm Rootzone"
+          }
+        },
+        "type": "object",
+        "required": [
+          "months",
+          "ndvi",
+          "ndvi_z",
+          "sm_rootzone"
+        ],
+        "title": "Series",
+        "description": "Monthly satellite history for the field's cells (pilot only), area-weighted."
+      },
+      "Soil": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "pilot_grid",
+              "soilgrids"
+            ],
+            "title": "Source"
+          },
+          "clay": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clay",
+            "description": "%"
+          },
+          "sand": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sand",
+            "description": "%"
+          },
+          "soc": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Soc",
+            "description": "Soil organic carbon, g/kg"
+          },
+          "phh2o": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phh2O"
+          },
+          "bdod": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bdod",
+            "description": "Bulk density, g/cm3"
+          },
+          "drainage_class": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Drainage Class",
+            "description": "1 (excessive) .. 5 (very poor); pilot only"
+          },
+          "elev_m": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Elev M"
+          },
+          "slope_deg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slope Deg"
+          },
+          "uncertainty": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uncertainty"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source",
+          "clay",
+          "sand",
+          "soc",
+          "phh2o",
+          "bdod",
+          "drainage_class",
+          "elev_m",
+          "slope_deg"
+        ],
+        "title": "Soil"
+      },
+      "Strategy": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "sequence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sequence"
+          },
+          "cover_crops": {
+            "items": {
+              "$ref": "#/components/schemas/CoverCropUse"
+            },
+            "type": "array",
+            "title": "Cover Crops"
+          },
+          "is_current": {
+            "type": "boolean",
+            "title": "Is Current"
+          },
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "one_line_why": {
+            "type": "string",
+            "title": "One Line Why"
+          },
+          "vs_current": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VsCurrent"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "criteria": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Criteria",
+            "description": "Per-criterion score 0..1, higher = better"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/Metrics"
+          },
+          "explanation": {
+            "$ref": "#/components/schemas/Explanation"
+          },
+          "advisor_questions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 4,
+            "minItems": 2,
+            "title": "Advisor Questions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "sequence",
+          "cover_crops",
+          "is_current",
+          "headline",
+          "one_line_why",
+          "vs_current",
+          "score",
+          "criteria",
+          "metrics",
+          "explanation",
+          "advisor_questions"
+        ],
+        "title": "Strategy"
+      },
+      "StressRiskLayer": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "default": "FeatureCollection"
+          },
+          "month": {
+            "type": "integer",
+            "title": "Month"
+          },
+          "features": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Features"
+          },
+          "data_quality": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Data Quality"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "This tool supports, not replaces, your judgment and local agronomic advice."
+          },
+          "provenance": {
+            "items": {
+              "$ref": "#/components/schemas/Provenance"
+            },
+            "type": "array",
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "features",
+          "data_quality",
+          "provenance"
+        ],
+        "title": "StressRiskLayer",
+        "description": "GeoJSON FeatureCollection: one polygon per pilot cell, `properties.p` = risk in that month."
+      },
+      "Trend": {
+        "properties": {
+          "per_decade": {
+            "type": "number",
+            "title": "Per Decade"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "increasing",
+              "decreasing",
+              "stable"
+            ],
+            "title": "Direction"
+          },
+          "months_affected": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Months Affected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "per_decade",
+          "direction",
+          "months_affected"
+        ],
+        "title": "Trend"
+      },
+      "Trends": {
+        "properties": {
+          "precip_mm_per_decade": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Precip Mm Per Decade"
+          },
+          "tmax_c_per_decade": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tmax C Per Decade"
+          },
+          "frost_days_per_decade": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frost Days Per Decade"
+          },
+          "n_years": {
+            "type": "integer",
+            "title": "N Years"
+          }
+        },
+        "type": "object",
+        "required": [
+          "precip_mm_per_decade",
+          "tmax_c_per_decade",
+          "frost_days_per_decade",
+          "n_years"
+        ],
+        "title": "Trends",
+        "description": "Sen's slope per decade over complete calendar years."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VsCurrent": {
+        "properties": {
+          "risk": {
+            "type": "string",
+            "enum": [
+              "lower",
+              "same",
+              "higher"
+            ],
+            "title": "Risk"
+          },
+          "bare_soil": {
+            "type": "string",
+            "enum": [
+              "less",
+              "same",
+              "more"
+            ],
+            "title": "Bare Soil"
+          },
+          "workload": {
+            "type": "string",
+            "enum": [
+              "less",
+              "same",
+              "more"
+            ],
+            "title": "Workload"
+          }
+        },
+        "type": "object",
+        "required": [
+          "risk",
+          "bare_soil",
+          "workload"
+        ],
+        "title": "VsCurrent"
+      }
+    }
+  }
+}

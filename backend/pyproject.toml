@@ -1,0 +1,29 @@
+[project]
+name = "agrolens-backend"
+version = "0.1.0"
+description = "AgroLens API: FastAPI + PostGIS + Redis on top of the agrolens_ml contract"
+requires-python = ">=3.12"
+dependencies = [
+    "agrolens-ml",
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic-settings",
+    "sqlalchemy>=2",
+    "geoalchemy2",
+    "alembic",
+    "psycopg2-binary",
+    "httpx",
+    "tenacity",
+    "shapely>=2",
+    "pyproj",
+    "redis>=5",
+    "loguru",
+    "pyyaml",
+    "prometheus-fastapi-instrumentator",
+]
+
+[tool.uv]
+package = false  # an app, not a library: run with PYTHONPATH=backend/app (brief rule 6)
+
+[tool.uv.sources]
+agrolens-ml = { workspace = true }

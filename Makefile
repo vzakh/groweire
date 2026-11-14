@@ -19,4 +19,34 @@ contract:        ## ML -> Backend contract tests: make contract BUNDLE=... DATA=
 test-ml:         ## ML unit tests (offline)
 	$(ML) pytest ml/tests -q -m "not contract"
 
-check: test-ml synthetic contract
+check: test-ml synthetic contract test-backend
+
+# --- backend (PLAN_20) ---
+BE := PYTHONPATH=backend/app uv run --package agrolens-backend
+COMPOSE := docker compose -f compose.yaml
+
+.PHONY: db-up db-down migrate load-pilot api test-backend openapi fixtures
+
+db-up:           ## start local PostGIS (:55432) + Redis (:56379) and wait until healthy
+	$(COMPOSE) up -d --wait db redis
+
+db-down:         ## stop them (data volume is kept)
+	$(COMPOSE) down
+
+migrate:         ## alembic upgrade head
+	cd backend && PYTHONPATH=app uv run --package agrolens-backend alembic upgrade head
+
+load-pilot:      ## parquet -> PostGIS: make load-pilot DATA=data/synthetic
+	$(BE) python -m jobs.load_pilot $(DATA)
+
+api:             ## run the API with reload on :8080
+	$(BE) uvicorn main:app --reload --port 8080
+
+test-backend:    ## backend tests (DB tests are skipped when PostGIS is not running)
+	$(BE) pytest backend/tests -q
+
+openapi:         ## write backend/openapi.json (Backend -> Frontend contract)
+	$(BE) python -m jobs.export_openapi
+
+fixtures:        ## write backend/tests/fixtures/api/*.json (Backend -> Frontend contract)
+	$(BE) python -m jobs.export_fixtures

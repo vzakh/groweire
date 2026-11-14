@@ -19,3 +19,7 @@ data/synthetic/
 data/logs/
 ml/artifacts/_scratch/
 .netrc
+
+# Env files: only .envs/.example/ is committed (brief §12.7)
+.envs/.dev/
+.envs/.prod/

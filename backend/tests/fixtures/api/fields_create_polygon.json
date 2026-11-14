@@ -1,0 +1,80 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "POST",
+    "path": "/api/v1/fields",
+    "body": {
+      "name": "Drawn field",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -7.25,
+              52.65
+            ],
+            [
+              -7.24,
+              52.65
+            ],
+            [
+              -7.24,
+              52.66
+            ],
+            [
+              -7.25,
+              52.66
+            ],
+            [
+              -7.25,
+              52.65
+            ]
+          ]
+        ]
+      }
+    },
+    "status": 201
+  },
+  "field_id": "f_00000002",
+  "name": "Drawn field",
+  "area_ha": 75.3,
+  "area_source": "drawn",
+  "centroid": [
+    -7.245,
+    52.655
+  ],
+  "pilot_coverage": true,
+  "cell_ids": [
+    "c01228",
+    "c01164",
+    "c01165",
+    "c01227"
+  ],
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -7.25,
+          52.65
+        ],
+        [
+          -7.24,
+          52.65
+        ],
+        [
+          -7.24,
+          52.66
+        ],
+        [
+          -7.25,
+          52.66
+        ],
+        [
+          -7.25,
+          52.65
+        ]
+      ]
+    ]
+  }
+}
