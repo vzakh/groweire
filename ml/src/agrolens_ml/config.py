@@ -28,3 +28,6 @@ FROST_MONTHS = (3, 4, 5)  # ... in March-May
 # Labels (brief §8.1)
 STRESS_Z = -1.0
 MIN_VALID_FRAC = 0.3
+
+# z-anomalies need at least this many earlier baseline years of the same calendar month
+MIN_CLIM_YEARS = 5

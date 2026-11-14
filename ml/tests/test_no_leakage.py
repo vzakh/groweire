@@ -28,7 +28,7 @@ STATIC = {
 
 def _history(seed: int = 0) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
-    months = pd.period_range("2019-01", "2023-12", freq="M")  # 5 years
+    months = pd.period_range("2001-01", "2023-12", freq="M")  # covers the 2001-2020 baseline
     data = {c: rng.normal(size=len(months)) for c in MONTHLY_INPUT_COLUMNS if c != "month"}
     return pd.DataFrame({"month": months, **data})[list(MONTHLY_INPUT_COLUMNS)]
 
@@ -39,7 +39,9 @@ def _same(a: dict, b: dict) -> bool:
     )
 
 
-@pytest.mark.parametrize("target", ["2020-03", "2021-07", "2022-10", "2023-06"])
+@pytest.mark.parametrize(
+    "target", ["2004-05", "2008-03", "2015-08", "2020-03", "2021-07", "2022-10", "2023-06"]
+)
 def test_mutating_future_leaves_row_unchanged(target):
     target = pd.Period(target, freq="M")
     hist = _history()
@@ -72,3 +74,20 @@ def test_month_order_does_not_matter():
     assert _same(
         build_feature_row(STATIC, hist, target), build_feature_row(STATIC, shuffled, target)
     )
+
+
+def test_anomalies_are_active_with_long_history():
+    row = build_feature_row(STATIC, _history(), pd.Period("2015-08", freq="M"))
+    for feat in ("p_minus_et0_l1_z", "p_minus_et0_3m_l1_z", "tmax_l1_z", "clim_precip_m"):
+        assert not math.isnan(row[feat]), feat
+
+
+def test_baseline_rows_after_target_are_ignored():
+    """A 2010 target must not see 2011-2020 baseline values (expanding baseline)."""
+    target = pd.Period("2010-07", freq="M")
+    hist = _history()
+    before = build_feature_row(STATIC, hist, target)
+    mutated = hist.copy()
+    later = mutated["month"] >= pd.Period("2011-01", freq="M")
+    mutated.loc[later, "tmax"] = 99.0
+    assert _same(before, build_feature_row(STATIC, mutated, target))

@@ -17,8 +17,8 @@
   "features": {
     "month_sin": 1.2246467991473532e-16,
     "month_cos": -1.0,
-    "p_minus_et0_l1": null,
-    "p_minus_et0_3m_l1": null,
+    "p_minus_et0_l1": 17.039563264042783,
+    "p_minus_et0_3m_l1": 68.98665720577196,
     "p_minus_et0_l1_z": null,
     "p_minus_et0_3m_l1_z": null,
     "precip_l1": 89.99664981535349,

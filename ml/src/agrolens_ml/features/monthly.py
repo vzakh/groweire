@@ -1,8 +1,8 @@
 """POWER daily -> monthly aggregates (brief §8.3, §13.2).
 
-Task-05 SHELL: every aggregate is real EXCEPT et0 / p_minus_et0 (NaN until task 12 adds FAO-56
-Penman-Monteith). sm_rootzone (SMAP) and ndvi_z (MODIS) are not in POWER, so they are NaN here
-and filled from the pilot tables by the training pipeline.
+et0 is the monthly sum of daily FAO-56 Penman-Monteith ET0 (features/et0.py) and
+p_minus_et0 = precip - et0 (climatic water balance). sm_rootzone (SMAP) and ndvi_z (MODIS) are
+not in POWER, so they are NaN here and filled from the pilot tables by the training pipeline.
 The SAME function builds the training table, so the backend's live path has no train/serve skew.
 """
 
@@ -13,6 +13,7 @@ import pandas as pd
 
 from agrolens_ml.config import DRY_DAY_MM, FROST_C, GDD_BASE_C, HEAVY_RAIN_MM, HOT_DAY_C
 from agrolens_ml.contract import MONTHLY_INPUT_COLUMNS, POWER_DAILY_PARAMETERS
+from agrolens_ml.features.et0 import actual_vapour_pressure_from_dew, et0_penman_monteith
 
 POWER_FILL = -999.0
 
@@ -26,7 +27,7 @@ def _daily_frame(daily: pd.DataFrame) -> pd.DataFrame:
     if missing:
         raise ValueError(f"POWER daily frame is missing parameters: {missing}")
     out = df[list(POWER_DAILY_PARAMETERS)].apply(pd.to_numeric, errors="coerce").astype(float)
-    return out.mask(out <= POWER_FILL + 1e-9).sort_index()
+    return out.mask(out <= POWER_FILL + 1e-9).sort_index().copy()
 
 
 def _longest_dry_run(precip: pd.Series, month: pd.PeriodIndex) -> pd.Series:
@@ -40,10 +41,19 @@ def power_daily_to_monthly(daily: pd.DataFrame, elev_m: float, lat: float) -> pd
     """POWER daily (POWER_DAILY_PARAMETERS, `date` column or DatetimeIndex) -> monthly_history.
 
     Returns one row per calendar month with exactly MONTHLY_INPUT_COLUMNS (`month` = Period[M]).
-    `elev_m` and `lat` feed FAO-56 ET0 (task 12); unused by the shell.
+    `elev_m` [m] and `lat` [deg] feed FAO-56 ET0 (pressure and extraterrestrial radiation).
     """
-    del elev_m, lat  # used from task 12 (ET0)
     df = _daily_frame(daily)
+    df["ET0"] = et0_penman_monteith(
+        df["T2M_MAX"],
+        df["T2M_MIN"],
+        df["ALLSKY_SFC_SW_DWN"],
+        df["WS2M"],
+        actual_vapour_pressure_from_dew(df["T2MDEW"]),
+        elev_m,
+        lat,
+        df.index.day_of_year,
+    )
     month = df.index.to_period("M")
     g = df.groupby(month)
 
@@ -63,8 +73,8 @@ def power_daily_to_monthly(daily: pd.DataFrame, elev_m: float, lat: float) -> pd
             "gwettop": g["GWETTOP"].mean(),
         }
     )
-    out["et0"] = np.nan  # TODO(task 12): FAO-56 Penman-Monteith
-    out["p_minus_et0"] = np.nan  # TODO(task 12): precip - et0
+    out["et0"] = df["ET0"].groupby(month).sum(min_count=1)
+    out["p_minus_et0"] = out["precip"] - out["et0"]
     out["sm_rootzone"] = np.nan  # SMAP, pilot tables only
     out["ndvi_z"] = np.nan  # MODIS, pilot tables only
     out.index = pd.PeriodIndex(out.index, freq="M")
