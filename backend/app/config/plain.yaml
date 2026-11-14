@@ -1,0 +1,36 @@
+# Plain-language rules (brief §10.5, D19). Changing a word here changes what farmers read:
+# the snapshot tests in tests/test_plain.py must be updated on purpose.
+
+levels:            # displayed risk p: low < medium_from <= medium < high_from <= high
+  medium_from: 0.10
+  high_from: 0.25
+
+frequency:
+  rare_below: 0.05        # "less than 1 year in 20"
+  per_20_below: 0.10      # "about 1 year in 20"
+  almost_every_from: 0.95 # "almost every year"
+
+months: [January, February, March, April, May, June, July, August, September, October,
+         November, December]
+
+# If a month has several stress types, the first one in this list names it.
+type_priority: [drought, waterlogging, heat, frost, other]
+
+labels:
+  ok: OK
+  drought: Dry
+  waterlogging: Wet
+  heat: Heat
+  frost: Frost
+  other: Unclear
+
+too_words:         # "... it is too {word}."
+  drought: dry
+  waterlogging: wet
+  heat: hot
+  frost: frosty
+
+default_crop_words: crops
+
+# A driver text from ML that contains any of these is dropped (never shown to a farmer).
+banned_terms: ["NDVI", "ET0", "_z", "%", "z-score"]

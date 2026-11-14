@@ -1,0 +1,25 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "GET",
+    "path": "/api/v1/places?q=Bagenalstown",
+    "body": null,
+    "status": 200
+  },
+  "results": [
+    {
+      "name": "Bagenalstown, County Carlow",
+      "lon": -6.962,
+      "lat": 52.7,
+      "bbox": [
+        -6.99,
+        52.68,
+        -6.94,
+        52.72
+      ],
+      "kind": "town"
+    }
+  ],
+  "attribution": "© OpenStreetMap contributors",
+  "source": "osm"
+}

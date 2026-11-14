@@ -1,0 +1,87 @@
+# Local dev stack for the backend track: PostGIS + Redis, plus the API image.
+#   make db-up            -> only db + redis (run the API on the host with `make api`)
+#   docker compose up     -> db, redis, migrate, api on :8080 (API_PORT overrides the host port)
+# Own project name and non-default host ports, so it never collides with other stacks.
+name: agrolens-backend
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    platform: linux/amd64 # the official image has no arm64 build; emulated on Apple Silicon
+    environment:
+      POSTGRES_USER: agrolens
+      POSTGRES_PASSWORD: agrolens # dev only; prod reads .envs/.prod (never committed)
+      POSTGRES_DB: agrolens
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agrolens -d agrolens"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:56379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  # One-shot: alembic upgrade head. Migrations never run at API startup (brief §12.3).
+  migrate:
+    image: agrolens-api:dev
+    build: &api-build
+      context: .
+      dockerfile: deploy/docker/api.Dockerfile
+      args:
+        MODEL_VERSION: ${MODEL_VERSION:-stub_v0} # `make build` passes ml/artifacts/CURRENT
+    command: alembic -c /srv/alembic.ini upgrade head
+    working_dir: /srv
+    restart: "no"
+    environment: &api-env
+      APP_ENV: dev
+      DATABASE_URL: postgresql+psycopg2://agrolens:agrolens@db:5432/agrolens
+      REDIS_URL: redis://redis:6379/0
+      ALLOW_STUB_MODEL: ${ALLOW_STUB_MODEL:-true}
+      FRONTEND_ORIGIN: http://localhost:5173
+      DOMAIN: localhost
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    image: agrolens-api:dev
+    build: *api-build
+    environment:
+      <<: *api-env
+      WEB_CONCURRENCY: "1"
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8080" # dev only; in prod the port is not published
+    stop_grace_period: 30s
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+  # make load-pilot-docker PILOT_DATA=synthetic   (reads ./data, which is not in the image)
+  load-pilot:
+    profiles: ["ops"]
+    image: agrolens-api:dev
+    build: *api-build
+    command: python -m jobs.load_pilot /data/${PILOT_DATA:-synthetic} --geonames /data/raw/geonames
+    restart: "no"
+    environment: *api-env
+    volumes:
+      - ./data:/data:ro
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  pgdata:

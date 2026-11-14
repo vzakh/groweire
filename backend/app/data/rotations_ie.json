@@ -1,0 +1,46 @@
+{
+  "templates": [
+    {
+      "id": "t_sb_sb_ww_beans",
+      "label": "Barley, barley, wheat, beans",
+      "sequence": ["spring_barley", "spring_barley", "winter_wheat", "spring_beans"],
+      "rationale": "Beans act as a break crop before the cereals and fix nitrogen.",
+      "source": "teagasc_rotation"
+    },
+    {
+      "id": "t_teagasc_5yr",
+      "label": "Five-year winter rotation with two break crops",
+      "sequence": ["winter_wheat", "winter_barley", "winter_oilseed_rape", "winter_wheat", "spring_beans"],
+      "rationale": "Wheat grown after a break crop avoids the take-all build-up seen in continuous wheat.",
+      "source": "teagasc_rotation"
+    },
+    {
+      "id": "t_sb_beans_oats",
+      "label": "Barley, barley, beans, oats",
+      "sequence": ["spring_barley", "spring_barley", "spring_beans", "spring_oats"],
+      "rationale": "Beans and oats break the cereal disease cycle while keeping spring work.",
+      "source": "teagasc_rotation"
+    },
+    {
+      "id": "t_ww_oats_beans",
+      "label": "Wheat, oats, beans",
+      "sequence": ["winter_wheat", "winter_oats", "spring_beans"],
+      "rationale": "Oats and beans are both take-all breaks for wheat.",
+      "source": "teagasc_rotation"
+    },
+    {
+      "id": "t_ley_cereals",
+      "label": "Three years of grass-clover, then two cereals",
+      "sequence": ["grass_clover_ley", "grass_clover_ley", "grass_clover_ley", "winter_wheat", "spring_barley"],
+      "rationale": "A grass-clover ley keeps the soil covered all year and feeds livestock; cereals follow it.",
+      "source": "teagasc_grassland"
+    },
+    {
+      "id": "t_maize_cereals",
+      "label": "Maize silage, wheat, barley, beans",
+      "sequence": ["maize_silage", "winter_wheat", "spring_barley", "spring_beans"],
+      "rationale": "Maize gives winter feed; beans break the cereal disease cycle.",
+      "source": "teagasc_rotation"
+    }
+  ]
+}

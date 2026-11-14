@@ -1,0 +1,34 @@
+{
+  "fao56_table11": {
+    "citation": "Allen, Pereira, Raes, Smith (1998). Crop evapotranspiration. FAO Irrigation and Drainage Paper 56, Table 11: lengths of crop development stages.",
+    "url": "https://www.fao.org/4/x0490e/x0490e0b.htm"
+  },
+  "fao56_table12": {
+    "citation": "Allen, Pereira, Raes, Smith (1998). Crop evapotranspiration. FAO Irrigation and Drainage Paper 56, Table 12: single crop coefficients (Kc).",
+    "url": "https://www.fao.org/4/x0490e/x0490e0b.htm"
+  },
+  "teagasc_crops": {
+    "citation": "Teagasc crops advice: sowing and harvest windows, crop husbandry for Irish tillage crops.",
+    "url": "https://www.teagasc.ie/crops/crops/"
+  },
+  "teagasc_rotation": {
+    "citation": "Teagasc: break crops and crop rotation in Irish tillage systems (take-all breaks, rotation trials at Oak Park and Knockbeg).",
+    "url": "https://www.teagasc.ie/crops/crops/break-crops/"
+  },
+  "teagasc_cover_crops": {
+    "citation": "Teagasc: cover (catch) crops guidance.",
+    "url": "https://www.teagasc.ie/crops/crops/cover-crops/"
+  },
+  "teagasc_grassland": {
+    "citation": "Teagasc: grass-clover and multispecies swards guidance.",
+    "url": "https://www.teagasc.ie/crops/grassland/"
+  },
+  "dafm_conditionality": {
+    "citation": "Department of Agriculture, Food and the Marine: CAP conditionality, GAEC 7 crop rotation and crop diversification requirements.",
+    "url": "https://www.gov.ie/en/department-of-agriculture-food-and-the-marine/"
+  },
+  "draft_unverified": {
+    "citation": "First estimate by the AgroLens team. NOT yet checked against a published source or field trials. Shown to users as an information gap.",
+    "url": null
+  }
+}

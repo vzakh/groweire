@@ -1,0 +1,15 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "GET",
+    "path": "/api/v1/health/ready",
+    "body": null,
+    "status": 200
+  },
+  "status": "ok",
+  "model_version": "stub-0",
+  "model_kind": "stub",
+  "data_source": "synthetic",
+  "contract_version": "1.0",
+  "cache": "redis"
+}

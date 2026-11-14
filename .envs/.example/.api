@@ -1,0 +1,13 @@
+# Copy to .envs/.dev/.api (gitignored). Placeholders only: never commit real secrets.
+APP_ENV=dev
+DATABASE_URL=postgresql+psycopg2://agrolens:agrolens@localhost:55432/agrolens
+REDIS_URL=redis://localhost:56379/0
+# MODEL_DIR is optional in dev: defaults to ml/artifacts/<contents of ml/artifacts/CURRENT>
+# MODEL_DIR=/srv/model
+ALLOW_STUB_MODEL=true
+LOG_LEVEL=INFO
+FRONTEND_ORIGIN=http://localhost:5173
+DOMAIN=localhost
+ENABLE_DOCS=true
+REPO_URL=https://example.org/agrolens
+CONTACT_EMAIL=change-me@example.org

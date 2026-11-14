@@ -1,0 +1,101 @@
+{
+  "_fixture_source": "stub-0",
+  "_request": {
+    "method": "POST",
+    "path": "/api/v1/predict/stress-risk",
+    "body": {
+      "field_id": "f_00000001",
+      "mode": "next_month",
+      "crop_id": "spring_barley"
+    },
+    "status": 200
+  },
+  "field_id": "f_00000001",
+  "mode": "next_month",
+  "crop_id": "spring_barley",
+  "model_version": "stub-0",
+  "calibrated_region": "IE",
+  "pilot_coverage": true,
+  "headline": "No month stands out as risky for spring barley here.",
+  "months": [
+    {
+      "month": 11,
+      "year": 2026,
+      "probability": 0.0444,
+      "interval": [
+        0.0,
+        0.0944
+      ],
+      "stress_types": [
+        "other"
+      ],
+      "drivers": [
+        {
+          "feature": "p_minus_et0_3m_l1_z",
+          "value": 0.4573740648835368,
+          "contribution": 0.04,
+          "text": "The last 3 months were wetter than usual for this place"
+        },
+        {
+          "feature": "tmax_l1_z",
+          "value": 0.9517637832441181,
+          "contribution": 0.02,
+          "text": "Last month's days were warmer than usual"
+        },
+        {
+          "feature": "ndvi_z_l1",
+          "value": null,
+          "contribution": 0.01,
+          "text": "Recent weather at this place"
+        }
+      ],
+      "crop_sensitivity": null,
+      "crop_weighted_risk": null,
+      "level": "low",
+      "label": "OK",
+      "frequency_text": "less than 1 year in 20",
+      "aria_label": "November, spring barley: OK. In less than 1 year in 20 there is crop stress here. Uncertainty 0 to 9 percent."
+    }
+  ],
+  "riskiest_month": 11,
+  "trend": null,
+  "data_quality": [
+    "live_weather_only",
+    "outside_growing_season",
+    "synthetic_data"
+  ],
+  "information_gaps": [
+    {
+      "code": "satellite_history_not_current",
+      "text": "The newest satellite crop data is not in yet. This month uses weather only."
+    },
+    {
+      "code": "outside_growing_season",
+      "text": "The model covers March to October. Treat this month with care."
+    },
+    {
+      "code": "crop_sensitivity_unverified",
+      "text": "How much spring barley suffers in each month is our first estimate. It has not been checked against field trials."
+    },
+    {
+      "code": "crop_sensitivity_unknown",
+      "text": "For some months we do not know how this crop reacts. Those months show the general risk for crops."
+    }
+  ],
+  "needs_local_review": true,
+  "disclaimer": "This tool supports, not replaces, your judgment and local agronomic advice.",
+  "provenance": [
+    {
+      "dataset_id": "power",
+      "description": "NASA POWER daily weather (MERRA-2 / CERES), about 50 km grid",
+      "url": "https://power.larc.nasa.gov/",
+      "period": "1981–present"
+    },
+    {
+      "dataset_id": "crops_ie",
+      "description": "AgroLens crop catalogue (FAO-56 crop coefficients, Teagasc guidance)",
+      "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+      "period": null
+    }
+  ]
+}
