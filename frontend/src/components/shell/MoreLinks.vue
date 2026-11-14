@@ -37,7 +37,7 @@ const links: { section: Section; icon: typeof MapIcon }[] = [
             :is-active="flow.section === link.section"
           >
             <RouterLink
-              :to="`/app/${link.section}`"
+              :to="flow.place({ section: link.section })"
               :aria-current="flow.section === link.section ? 'page' : undefined"
             >
               <component

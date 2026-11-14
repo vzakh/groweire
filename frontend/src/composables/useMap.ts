@@ -13,7 +13,13 @@ const IRELAND: [number, number, number, number] = [-10.7, 51.3, -5.3, 55.5]
 
 type MapStatus = 'idle' | 'loading' | 'ready' | 'error'
 
+type MapLibre = typeof import('maplibre-gl')
+
 const map = shallowRef<MapLibreMap | null>(null)
+/** The MapLibre module itself, for callers that need markers or popups. */
+const lib = shallowRef<MapLibre | null>(null)
+/** Goes up each time a basemap style has loaded; our own layers must be added again then. */
+const styleVersion = ref(0)
 const status = ref<MapStatus>('idle')
 let container: HTMLDivElement | null = null
 let starting: Promise<void> | null = null
@@ -30,14 +36,16 @@ function getContainer(): HTMLDivElement {
 async function start(): Promise<void> {
   status.value = 'loading'
   try {
-    const [{ Map, NavigationControl, setWorkerUrl }, { default: workerUrl }] = await Promise.all([
+    const [module, { default: workerUrl }] = await Promise.all([
       import('maplibre-gl'),
       // MapLibre 6 looks for its worker file next to its own module, which a bundler moves.
       // Let Vite bundle the worker and tell MapLibre where it ended up.
       import('maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'),
       import('maplibre-gl/dist/maplibre-gl.css'),
     ])
+    const { Map, NavigationControl, setWorkerUrl } = module
     setWorkerUrl(workerUrl)
+    lib.value = module
     const instance = new Map({
       container: getContainer(),
       style: BASEMAP,
@@ -52,6 +60,7 @@ async function start(): Promise<void> {
     instance.on('style.load', () => {
       styleLoaded = true
       status.value = 'ready'
+      styleVersion.value++
     })
     instance.on('error', () => {
       // Tile errors after the style has loaded are not fatal: the map stays usable.
@@ -87,5 +96,5 @@ export function useMap() {
     if (container?.parentElement === host) host.removeChild(container)
   }
 
-  return { map, status, attach, detach }
+  return { map, lib, status, styleVersion, attach, detach }
 }

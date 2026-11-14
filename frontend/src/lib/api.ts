@@ -1,3 +1,4 @@
+import { ref, shallowRef } from 'vue'
 import createClient, { type Middleware } from 'openapi-fetch'
 import { copy, type ErrorKey } from '@/copy/en'
 import type { components, paths } from './api-types'
@@ -81,4 +82,73 @@ export async function checkContract(): Promise<void> {
   } catch {
     // The API is unreachable. Each screen reports its own failed request, so stay quiet here.
   }
+}
+
+/** A failed API call, already worded for the person using the app. */
+export class ApiFailure extends Error {
+  readonly friendly: FriendlyError
+  readonly status?: number
+  constructor(friendly: FriendlyError, status?: number) {
+    super(friendly.message)
+    this.friendly = friendly
+    this.status = status
+  }
+}
+
+/**
+ * The data of an API call, or an `ApiFailure` that says what happened and what to do next.
+ * The result is typed by the caller (a `Schemas[...]` shape): openapi-fetch widens fixed-length
+ * arrays such as `[lon, lat]` to `number[]`, which would not match the generated schema types.
+ */
+export async function unwrap<T>(
+  request: Promise<{ data?: unknown; error?: unknown; response: Response }>,
+): Promise<T> {
+  let result: { data?: unknown; error?: unknown; response: Response }
+  try {
+    result = await request
+  } catch (thrown) {
+    throw new ApiFailure(toFriendlyError(thrown))
+  }
+  if (result.error !== undefined || result.data === undefined) {
+    throw new ApiFailure(toFriendlyError(result.error, result.response.status), result.response.status)
+  }
+  return result.data as T
+}
+
+/**
+ * One piece of loaded data with its loading and error state. A newer `run` wins over an older
+ * one that is still in flight, so a slow answer never overwrites a fresh one.
+ */
+export function useResource<T>() {
+  const data = shallowRef<T | null>(null)
+  const error = shallowRef<FriendlyError | null>(null)
+  const loading = ref(false)
+  let latest = 0
+
+  async function run(load: () => Promise<T>): Promise<T | null> {
+    const mine = ++latest
+    loading.value = true
+    error.value = null
+    try {
+      const value = await load()
+      if (mine === latest) data.value = value
+      return value
+    } catch (thrown) {
+      if (mine === latest) {
+        error.value = thrown instanceof ApiFailure ? thrown.friendly : toFriendlyError(thrown)
+      }
+      return null
+    } finally {
+      if (mine === latest) loading.value = false
+    }
+  }
+
+  function reset() {
+    latest++
+    data.value = null
+    error.value = null
+    loading.value = false
+  }
+
+  return { data, error, loading, run, reset }
 }

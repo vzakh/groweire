@@ -86,7 +86,7 @@ const here = computed(() =>
         variant="outline"
         size="tap"
       >
-        <RouterLink to="/app/words">
+        <RouterLink :to="flow.place({ section: 'words' })">
           <CircleHelpIcon data-icon="inline-start" />
           <span class="@max-[44rem]:hidden">{{ copy.whatDoesThisMean }}</span>
           <span class="@min-[44rem]:hidden">{{ copy.words }}</span>
@@ -116,7 +116,7 @@ const here = computed(() =>
           size="tap"
           class="@max-[20rem]:hidden"
         >
-          <RouterLink to="/app/words">
+          <RouterLink :to="flow.place({ section: 'words' })">
             <CircleHelpIcon data-icon="inline-start" />
             {{ copy.words }}
           </RouterLink>
@@ -140,7 +140,7 @@ const here = computed(() =>
                 as-child
                 class="min-h-12"
               >
-                <RouterLink to="/app/maps">
+                <RouterLink :to="flow.place({ section: 'maps' })">
                   <MapIcon aria-hidden="true" />
                   {{ copy.more.maps.label }}
                 </RouterLink>
@@ -149,7 +149,7 @@ const here = computed(() =>
                 as-child
                 class="min-h-12"
               >
-                <RouterLink to="/app/words">
+                <RouterLink :to="flow.place({ section: 'words' })">
                   <BookOpenIcon aria-hidden="true" />
                   {{ copy.more.words.label }}
                 </RouterLink>
@@ -158,7 +158,7 @@ const here = computed(() =>
                 as-child
                 class="min-h-12"
               >
-                <RouterLink to="/app/sources">
+                <RouterLink :to="flow.place({ section: 'sources' })">
                   <InfoIcon aria-hidden="true" />
                   {{ copy.more.sources.label }}
                 </RouterLink>
@@ -186,6 +186,7 @@ const here = computed(() =>
         v-else
         variant="outline"
         size="tap"
+        class="disabled:opacity-70"
         :disabled="flow.isFirst"
         @click="flow.back()"
       >
