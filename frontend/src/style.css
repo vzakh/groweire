@@ -1,0 +1,250 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/*
+ ---break---
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * GrowÉire design tokens.
+ * Zero black anywhere: the darkest ink is forest #122B23 / #0B1D17.
+ */
+
+@theme {
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
+
+  --color-white: #ffffff;
+  --color-black: #122b23; /* safety net: any stray `black` utility renders forest ink */
+
+  --color-mist: #f5f7f5; /* Soft Alabaster Mist */
+  --color-mist-warm: #f6f5ef;
+  --color-hairline: #e2e8e4;
+  --color-mint: #e3f1e4; /* soft emerald hover wash */
+
+  --color-forest: #122b23; /* primary text ink */
+  --color-forest-deep: #0d3b26; /* dark feature sections */
+  --color-forest-night: #0b1d17; /* footer */
+  --color-muted-ink: #526158;
+
+  --color-emerald: #16a34a; /* primary accent */
+  --color-emerald-bright: #1db954;
+  --color-emerald-press: #128a3e;
+
+  --color-lime: #c8f36b; /* Spring Growth Lime */
+  --color-lime-press: #b6e553;
+  --color-gold: #d7b578; /* Harvest Gold */
+  --color-atlantic: #315d73; /* Atlantic Blue, also the light-surface focus ring */
+
+  --ease-grow: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-display);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* shadcn-vue semantic tokens mapped onto the GrowÉire palette */
+:root {
+  --radius: 0.75rem;
+  --background: #ffffff;
+  --foreground: #122b23;
+  --card: #ffffff;
+  --card-foreground: #122b23;
+  --popover: #ffffff;
+  --popover-foreground: #122b23;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f7f5;
+  --secondary-foreground: #122b23;
+  --muted: #f5f7f5;
+  --muted-foreground: #526158;
+  --accent: #e3f1e4;
+  --accent-foreground: #122b23;
+  --destructive: #b42318;
+  --border: #e2e8e4;
+  --input: #e2e8e4;
+  --ring: #315d73;
+
+  --toolbar-h: 4.5rem; /* 72px at 100% text size */
+
+  /* Page frame */
+  --hero-wrap: 81rem; /* 1296px */
+  --hero-pad: 3rem;
+}
+@media (max-width: 960px) {
+  :root { --hero-pad: 1.25rem; }
+}
+
+/* A+ text-size cycler: rem-based sizing scales the whole interface */
+html.text-125 { font-size: 125%; }
+html.text-150 { font-size: 150%; }
+
+/* Buttons */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3.5rem;
+    padding: 0 1.75rem;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.18s, color 0.18s, border-color 0.18s;
+  }
+  .btn-sm {
+    min-height: 3rem;
+    padding: 0 1.1rem;
+    font-size: 1.0625rem;
+  }
+  .btn-primary { background: var(--color-lime); color: var(--color-forest); }
+  .btn-primary:hover { background: #b6e356; }
+  .btn-ghost-light { background: transparent; color: #ffffff; border-color: rgba(255, 255, 255, 0.9); }
+  .btn-ghost-light:hover { background: #ffffff; color: var(--color-forest); }
+  .btn-arrow { padding-right: 0.45rem; }
+  .btn-arrow .ar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-left: 0.4rem;
+    border-radius: 999px;
+    background: var(--color-forest);
+    color: var(--color-lime);
+    transition: transform 0.2s var(--ease-grow);
+  }
+  @media (hover: hover) {
+    .btn-arrow:hover .ar { transform: rotate(-45deg); }
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: var(--color-lime);
+    color: var(--color-forest);
+    font-weight: 700;
+  }
+  .skip-link:focus { top: 1rem; }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem; /* anchors land below the fixed header */
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: #9fb3a7 #f5f7f5;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 1.125rem; /* 18px marketing base */
+    line-height: 1.55;
+  }
+  ::selection {
+    background: #c8f36b;
+    color: #122b23;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-atlantic);
+    outline-offset: 3px;
+  }
+  /* On dark green / photographic surfaces the ring switches to lime */
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-lime);
+  }
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: #f5f7f5; }
+  ::-webkit-scrollbar-thumb {
+    background: #9fb3a7;
+    border-radius: 999px;
+    border: 3px solid #f5f7f5;
+  }
+}
+
+/* Reduced motion and ?static=1 (Figma capture mode) freeze every animation in its final state */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+html.is-static *, html.is-static *::before, html.is-static *::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+}
+/*
+ ---break---
+ */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Shared layout */
+@layer components {
+  .page-wrap {
+    max-width: var(--hero-wrap);
+    margin: 0 auto;
+    padding: 0 var(--hero-pad);
+  }
+  .h-section {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.1rem, 3.6vw, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+}
