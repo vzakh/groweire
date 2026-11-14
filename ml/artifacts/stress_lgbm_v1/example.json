@@ -1,0 +1,49 @@
+{
+  "cell_id": "c00007",
+  "target_month": "2022-03",
+  "features": {
+    "month_sin": 0.8660253882408142,
+    "month_cos": 0.5,
+    "p_minus_et0_l1": 106.71749877929688,
+    "p_minus_et0_3m_l1": 288.7676696777344,
+    "p_minus_et0_l1_z": 0.5042446255683899,
+    "p_minus_et0_3m_l1_z": -0.3387434482574463,
+    "precip_l1": 133.58999633789062,
+    "imerg_l1": null,
+    "heavy_rain_days_l1": 0.0,
+    "dry_spell_max_l1": 2.0,
+    "t2m_l1": 8.772856712341309,
+    "tmax_l1": 10.186429023742676,
+    "tmin_l1": 7.017857074737549,
+    "t2m_l1_z": 1.3973023891448975,
+    "tmax_l1_z": 1.5482473373413086,
+    "tmin_l1_z": 1.0726649761199951,
+    "gdd5_l1": 105.63999938964844,
+    "hot_days_l1": 0.0,
+    "frost_days_l1": 0.0,
+    "gwetroot_l1": 0.8907142877578735,
+    "gwettop_l1": 0.908214271068573,
+    "smap_rzsm_l1": null,
+    "smap_pct_l1": null,
+    "ndvi_z_l1": 1.0422167778015137,
+    "ndvi_z_l2": null,
+    "clim_precip_m": 98.23149871826172,
+    "clim_tmax_m": 9.455177307128906,
+    "clim_et0_m": 36.201045989990234,
+    "elev_m": 23.95602798461914,
+    "slope_deg": 3.89604115486145,
+    "clay": null,
+    "sand": null,
+    "soc": null,
+    "ph": null,
+    "drainage_class": 2.0,
+    "ag_fraction": 0.3483146131038666
+  },
+  "expected": {
+    "probability": 0.06924246188074576,
+    "interval": [
+      0.05673712907407782,
+      0.08005043303324764
+    ]
+  }
+}

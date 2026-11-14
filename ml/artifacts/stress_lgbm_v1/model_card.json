@@ -1,0 +1,490 @@
+{
+  "model_details": {
+    "name": "AgroLens crop-stress risk",
+    "version": "stress-b1-1-final",
+    "kind": "b1",
+    "contract_version": "1.0",
+    "trained_at": "2026-11-14T12:46:36+00:00",
+    "git_sha": "d9992c2",
+    "algorithm": "logistic regression on 5 standardised features"
+  },
+  "intended_use": "Decision support for crop-rotation planning on Irish farmland: how often a month shows vegetation stress at this place. Not a field measurement.",
+  "out_of_scope": [
+    "regions outside the Republic of Ireland / Northern Ireland pilot",
+    "single-field yield prediction",
+    "insurance or credit decisions"
+  ],
+  "factors": [
+    "calendar month",
+    "land-cover mix (crop_fraction)",
+    "region (50-km blocks)"
+  ],
+  "metrics": {
+    "holdout": {
+      "B0 climatology": {
+        "n": 79524,
+        "base_rate": 0.15805291484331774,
+        "pr_auc": 0.17267243906721208,
+        "roc_auc": 0.5393301421823998,
+        "brier": 0.1338844258413074,
+        "log_loss": 0.44118086888671926
+      },
+      "B1 logistic": {
+        "n": 79524,
+        "base_rate": 0.15805291484331774,
+        "pr_auc": 0.20038883054580647,
+        "roc_auc": 0.595188186184259,
+        "brier": 0.13344913365762667,
+        "log_loss": 0.4374298784955061
+      },
+      "LGBM raw": {
+        "n": 79524,
+        "base_rate": 0.15805291484331774,
+        "pr_auc": 0.2187592707921885,
+        "roc_auc": 0.6536060977754227,
+        "brier": 0.13981153109229533,
+        "log_loss": 0.4515871677686048
+      },
+      "LGBM calibrated": {
+        "n": 79524,
+        "base_rate": 0.15805291484331774,
+        "pr_auc": 0.2191657591942496,
+        "roc_auc": 0.6543021008091789,
+        "brier": 0.13572654964950173,
+        "log_loss": 0.4309662916058624
+      }
+    },
+    "cv_oof": {
+      "LGBM calibrated (OOF)": {
+        "n": 400796,
+        "base_rate": 0.14917813551033443,
+        "pr_auc": 0.3567208567588539,
+        "roc_auc": 0.7089437101474625,
+        "brier": 0.11221028069343769,
+        "log_loss": 0.3728156837629022
+      },
+      "B1 logistic (OOF)": {
+        "n": 400796,
+        "base_rate": 0.14917813551033443,
+        "pr_auc": 0.2611729408244601,
+        "roc_auc": 0.6468036930892113,
+        "brier": 0.12155861210294593,
+        "log_loss": 0.4030043828591034
+      }
+    },
+    "acceptance": {
+      "rule": "LGBM-calibrated beats B0 and B1 on holdout PR-AUC and Brier",
+      "lgbm_passed": false,
+      "shipped_kind": "b1"
+    }
+  },
+  "evaluation_data": {
+    "holdout_years": [
+      2022.0,
+      2023.0,
+      2024.0,
+      2025.0
+    ],
+    "holdout_kind": "final",
+    "rows": 79524
+  },
+  "training_data": {
+    "years": [
+      2002.0,
+      2003.0,
+      2004.0,
+      2005.0,
+      2006.0,
+      2007.0,
+      2008.0,
+      2009.0,
+      2010.0,
+      2011.0,
+      2012.0,
+      2013.0,
+      2014.0,
+      2015.0,
+      2016.0,
+      2017.0,
+      2018.0,
+      2019.0,
+      2020.0,
+      2021.0
+    ],
+    "rows": 400796,
+    "cells": 2539,
+    "label": "MODIS MOD13Q1 NDVI monthly max composite, cell mean over farmed pixels; stress = NDVI anomaly z <= -1 vs the 2001-2020 same-month baseline",
+    "features": "NASA POWER daily weather (lag 1-3 months), FAO-56 ET0 water balance, SoilGrids 0-30 cm, SRTM terrain, EPA/Teagasc soil drainage, MCD12Q1 land cover"
+  },
+  "quantitative_analyses": {
+    "slices": {
+      "by_month": {
+        "3": {
+          "n": 10106,
+          "base_rate": 0.0022758757173956066,
+          "pr_auc": 0.006434148302930542,
+          "roc_auc": 0.5214114156846004,
+          "brier": 0.013737662037045456,
+          "log_loss": 0.11424719975925152
+        },
+        "4": {
+          "n": 10156,
+          "base_rate": 0.07650649862150453,
+          "pr_auc": 0.11134753027682459,
+          "roc_auc": 0.5622905741255246,
+          "brier": 0.07119005099646467,
+          "log_loss": 0.27256876700021454
+        },
+        "5": {
+          "n": 10156,
+          "base_rate": 0.27796376526191413,
+          "pr_auc": 0.3030113971809929,
+          "roc_auc": 0.5409030281977362,
+          "brier": 0.21826366422343405,
+          "log_loss": 0.6595093967235685
+        },
+        "6": {
+          "n": 10129,
+          "base_rate": 0.1445354921512489,
+          "pr_auc": 0.16925031501607188,
+          "roc_auc": 0.6030035331510788,
+          "brier": 0.12630739940760394,
+          "log_loss": 0.4160207433023483
+        },
+        "7": {
+          "n": 9872,
+          "base_rate": 0.20573338735818478,
+          "pr_auc": 0.2533762811213752,
+          "roc_auc": 0.5704502039582744,
+          "brier": 0.1700055253725102,
+          "log_loss": 0.5398536771498528
+        },
+        "8": {
+          "n": 10138,
+          "base_rate": 0.274117182876307,
+          "pr_auc": 0.2931554111484381,
+          "roc_auc": 0.5514341321290299,
+          "brier": 0.22179465819621894,
+          "log_loss": 0.6719349758465208
+        },
+        "9": {
+          "n": 10118,
+          "base_rate": 0.13391974698557027,
+          "pr_auc": 0.13676927602392178,
+          "roc_auc": 0.5191206906933842,
+          "brier": 0.12114256202531802,
+          "log_loss": 0.4086251102532604
+        },
+        "10": {
+          "n": 8849,
+          "base_rate": 0.14883037631370777,
+          "pr_auc": 0.2184317527539524,
+          "roc_auc": 0.594111643522691,
+          "brier": 0.12452788769657085,
+          "log_loss": 0.4153633591957897
+        }
+      },
+      "by_crop_fraction_tercile": {
+        "low": {
+          "n": 26508,
+          "base_rate": 0.1453146220009054,
+          "pr_auc": 0.16095309894372567,
+          "roc_auc": 0.5518356677652229,
+          "brier": 0.1266341437347044,
+          "log_loss": 0.42248002043005184
+        },
+        "mid": {
+          "n": 26508,
+          "base_rate": 0.1414290025652633,
+          "pr_auc": 0.17540541612070754,
+          "roc_auc": 0.5837414927150602,
+          "brier": 0.12208713568565525,
+          "log_loss": 0.4090383272647019
+        },
+        "high": {
+          "n": 26508,
+          "base_rate": 0.18741511996378452,
+          "pr_auc": 0.2589808073405936,
+          "roc_auc": 0.6302328308789997,
+          "brier": 0.1516261215525204,
+          "log_loss": 0.48077128779176465
+        }
+      }
+    },
+    "spatial": {
+      "held_out_family_unseen_cells": {
+        "n": 13649,
+        "base_rate": 0.16030478423327715,
+        "pr_auc": 0.2096834659028064,
+        "roc_auc": 0.6367759863471495,
+        "brier": 0.14476126741460127,
+        "log_loss": 0.455407250531934
+      },
+      "same_rows_full_model": {
+        "n": 13649,
+        "base_rate": 0.16030478423327715,
+        "pr_auc": 0.20929313948028938,
+        "roc_auc": 0.6412132983536728,
+        "brier": 0.14043423052698725,
+        "log_loss": 0.443335340019806
+      }
+    },
+    "case_study": {
+      "year": 2018,
+      "monthly": {
+        "3": {
+          "observed": 0.4254,
+          "predicted": 0.1727,
+          "climatology": 0.1083
+        },
+        "4": {
+          "observed": 0.0583,
+          "predicted": 0.1366,
+          "climatology": 0.1482
+        },
+        "5": {
+          "observed": 0.0874,
+          "predicted": 0.2264,
+          "climatology": 0.1639
+        },
+        "6": {
+          "observed": 0.8212,
+          "predicted": 0.1444,
+          "climatology": 0.1139
+        },
+        "7": {
+          "observed": 0.7385,
+          "predicted": 0.2948,
+          "climatology": 0.1123
+        },
+        "8": {
+          "observed": 0.0743,
+          "predicted": 0.1262,
+          "climatology": 0.1589
+        },
+        "9": {
+          "observed": 0.0414,
+          "predicted": 0.0742,
+          "climatology": 0.168
+        },
+        "10": {
+          "observed": 0.0146,
+          "predicted": 0.119,
+          "climatology": 0.1644
+        }
+      }
+    },
+    "reliability": {
+      "B0 climatology": [
+        {
+          "bin": 0,
+          "p_mean": 0.05050131431971896,
+          "obs": 0.12089274643521389,
+          "n": 4839
+        },
+        {
+          "bin": 1,
+          "p_mean": 0.13154953188824636,
+          "obs": 0.15185359871710216,
+          "n": 53005
+        },
+        {
+          "bin": 2,
+          "p_mean": 0.21407746638912312,
+          "obs": 0.18135985198889917,
+          "n": 21620
+        },
+        {
+          "bin": 3,
+          "p_mean": 0.322690058479532,
+          "obs": 0.23333333333333334,
+          "n": 60
+        }
+      ],
+      "B1 logistic": [
+        {
+          "bin": 0,
+          "p_mean": 0.07826645383514999,
+          "obs": 0.11331241901384437,
+          "n": 29326
+        },
+        {
+          "bin": 1,
+          "p_mean": 0.13456490355917106,
+          "obs": 0.17588511303853263,
+          "n": 42198
+        },
+        {
+          "bin": 2,
+          "p_mean": 0.23546344089080928,
+          "obs": 0.23127340823970038,
+          "n": 6408
+        },
+        {
+          "bin": 3,
+          "p_mean": 0.33788952690913227,
+          "obs": 0.2392638036809816,
+          "n": 1141
+        },
+        {
+          "bin": 4,
+          "p_mean": 0.43837904523963833,
+          "obs": 0.19463087248322147,
+          "n": 298
+        },
+        {
+          "bin": 5,
+          "p_mean": 0.5410354820132408,
+          "obs": 0.09278350515463918,
+          "n": 97
+        },
+        {
+          "bin": 6,
+          "p_mean": 0.6429744385786789,
+          "obs": 0.058823529411764705,
+          "n": 34
+        },
+        {
+          "bin": 7,
+          "p_mean": 0.733647910015531,
+          "obs": 0.0,
+          "n": 17
+        },
+        {
+          "bin": 8,
+          "p_mean": 0.8298236805376754,
+          "obs": 0.0,
+          "n": 3
+        },
+        {
+          "bin": 9,
+          "p_mean": 0.9085320710280311,
+          "obs": 0.0,
+          "n": 2
+        }
+      ],
+      "LGBM raw": [
+        {
+          "bin": 0,
+          "p_mean": 0.05049605881472475,
+          "obs": 0.10805887959334957,
+          "n": 47215
+        },
+        {
+          "bin": 1,
+          "p_mean": 0.14052877656134716,
+          "obs": 0.2402825085153276,
+          "n": 19964
+        },
+        {
+          "bin": 2,
+          "p_mean": 0.24021393045800762,
+          "obs": 0.21894345852249278,
+          "n": 4846
+        },
+        {
+          "bin": 3,
+          "p_mean": 0.34548072889812015,
+          "obs": 0.2103213242453749,
+          "n": 2054
+        },
+        {
+          "bin": 4,
+          "p_mean": 0.4517332940787362,
+          "obs": 0.20068317677198974,
+          "n": 2342
+        },
+        {
+          "bin": 5,
+          "p_mean": 0.5537158021323109,
+          "obs": 0.22522957950700823,
+          "n": 2069
+        },
+        {
+          "bin": 6,
+          "p_mean": 0.6360793907944731,
+          "obs": 0.23330106485963215,
+          "n": 1033
+        },
+        {
+          "bin": 7,
+          "p_mean": 0.7110187319706622,
+          "obs": 0.0,
+          "n": 1
+        }
+      ],
+      "LGBM calibrated": [
+        {
+          "bin": 0,
+          "p_mean": 0.054876345509106327,
+          "obs": 0.0797956610301012,
+          "n": 30929
+        },
+        {
+          "bin": 1,
+          "p_mean": 0.14556231060217,
+          "obs": 0.20371504388650746,
+          "n": 34293
+        },
+        {
+          "bin": 2,
+          "p_mean": 0.23747672877884263,
+          "obs": 0.22201989074100015,
+          "n": 7139
+        },
+        {
+          "bin": 3,
+          "p_mean": 0.3478715224170331,
+          "obs": 0.19088213491475167,
+          "n": 2698
+        },
+        {
+          "bin": 4,
+          "p_mean": 0.4492262097531118,
+          "obs": 0.2424684159378037,
+          "n": 2058
+        },
+        {
+          "bin": 5,
+          "p_mean": 0.5469915156109237,
+          "obs": 0.19855595667870035,
+          "n": 1385
+        },
+        {
+          "bin": 6,
+          "p_mean": 0.6411308483423174,
+          "obs": 0.26586826347305387,
+          "n": 835
+        },
+        {
+          "bin": 7,
+          "p_mean": 0.7208876141335646,
+          "obs": 0.10160427807486631,
+          "n": 187
+        }
+      ]
+    }
+  },
+  "ethical_considerations": [
+    "Over-reliance: the tool supports, not replaces, the farmer's and adviser's judgement.",
+    "Coarse 5 km cells cannot see a single field."
+  ],
+  "caveats": [
+    "Cloud gaps reduce NDVI quality (only good/marginal MODIS pixels used).",
+    "Grass cutting and grazing lower NDVI without real stress (see crop_fraction slices).",
+    "NASA POWER weather is coarse (~50 km).",
+    "MODIS Terra/Aqua are near end of mission; a VIIRS hand-over is future work.",
+    "SMAP soil-moisture features are empty in this version."
+  ],
+  "plain_thresholds": {
+    "low_lt": 0.1,
+    "high_ge": 0.25,
+    "base_rate": 0.14917813551033443,
+    "band_shares": {
+      "low": 0.36876917660077463,
+      "medium": 0.5883129621246416,
+      "high": 0.042917861274583774
+    }
+  },
+  "plain_language_note": "This shows how often, in past years, crops and grass at places like yours looked stressed from space in each month, and what the weather was doing before. It is a guide for planning, not a measurement of your field."
+}
