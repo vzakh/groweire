@@ -6,8 +6,9 @@ requires-python = ">=3.12"
 dependencies = ["lightgbm", "scikit-learn", "pandas", "pyarrow", "numpy", "joblib"]
 
 [project.optional-dependencies]
-train = ["earthaccess", "xarray", "h5netcdf", "rasterio", "rioxarray", "geopandas", "requests",
-         "matplotlib", "optuna"]
+train = ["earthaccess", "xarray", "h5netcdf", "h5py", "rasterio", "rioxarray", "geopandas", "requests",
+         "matplotlib", "optuna",
+         "pyhdf"]  # pyhdf: read MCD12Q1 HDF4 (GDAL wheels have no HDF4 driver)
 
 [build-system]
 requires = ["uv_build>=0.8,<0.14"]
