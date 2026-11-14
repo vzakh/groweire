@@ -1,298 +1,197 @@
 <script setup lang="ts">
 /**
- * Homepage header:
- * a floating glass pill, fixed to the top. Transparent glass over the hero; once the page
- * scrolls it fills with solid forest (the reference's dark header colour). On narrow screens (and at large text sizes)
- * the links collapse into a full-screen menu.
+ * Top bar, ported from final-header/groweire-v7.3 (`header.top`), without the A+ control.
+ * Fixed; dark gradient over the hero photo, solid deep green after 70% of a screen of scroll.
+ * The link for the section currently in view is underlined in lime.
+ * Links point at the matching parts of this page.
  */
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
-import GrowEireLogo from '@/components/brand/GrowEireLogo.vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const links = [
-  { to: '/#how-it-works', label: 'How it works' },
-  { to: '/#the-science', label: 'The science' },
-  { to: '/app?farm=sample', label: 'Sample farm' },
+  { to: '/#how-it-works', label: 'How it works', ch: 'how-it-works' },
+  { to: '/app', label: 'Check my field', ch: '' },
+  { to: '/#coverage', label: 'Field insights', ch: 'coverage' },
+  { to: '/#solutions', label: 'Compare rotations', ch: 'solutions' },
 ]
+const tracked = ['solutions', 'coverage', 'how-it-works'] // in page order
 
-const menuOpen = ref(false)
-const menuBtn = ref<HTMLButtonElement | null>(null)
-const menuEl = ref<HTMLElement | null>(null)
-const closeBtn = ref<HTMLButtonElement | null>(null)
+const solid = ref(false)
+const current = ref('')
 
-async function openMenu() {
-  menuOpen.value = true
-  document.body.style.overflow = 'hidden'
-  await nextTick()
-  closeBtn.value?.focus()
-}
-
-function closeMenu(returnFocus = true) {
-  if (!menuOpen.value) return
-  menuOpen.value = false
-  document.body.style.overflow = ''
-  if (returnFocus) nextTick(() => menuBtn.value?.focus())
-}
-
-/** Keep Tab inside the open menu; Escape closes it. */
-function onMenuKeydown(e: KeyboardEvent) {
-  if (e.key === 'Escape') {
-    e.preventDefault()
-    closeMenu()
-    return
+function onScroll() {
+  solid.value = window.scrollY > window.innerHeight * 0.7
+  let cur = ''
+  for (const id of tracked) {
+    const el = document.getElementById(id)
+    if (el && el.getBoundingClientRect().top < window.innerHeight * 0.4) cur = id
   }
-  if (e.key !== 'Tab' || !menuEl.value) return
-  const items = menuEl.value.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
-  if (!items.length) return
-  const first = items[0]!
-  const last = items[items.length - 1]!
-  if (e.shiftKey && document.activeElement === first) {
-    e.preventDefault()
-    last.focus()
-  } else if (!e.shiftKey && document.activeElement === last) {
-    e.preventDefault()
-    first.focus()
-  }
+  current.value = cur
 }
 
-/* Transparent at the top of the page, solid once scrolled */
-const scrolled = ref(false)
-const onScroll = () => { scrolled.value = window.scrollY > 24 }
+let tick = false
+function onScrollRaf() {
+  if (tick) return
+  tick = true
+  requestAnimationFrame(() => {
+    tick = false
+    onScroll()
+  })
+}
+
 onMounted(() => {
   onScroll()
-  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('scroll', onScrollRaf, { passive: true })
 })
-
-const route = useRoute()
-watch(() => route.fullPath, () => closeMenu(false))
-onBeforeUnmount(() => {
-  document.body.style.overflow = ''
-  window.removeEventListener('scroll', onScroll)
-})
+onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
 </script>
 
 <template>
   <header
-    class="site-header on-dark"
-    :class="{ 'is-scrolled': scrolled }"
+    id="top"
+    class="top dark"
+    :class="{ solid }"
   >
-    <nav
-      class="nav"
-      aria-label="Main"
-    >
+    <div class="wrap">
       <RouterLink
+        class="wordmark"
         to="/"
-        class="logo-link"
         aria-label="GrowÉire home"
       >
-        <GrowEireLogo on-dark />
-      </RouterLink>
-
-      <div class="nav-links">
-        <RouterLink
-          v-for="link in links"
-          :key="link.to"
-          :to="link.to"
-          class="nl"
-        >
-          {{ link.label }}
-        </RouterLink>
-        <RouterLink
-          to="/app"
-          class="btn btn-primary btn-sm ml-1"
-        >
-          Find my field
-        </RouterLink>
-      </div>
-
-      <button
-        ref="menuBtn"
-        type="button"
-        class="menu-btn"
-        :aria-expanded="menuOpen"
-        aria-controls="mobile-menu"
-        @click="openMenu"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.4"
+        <span aria-hidden="true">Grow</span><span
+          class="e"
           aria-hidden="true"
-        ><path d="M4 7h16M4 12h16M4 17h16" /></svg>
-        Menu
-      </button>
-    </nav>
-  </header>
-
-  <Teleport to="body">
-    <div
-      v-if="menuOpen"
-      id="mobile-menu"
-      ref="menuEl"
-      class="mobile-menu on-dark"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Menu"
-      @keydown="onMenuKeydown"
-    >
-      <div class="mm-top">
+        >E<svg
+          viewBox="0 0 40 16"
+          preserveAspectRatio="none"
+        ><path
+          d="M6 15 C14 10 24 5 34 3"
+          stroke="#C8F36B"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+        /><circle
+          cx="35"
+          cy="3"
+          r="3.2"
+          fill="#C8F36B"
+        /></svg></span><span aria-hidden="true">ire</span>
+      </RouterLink>
+      <nav aria-label="Main">
+        <ol class="navl">
+          <li
+            v-for="l in links"
+            :key="l.label"
+          >
+            <a
+              v-if="l.ch"
+              :href="l.to"
+              :aria-current="current === l.ch"
+            >{{ l.label }}</a>
+            <RouterLink
+              v-else
+              :to="l.to"
+            >
+              {{ l.label }}
+            </RouterLink>
+          </li>
+        </ol>
+      </nav>
+      <div style="display:flex;gap:.6rem;align-items:center">
         <RouterLink
-          to="/"
-          class="logo-link"
-          aria-label="GrowÉire home"
+          class="btn btn-primary top-cta"
+          to="/app"
         >
-          <GrowEireLogo on-dark />
+          Check my field
         </RouterLink>
-        <button
-          ref="closeBtn"
-          type="button"
-          class="menu-btn menu-btn--close"
-          @click="closeMenu()"
-        >
-          Close
-        </button>
       </div>
-      <RouterLink
-        v-for="link in links"
-        :key="link.to"
-        :to="link.to"
-        class="ml"
-      >
-        {{ link.label }}
-      </RouterLink>
-      <RouterLink
-        to="/app"
-        class="ml"
-      >
-        Find my field
-      </RouterLink>
     </div>
-  </Teleport>
+  </header>
 </template>
 
 <style scoped>
-/* Floating glass pill over the hero (reference: .site-header.over) */
-.site-header {
+/* Top bar (v7.3) */
+.top {
   position: fixed;
-  inset: 0 0 auto;
-  z-index: 40;
-  padding: 1rem var(--hero-pad) 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 50;
   color: #ffffff;
-  pointer-events: none; /* only the pill itself takes clicks */
+  background: linear-gradient(180deg, rgba(5, 17, 13, 0.82) 0%, rgba(5, 17, 13, 0.5) 60%, rgba(5, 17, 13, 0) 100%);
+  transition: background-color 0.3s;
 }
-/* Soft top shade only while the header floats over the hero photo */
-.site-header::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 -2rem;
-  z-index: -1;
-  background: linear-gradient(180deg, rgba(11, 29, 23, 0.55), rgba(11, 29, 23, 0));
-  transition: opacity 0.3s ease-out;
-  pointer-events: none;
+.top.solid {
+  background: #0c2019;
+  border-bottom: 1px solid rgba(246, 245, 239, 0.22);
 }
-.site-header.is-scrolled::before { opacity: 0; }
-.nav {
+.top .wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem 1.5rem;
-  max-width: calc(var(--hero-wrap) - 2 * var(--hero-pad));
+  gap: 1rem;
+  min-height: 4.5rem;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0.5rem 0.6rem 0.5rem 1.1rem;
-  border-radius: 999px;
-  background: rgba(11, 29, 23, 0.38);
-  border: 1px solid rgba(246, 245, 239, 0.22);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
-  pointer-events: auto;
-  transition: background-color 0.3s ease-out, border-color 0.3s ease-out, box-shadow 0.3s ease-out;
+  padding: 0 3rem;
 }
-/* Scrolled: solid forest pill, same contents */
-.is-scrolled .nav {
-  background: rgba(11, 29, 23, 0.96);
-  border-color: rgba(246, 245, 239, 0.14);
-  box-shadow: 0 12px 32px -14px rgba(11, 29, 23, 0.6);
-}
-.logo-link {
+.dark :focus-visible { outline-color: #c8f36b; }
+
+/* Wordmark (v7.3) */
+.wordmark {
   display: inline-flex;
   align-items: center;
   min-height: 3rem;
-  border-radius: 999px;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: -0.04em;
+  line-height: 1;
   text-decoration: none;
   color: inherit;
 }
-.nav-links {
+.wordmark .e { position: relative; }
+.wordmark .e svg {
+  position: absolute;
+  left: 10%;
+  top: -0.36em;
+  width: 95%;
+  height: 0.4em;
+  overflow: visible;
+}
+
+/* Links (v7.3) */
+.navl {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.navl a {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-}
-.nl {
-  display: inline-flex;
-  align-items: center;
-  min-height: 3rem;
-  padding: 0 1.1rem;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 1.0625rem;
-  text-decoration: none;
-  color: inherit;
-  transition: background-color 0.18s;
-}
-.nl:hover { background: rgba(246, 245, 239, 0.16); }
-
-.menu-btn {
-  display: none;
-  align-items: center;
-  gap: 0.5rem;
   min-height: 3rem;
   padding: 0 0.9rem;
-  margin-left: auto;
-  border-radius: 999px;
-  border: 2px solid currentColor;
-  background: transparent;
-  color: inherit;
-  font-family: var(--font-sans);
+  text-decoration: none;
   font-weight: 700;
   font-size: 1.0625rem;
-  cursor: pointer;
-}
-.menu-btn--close { display: inline-flex; margin-left: 0; }
-
-/* Full-screen menu (reference: .mobile-menu.open) */
-.mobile-menu {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  overflow: auto;
-  padding: 1.25rem;
-  background: var(--color-forest-night);
-  color: #ffffff;
-}
-.mm-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-.ml {
-  display: flex;
-  align-items: center;
-  min-height: 3.75rem;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.5rem;
-  text-decoration: none;
   color: inherit;
-  border-bottom: 1px solid #2b4a3e;
+  border-bottom: 2px solid transparent;
 }
-/* Collapse the links into the Menu button on narrow screens */
-@media (max-width: 960px) {
-  .nav-links { display: none; }
-  .menu-btn { display: inline-flex; }
-  .site-header { padding-top: 0.75rem; }
-  .nav { padding: 0.4rem 0.4rem 0.4rem 0.9rem; }
+.navl a[aria-current='true'] { border-bottom-color: #c8f36b; }
+
+/* Header button (v7.3: shown only when the links collapse) */
+.top .top-cta { display: none; }
+
+@media (max-width: 1060px) {
+  .top .wrap { padding: 0 1.25rem; }
+  .top nav { display: none; }
+  .top .top-cta {
+    display: inline-flex;
+    min-height: 3rem;
+    padding: 0 1rem;
+    font-size: 1rem;
+  }
 }
 </style>
