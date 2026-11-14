@@ -2,7 +2,9 @@
 
 **Know your land. Grow your future.** GrowÉire is a crop-rotation decision-support tool for small farms, built on NASA Earth observations. In four plain steps, a farmer finds their field and sees how often each month of the growing season has been too dry, too wet, too hot or frosty there. They then compare their current rotation with alternatives that lower that risk and build soil.
 
-Built for **NASA Space Apps Challenge 2026: _Field Shift: Adapting Farms with NASA Data_** at HackAthlone 2026, Athlone, Ireland. The core runs on global NASA data, and **Ireland is the pilot region**.
+Built for **NASA Space Apps Challenge 2026: _Field Shift: Adapting Farms with NASA Data_** at Hack Athlone 2026, Athlone, Ireland. The core runs on global NASA data, and **Ireland is the pilot region**.
+
+[![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE) ![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg) ![Vue 3](https://img.shields.io/badge/vue-3.5-42b883.svg)
 
 > [!NOTE]
 > **Status: hackathon proof of concept.** The guided flow, the counted-risk engine, the rotation comparison and the landing page all work end to end against the API or recorded fixtures. The project runs locally; see [Running locally](#running-locally).
@@ -748,4 +750,10 @@ The planning documents (product requirements, technical brief and per-track plan
 
 ## Licence
 
-No licence file has been added yet, so all rights are reserved by the authors by default. Add a `LICENSE` file (for example MIT or Apache-2.0) before the Space Apps submission if the project is to be reused. Third-party data keeps its own licence, listed above.
+The code in this repository is released under the **MIT Licence**; see [`LICENSE`](LICENSE). It is an open-source licence approved by the Open Source Initiative, as the NASA Space Apps Challenge terms require.
+
+The MIT Licence covers our code only:
+
+- **Data** keeps its own licence and attribution terms, listed under [Acknowledgements and data attribution](#acknowledgements-and-data-attribution): NASA open data, SoilGrids, Met Éireann and GeoNames (all CC BY 4.0), and OpenStreetMap (ODbL).
+- **The NASA Space Apps Challenge 2026 logo** in the footer belongs to NASA Space Apps and is not covered by the MIT Licence.
+- **Third-party packages** (Vue, FastAPI, MapLibre, LightGBM and others) keep their own licences.
