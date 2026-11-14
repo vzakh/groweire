@@ -24,6 +24,9 @@ export const buttonVariants = cva(
         'icon-xs': 'size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*=size-])]:size-3',
         'icon-sm': 'size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg',
         'icon-lg': 'size-9',
+        // 48px touch targets for the field app (users aged 45-65)
+        'tap': 'h-12 gap-2 px-4 text-base has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3 [&_svg:not([class*=size-])]:size-5',
+        'icon-tap': 'size-12 [&_svg:not([class*=size-])]:size-6',
       },
     },
     defaultVariants: {
