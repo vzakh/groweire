@@ -52,7 +52,7 @@ const cards = [
         </p>
       </header>
 
-      <ul class="mt-12 grid list-none gap-4 p-0 md:grid-cols-3">
+      <ul class="aud-grid mt-12 flex list-none flex-wrap justify-center gap-4 p-0">
         <li
           v-for="c in cards"
           :id="c.id"
@@ -92,6 +92,11 @@ const cards = [
 </template>
 
 <style scoped>
+/* Cards: 1 / 2 / 3 per row; an incomplete last row is centred */
+.aud-grid > li { flex: 0 0 100%; min-width: 0; }
+@media (min-width: 768px) { .aud-grid > li { flex-basis: calc((100% - 1rem) / 2); } }
+@media (min-width: 1024px) { .aud-grid > li { flex-basis: calc((100% - 2rem) / 3); } }
+
 .aud-card {
   position: relative;
   isolation: isolate;

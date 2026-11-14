@@ -39,7 +39,6 @@ defineProps<{ title: string; items: Source[] }>()
                 :src="s.logo"
                 alt=""
                 :style="s.scale ? { maxHeight: `${s.scale * 100}%` } : undefined"
-                loading="lazy"
               >
             </span>
             <span class="src-name">{{ s.name }}</span>

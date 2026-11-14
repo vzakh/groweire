@@ -55,7 +55,7 @@ const note = (c: Country) =>
         Built on global NASA Earth observations across
         <span class="text-emerald">180+ countries</span>
         — tailored for
-        <span class="text-emerald">Irish fields and advisers</span>
+        <span class="text-emerald"><span class="underline decoration-[0.08em] underline-offset-[0.14em]">Irish fields</span> and advisers</span>
         <IrishFlag class="ml-3 inline-block align-[0.05em]" />
       </h2>
 
@@ -117,7 +117,7 @@ const note = (c: Country) =>
       <h2 class="sr-only">
         GrowÉire in numbers
       </h2>
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div class="stats flex flex-wrap justify-center gap-x-8 gap-y-10">
         <StatBlock
           :from="1981"
           :to="2026"
@@ -152,6 +152,12 @@ const note = (c: Country) =>
 </template>
 
 <style scoped>
+/* Stats: 1 / 2 / 3 / 5 per row; an incomplete last row is centred */
+.stats > * { flex: 0 0 100%; min-width: 0; }
+@media (min-width: 640px) { .stats > * { flex-basis: calc((100% - 2rem) / 2); } }
+@media (min-width: 1024px) { .stats > * { flex-basis: calc((100% - 4rem) / 3); } }
+@media (min-width: 1280px) { .stats > * { flex-basis: calc((100% - 8rem) / 5); } }
+
 .marquee {
   -webkit-mask-image: linear-gradient(90deg, transparent, #fff 8%, #fff 92%, transparent);
   mask-image: linear-gradient(90deg, transparent, #fff 8%, #fff 92%, transparent);

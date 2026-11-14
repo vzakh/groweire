@@ -83,7 +83,7 @@ function backToTop() {
 
       <!-- Brand + link columns -->
       <div class="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12">
-        <div class="sm:col-span-2 lg:col-span-5">
+        <div class="sm:col-span-2 lg:col-span-4">
           <RouterLink
             to="/"
             class="inline-flex min-h-12 items-center rounded-full"
@@ -99,7 +99,7 @@ function backToTop() {
         <nav
           v-for="col in columns"
           :key="col.title"
-          class="lg:col-span-2"
+          :class="col.title === 'Data sources' ? 'lg:col-span-4' : 'lg:col-span-2'"
           :aria-label="col.title"
         >
           <h3 class="text-[0.9375rem] font-bold tracking-[0.04em] text-lime uppercase">

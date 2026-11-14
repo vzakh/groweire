@@ -128,7 +128,8 @@
   :root { --hero-pad: 1.25rem; }
 }
 
-/* A+ text-size cycler: rem-based sizing scales the whole interface */
+
+/* A+ text-size control: rem-based sizing scales the page */
 html.text-125 { font-size: 125%; }
 html.text-150 { font-size: 150%; }
 
@@ -271,6 +272,15 @@ html.is-static *, html.is-static *::before, html.is-static *::after {
     text-wrap: balance;
   }
 }
+
+/*
+ * Large-text safeguards for the A+ button (125–150%). Tailwind breakpoints are measured in
+ * browser-default rems, so two-column layouts kick in before there is room for larger text.
+ * Landing page only: the /app theme handles its own large-text layout.
+ */
+html.text-150 .hiw-top { grid-template-columns: minmax(0, 1fr); }
+html:not(.theme-app):is(.text-125, .text-150) :is(h1, h2, h3, p, li) { overflow-wrap: anywhere; hyphens: auto; }
+html:is(.text-125, .text-150) #coverage .whitespace-nowrap { white-space: normal; }
 
 /*
  * Field app theme (routes under /app).
