@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import '@fontsource/manrope/500.css'
 import '@fontsource/manrope/600.css'
 import '@fontsource/manrope/700.css'
@@ -15,4 +16,17 @@ if (new URLSearchParams(window.location.search).get('static') === '1') {
 }
 initTextScale()
 
-createApp(App).use(router).mount('#app')
+/**
+ * `npm run dev:mock` answers the API from recorded responses, so the app runs without a backend.
+ * The mock code is a separate chunk that a normal build never loads.
+ */
+async function enableMocking() {
+  if (import.meta.env.VITE_MOCK !== '1') return
+  const { worker } = await import('./mocks/browser')
+  await worker.start({ onUnhandledFrame: 'bypass' })
+}
+
+// Mount only once the mocks are listening, so the first request is never missed
+void enableMocking().then(() => {
+  createApp(App).use(createPinia()).use(router).mount('#app')
+})
