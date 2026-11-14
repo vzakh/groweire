@@ -117,11 +117,19 @@ import { HERO_IMAGE, HERO_IMAGE_ALT } from '@/config/assets'
 </template>
 
 <style scoped>
+/*
+ * The hero fills the window (capped at 1000px) and its content always flows inside it,
+ * bottom-aligned, so nothing can fall below the fold or overflow the photo, whatever the
+ * window height, display scaling (e.g. 14" @ 175% ≈ 1097×530) or A+ text size.
+ */
 .hero {
   position: relative;
-  height: 100vh;
-  min-height: 45rem; /* 720px at 100% text */
-  max-height: 62.5rem; /* 1000px */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: clamp(28rem, 100vh, 62.5rem);
+  min-height: clamp(28rem, 100svh, 62.5rem);
+  padding-top: 7rem; /* clear the floating header */
   overflow: hidden;
   background: var(--color-forest-night);
 }
@@ -166,11 +174,8 @@ import { HERO_IMAGE, HERO_IMAGE_ALT } from '@/config/assets'
 }
 
 .hero-content {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding-bottom: 3rem;
+  position: relative;
+  padding-bottom: clamp(1.5rem, 5svh, 3rem);
 }
 .wrap {
   max-width: var(--hero-wrap);
@@ -178,7 +183,7 @@ import { HERO_IMAGE, HERO_IMAGE_ALT } from '@/config/assets'
   padding: 0 var(--hero-pad);
 }
 .eyebrow {
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.5rem, 2svh, 1rem);
   font-weight: 700;
   font-size: 1.0625rem;
   color: var(--color-lime);
@@ -187,7 +192,8 @@ h1 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(3.25rem, 6.6vw, 6.25rem);
+  /* scales with width AND height, so short laptop windows don't get a screen-filling headline */
+  font-size: clamp(2.5rem, min(6.6vw, 11.5svh), 6.25rem);
   line-height: 0.98;
   letter-spacing: -0.05em;
   color: #ffffff;
@@ -203,7 +209,7 @@ h1 {
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: 1.5rem;
   align-items: end;
-  margin-top: 1.75rem;
+  margin-top: clamp(1rem, 3svh, 1.75rem);
 }
 .lead {
   grid-column: 1 / span 6;
@@ -219,7 +225,7 @@ h1 {
   justify-content: flex-end;
 }
 .footnote {
-  margin-top: 1.25rem;
+  margin-top: clamp(0.75rem, 2.5svh, 1.25rem);
   font-size: 1rem;
   color: #e6ebe7;
 }
@@ -248,20 +254,15 @@ h1 {
 }
 @keyframes fade-in { to { opacity: 1; } }
 
-/* --- Narrow screens (reference breakpoint 960px) --- */
+/* --- Short windows: the field outline would sit under the header / behind the headline --- */
+@media (max-height: 700px) {
+  .fade { display: none; }
+  .lead { font-size: 1.1875rem; }
+}
+
+/* --- Narrow screens (960px and below): single column --- */
 @media (max-width: 960px) {
-  /* Content flows instead of sitting absolutely, so large text sizes can't overflow the photo */
-  .hero {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    height: auto;
-    min-height: 100svh;
-    max-height: none;
-    padding-top: 6.5rem; /* clear the floating header */
-  }
-  .hero-content { position: relative; }
-  h1 { font-size: clamp(2.5rem, 11vw, 3.75rem); }
+  h1 { font-size: clamp(2.25rem, min(11vw, 9svh), 3.75rem); }
   .fade { display: none; }
   .hero-meta {
     grid-template-columns: 1fr;
@@ -269,7 +270,12 @@ h1 {
   }
   .lead,
   .hero-ctas { grid-column: auto; }
-  .lead { font-size: 1.1875rem; }
+  .lead { font-size: 1.1875rem; max-width: 40rem; }
+  .hero-ctas { justify-content: flex-start; }
+}
+
+/* --- Phones: full-width buttons --- */
+@media (max-width: 640px) {
   .hero-ctas { justify-content: stretch; }
   .hero-ctas .btn { flex: 1 1 100%; }
 }

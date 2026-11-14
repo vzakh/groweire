@@ -52,12 +52,12 @@ const cards = [
         </p>
       </header>
 
-      <ul class="mt-12 grid list-none gap-4 p-0 md:grid-cols-3">
+      <ul class="mt-12 grid list-none gap-4 p-0 md:grid-cols-2 lg:grid-cols-3">
         <li
           v-for="c in cards"
           :id="c.id"
           :key="c.id"
-          class="aud-card"
+          class="aud-card md:last:col-span-2 lg:last:col-span-1"
         >
           <img
             :src="c.img"

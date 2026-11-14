@@ -140,7 +140,7 @@ const providers: Source[] = [
     <!-- Light bottom -->
     <div class="flow-root bg-mist-warm pb-20 lg:pb-28">
       <div class="page-wrap">
-        <ul class="-mt-28 grid gap-5 p-0 sm:grid-cols-2 lg:grid-cols-4">
+        <ul class="-mt-28 grid gap-5 p-0 sm:grid-cols-2 xl:grid-cols-4">
           <li
             v-for="f in features"
             :key="f.title"
@@ -212,6 +212,10 @@ const providers: Source[] = [
 }
 .device-url {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   max-width: 18rem;
   margin: 0 auto;
   padding: 0.2rem 0.75rem;
@@ -303,8 +307,12 @@ const providers: Source[] = [
 .step {
   position: relative;
   display: grid;
-  grid-template-columns: 2.75rem 1fr;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
   gap: 1.25rem;
+  overflow-wrap: anywhere; /* long words never push past narrow screens at large text */
+}
+@media (max-width: 380px) {
+  .step { gap: 0.9rem; }
 }
 .step-n {
   display: inline-flex;
