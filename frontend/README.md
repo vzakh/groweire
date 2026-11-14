@@ -22,7 +22,8 @@ Add `?static=1` to any URL to freeze all motion in its final state (screenshots)
 
 ## Notes
 
-- Routes: `/` landing page; `/app` field app (map + guided steps, step in `?s=1..4`), with `/app/maps`, `/app/words`, `/app/sources`.
+- Routes: `/` landing page; `/app` field app (map + guided steps). Once a field exists the address is `/app/field/<id>?s=1..4&c=…&p=…&k=…&m=…` and holds every answer, so a link can be sent to an advisor. More pages: `…/maps`, `…/words`, `…/sources`; one-page summary: `/app/field/<id>/print`.
+- To run against the real API: `make db-up && make api` in the repo root (API on :8080), then `npm run dev` here.
 - The field app has its own theme (`html.theme-app` in `src/style.css`, shadcn-vue preset `aJRWQJl`); the landing page keeps its own palette.
 - How it works screenshot: set `HOW_IT_WORKS_SCREENSHOT` in `src/config/assets.ts` when the real interface exists (a placeholder is shown until then).
 - Data-source logos and their licence status: `public/logos/SOURCES.md`. Get permission for the NASA, Met Éireann and Teagasc logos before public release.
