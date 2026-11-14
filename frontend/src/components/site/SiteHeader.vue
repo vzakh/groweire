@@ -8,9 +8,6 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import GrowEireLogo from '@/components/brand/GrowEireLogo.vue'
-import { useTextScale } from '@/composables/useTextScale'
-
-const { percent, cycle, label } = useTextScale()
 
 const links = [
   { to: '/#how-it-works', label: 'How it works' },
@@ -100,17 +97,9 @@ onBeforeUnmount(() => {
         >
           {{ link.label }}
         </RouterLink>
-        <button
-          type="button"
-          class="aplus"
-          :aria-label="label"
-          @click="cycle"
-        >
-          A+
-        </button>
         <RouterLink
           to="/app"
-          class="btn btn-primary btn-sm"
+          class="btn btn-primary btn-sm ml-1"
         >
           Find my field
         </RouterLink>
@@ -180,17 +169,6 @@ onBeforeUnmount(() => {
       >
         Find my field
       </RouterLink>
-      <div class="mm-text">
-        <button
-          type="button"
-          class="aplus"
-          :aria-label="label"
-          @click="cycle"
-        >
-          A+
-        </button>
-        <span>Text size: {{ percent }}</span>
-      </div>
     </div>
   </Teleport>
 </template>
@@ -265,22 +243,6 @@ onBeforeUnmount(() => {
 }
 .nl:hover { background: rgba(246, 245, 239, 0.16); }
 
-.aplus {
-  min-width: 3.25rem;
-  min-height: 3rem;
-  margin: 0 0.25rem;
-  border-radius: 999px;
-  border: 2px solid currentColor;
-  background: transparent;
-  color: inherit;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.0625rem;
-  cursor: pointer;
-  transition: background-color 0.18s;
-}
-.aplus:hover { background: rgba(246, 245, 239, 0.16); }
-
 .menu-btn {
   display: none;
   align-items: center;
@@ -326,27 +288,11 @@ onBeforeUnmount(() => {
   color: inherit;
   border-bottom: 1px solid #2b4a3e;
 }
-.mm-text {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-.mm-text .aplus { margin: 0; }
-
-/* Collapse: 960px at 100% text, later at larger text sizes so the pill never wraps */
+/* Collapse the links into the Menu button on narrow screens */
 @media (max-width: 960px) {
   .nav-links { display: none; }
   .menu-btn { display: inline-flex; }
   .site-header { padding-top: 0.75rem; }
   .nav { padding: 0.4rem 0.4rem 0.4rem 0.9rem; }
-}
-@media (max-width: 1200px) {
-  html.text-125 .nav-links { display: none; }
-  html.text-125 .menu-btn { display: inline-flex; }
-}
-@media (max-width: 1440px) {
-  html.text-150 .nav-links { display: none; }
-  html.text-150 .menu-btn { display: inline-flex; }
 }
 </style>

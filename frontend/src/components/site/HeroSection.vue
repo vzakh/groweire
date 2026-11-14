@@ -120,7 +120,7 @@ import { HERO_IMAGE, HERO_IMAGE_ALT } from '@/config/assets'
 /*
  * The hero fills the window (capped at 1000px) and its content always flows inside it,
  * bottom-aligned, so nothing can fall below the fold or overflow the photo, whatever the
- * window height, display scaling (e.g. 14" @ 175% ≈ 1097×530) or A+ text size.
+ * window height or display scaling (e.g. 14" @ 175% ≈ 1097×530).
  */
 .hero {
   position: relative;

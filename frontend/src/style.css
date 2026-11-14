@@ -105,9 +105,6 @@
   :root { --hero-pad: 1.25rem; }
 }
 
-/* A+ text-size cycler: rem-based sizing scales the whole interface */
-html.text-125 { font-size: 125%; }
-html.text-150 { font-size: 150%; }
 
 /* Buttons */
 @layer components {
