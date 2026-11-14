@@ -6,6 +6,7 @@
  */
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "shadcn-vue/tailwind.css";
 
 /*
  * GrowÉire design tokens.
@@ -37,6 +38,15 @@
   --color-lime-press: #b6e553;
   --color-gold: #d7b578; /* Harvest Gold */
   --color-atlantic: #315d73; /* Atlantic Blue, also the light-surface focus ring */
+
+  /* Risk ramp for the field app: one ramp for map, month tiles and charts.
+     Light to dark in one direction, so it also reads in greyscale; always paired with an icon and a word. */
+  --color-risk-low: #f1f5d8;
+  --color-risk-low-ink: #33401a;
+  --color-risk-medium: #f5c04a;
+  --color-risk-medium-ink: #3d2a00;
+  --color-risk-high: #9a3412;
+  --color-risk-high-ink: #ffffff;
 
   --ease-grow: cubic-bezier(0.2, 0.7, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
@@ -71,6 +81,19 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
 }
 
 /* shadcn-vue semantic tokens mapped onto the GrowÉire palette */
@@ -246,5 +269,69 @@ html.is-static *, html.is-static *::before, html.is-static *::after {
     line-height: 1.08;
     letter-spacing: -0.035em;
     text-wrap: balance;
+  }
+}
+
+/*
+ * Field app theme (routes under /app).
+ * The router puts `theme-app` on <html> for those routes, so the landing page keeps the
+ * palette above while the app (including pop-ups rendered at the end of <body>) uses the
+ * shadcn-vue preset aJRWQJl. Fonts stay Atkinson Hyperlegible + Manrope.
+ */
+html.theme-app {
+  --radius: 0.875rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.147 0.004 49.25);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.147 0.004 49.25);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.147 0.004 49.25);
+  --primary: oklch(0.841 0.238 128.85);
+  --primary-foreground: oklch(0.405 0.101 131.063);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.97 0.001 106.424);
+  --muted-foreground: oklch(0.553 0.013 58.071);
+  --accent: oklch(0.97 0.001 106.424);
+  --accent-foreground: oklch(0.216 0.006 56.043);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.923 0.003 48.717);
+  --input: oklch(0.923 0.003 48.717);
+  --ring: oklch(0.709 0.01 56.259);
+  --chart-1: oklch(0.897 0.196 126.665);
+  --chart-2: oklch(0.768 0.233 130.85);
+  --chart-3: oklch(0.648 0.2 131.684);
+  --chart-4: oklch(0.532 0.157 131.589);
+  --chart-5: oklch(0.453 0.124 130.933);
+  --sidebar: oklch(0.985 0.001 106.423);
+  --sidebar-foreground: oklch(0.147 0.004 49.25);
+  --sidebar-primary: oklch(0.648 0.2 131.684);
+  --sidebar-primary-foreground: oklch(0.986 0.031 120.757);
+  --sidebar-accent: oklch(0.97 0.001 106.424);
+  --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
+  --sidebar-border: oklch(0.923 0.003 48.717);
+  --sidebar-ring: oklch(0.709 0.01 56.259);
+
+  /* Readability floor for users aged 45-65: no text under 16px, body 18px.
+     shadcn-vue components size text with text-xs / text-sm; lifting those two steps here
+     keeps every component readable without editing component files. */
+  --text-xs: 1rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1.125rem;
+  --text-base--line-height: 1.55;
+
+  --app-header-h: 4rem;
+}
+/* A+ text size inside the app: rem-based sizing scales the whole interface */
+html.theme-app.text-125 { font-size: 125%; }
+html.theme-app.text-150 { font-size: 150%; }
+
+@layer components {
+  /* Minimum touch target: 48 x 48 px at 100% text size */
+  .tap {
+    min-height: 3rem;
+    min-width: 3rem;
   }
 }
