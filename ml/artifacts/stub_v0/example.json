@@ -1,0 +1,62 @@
+{
+  "cell_static": {
+    "lat": 52.7,
+    "lon": -6.9,
+    "elev_m": 60.0,
+    "slope_deg": 2.0,
+    "clay": 22.0,
+    "sand": 40.0,
+    "soc": 35.0,
+    "phh2o": 6.4,
+    "bdod": 1.2,
+    "drainage_class": 2,
+    "ag_fraction": 0.85,
+    "crop_fraction": 0.4
+  },
+  "target_month": "2024-07",
+  "features": {
+    "month_sin": 1.2246467991473532e-16,
+    "month_cos": -1.0,
+    "p_minus_et0_l1": 17.039563264042783,
+    "p_minus_et0_3m_l1": 68.98665720577196,
+    "p_minus_et0_l1_z": null,
+    "p_minus_et0_3m_l1_z": null,
+    "precip_l1": 89.99664981535349,
+    "imerg_l1": null,
+    "heavy_rain_days_l1": 0.0,
+    "dry_spell_max_l1": 2.0,
+    "t2m_l1": 13.34744737683175,
+    "tmax_l1": 17.371097600074865,
+    "tmin_l1": 9.277019162167022,
+    "t2m_l1_z": null,
+    "tmax_l1_z": null,
+    "tmin_l1_z": null,
+    "gdd5_l1": 250.4234213049525,
+    "hot_days_l1": 0.0,
+    "frost_days_l1": 0.0,
+    "gwetroot_l1": 0.6759512226158723,
+    "gwettop_l1": 0.5682354123470563,
+    "smap_rzsm_l1": null,
+    "smap_pct_l1": null,
+    "ndvi_z_l1": null,
+    "ndvi_z_l2": null,
+    "clim_precip_m": null,
+    "clim_tmax_m": null,
+    "clim_et0_m": null,
+    "elev_m": 60.0,
+    "slope_deg": 2.0,
+    "clay": 22.0,
+    "sand": 40.0,
+    "soc": 35.0,
+    "ph": 6.4,
+    "drainage_class": 2.0,
+    "ag_fraction": 0.85
+  },
+  "expected": {
+    "probability": 0.2440257313940083,
+    "interval": [
+      0.1940257313940083,
+      0.2940257313940083
+    ]
+  }
+}

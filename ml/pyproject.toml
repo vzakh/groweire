@@ -1,0 +1,14 @@
+[project]
+name = "agrolens-ml"
+version = "0.1.0"
+description = "AgroLens seasonal stress-risk model: features, labels, training and the ML -> Backend contract"
+requires-python = ">=3.12"
+dependencies = ["lightgbm", "scikit-learn", "pandas", "pyarrow", "numpy", "joblib"]
+
+[project.optional-dependencies]
+train = ["earthaccess", "xarray", "h5netcdf", "rasterio", "rioxarray", "geopandas", "requests",
+         "matplotlib", "optuna"]
+
+[build-system]
+requires = ["uv_build>=0.8,<0.14"]
+build-backend = "uv_build"

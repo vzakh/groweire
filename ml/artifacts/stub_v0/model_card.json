@@ -1,0 +1,17 @@
+{
+  "model_details": {
+    "name": "AgroLens stress-risk stub",
+    "version": "stub-0",
+    "kind": "stub",
+    "contract_version": "1.0"
+  },
+  "intended_use": "development only",
+  "out_of_scope": [
+    "any real decision",
+    "production serving (ALLOW_STUB_MODEL=false)"
+  ],
+  "caveats": [
+    "Deterministic seasonal curve; numbers are not agronomic facts (rule 1).",
+    "Every response built on it must carry data_quality ['synthetic_data']."
+  ]
+}
