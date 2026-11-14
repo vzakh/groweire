@@ -26,5 +26,5 @@ Add `?static=1` to any URL to freeze all motion in its final state (screenshots)
 - To run against the real API: `make db-up && make api` in the repo root (API on :8080), then `npm run dev` here.
 - The field app has its own theme (`html.theme-app` in `src/style.css`, shadcn-vue preset `aJRWQJl`); the landing page keeps its own palette.
 - How it works screenshot: set `HOW_IT_WORKS_SCREENSHOT` in `src/config/assets.ts` when the real interface exists (a placeholder is shown until then).
-- Data-source logos and their licence status: `public/logos/SOURCES.md`. Get permission for the NASA, Met Éireann and Teagasc logos before public release.
+- No official logos are used: data sources are named in text only. The one exception is the NASA Space Apps Challenge 2026 logo in the footer (`public/brand/`, see `public/brand/SOURCES.md`).
 - Hero photo: credit and licence still to be confirmed.

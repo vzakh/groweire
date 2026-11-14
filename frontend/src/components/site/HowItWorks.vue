@@ -31,16 +31,16 @@ const features = [
 ]
 
 const missions: Source[] = [
-  { name: 'GPM', logo: '/logos/gpm.png', what: 'Global Precipitation Measurement (IMERG): rainfall estimates, including heavy-rain events.' },
-  { name: 'GRACE-FO', logo: '/logos/grace-fo.png', what: 'Gravity satellites that track long-term changes in stored water and groundwater.' },
-  { name: 'Landsat', logo: '/logos/landsat-ldcm.png', what: '30 m images: crop greenness and bare-soil periods at field scale.' },
-  { name: 'SMAP', logo: '/logos/smap.png', scale: 0.5, what: 'Soil moisture near the surface and in the root zone (regional context, 9 km).' },
-  { name: 'ECOSTRESS', logo: '/logos/ecostress.png', what: 'Land-surface temperature and evapotranspiration: how much water plants are using.' },
+  { name: 'GPM', tag: 'Rainfall', what: 'Global Precipitation Measurement (IMERG): rainfall estimates, including heavy-rain events.' },
+  { name: 'GRACE-FO', tag: 'Groundwater', what: 'Gravity satellites that track long-term changes in stored water and groundwater.' },
+  { name: 'Landsat', tag: 'Field images', what: '30 m images: crop greenness and bare-soil periods at field scale.' },
+  { name: 'SMAP', tag: 'Soil moisture', what: 'Soil moisture near the surface and in the root zone (regional context, 9 km).' },
+  { name: 'ECOSTRESS', tag: 'Plant water use', what: 'Land-surface temperature and evapotranspiration: how much water plants are using.' },
 ]
 const providers: Source[] = [
-  { name: 'NASA Earthdata', logo: '/logos/nasa.svg', what: 'Where the NASA datasets are published and downloaded.' },
-  { name: 'Met Éireann', logo: '/logos/met-eireann.svg', what: 'Irish weather-station records, used to check the satellite estimates on the ground.' },
-  { name: 'Teagasc', logo: '/logos/teagasc.png', what: 'Irish rotation guidance and soil information behind the farming advice.' },
+  { name: 'NASA Earthdata', tag: 'Satellite data', what: 'Where the NASA datasets are published and downloaded.' },
+  { name: 'Met Éireann', tag: 'Weather stations', what: 'Irish weather-station records, used to check the satellite estimates on the ground.' },
+  { name: 'Teagasc', tag: 'Farm guidance', what: 'Irish rotation guidance and soil information behind the farming advice.' },
 ]
 </script>
 
