@@ -1,7 +1,8 @@
 <script setup lang="ts">
 /**
- * Homepage hero: full-bleed aerial photo with the drawn field overlay and intro motion.
- * Copy is the approved current version.
+ * Homepage hero, ported exactly from final-header/groweire-v7.3 (`section.home`).
+ * Links point at this site: "Check my field" → /app, "Explore an example farm" → the sample farm.
+ * Motion (photo settle, line draw, headline rise) is frozen by style.css for reduced motion / ?static=1.
  */
 import { RouterLink } from 'vue-router'
 import { HERO_IMAGE, HERO_IMAGE_ALT } from '@/config/assets'
@@ -9,274 +10,288 @@ import { HERO_IMAGE, HERO_IMAGE_ALT } from '@/config/assets'
 
 <template>
   <section
-    class="hero on-dark"
-    aria-labelledby="hero-title"
+    id="home"
+    class="home dark"
+    aria-labelledby="h-home"
   >
-    <!-- Photo and overlay share one coordinate space and settle together -->
-    <div class="hero-media">
-      <img
-        class="hero-img"
-        :src="HERO_IMAGE"
-        :alt="HERO_IMAGE_ALT"
-        width="2048"
-        height="1534"
-        fetchpriority="high"
-      >
-      <svg
-        class="geo"
-        viewBox="0 0 1800 1348"
-        preserveAspectRatio="xMidYMid slice"
-        aria-hidden="true"
-      >
-        <path
-          class="draw"
-          d="M-20 300 C500 120 1200 80 1830 210"
-          pathLength="1"
-          fill="none"
-          stroke="#FFFFFF"
-          stroke-opacity=".6"
-          stroke-width="2"
-        />
-        <g class="fade">
-          <circle
-            cx="1460"
-            cy="128"
-            r="9"
-            fill="#C8F36B"
-          />
-          <path
-            d="M0 412 L416 400 L600 598 L0 690 Z"
-            fill="rgba(200,243,107,.16)"
-            stroke="#C8F36B"
-            stroke-width="4"
-          />
-          <path
-            d="M416 400 L560 330 L840 330"
-            fill="none"
-            stroke="#C8F36B"
-            stroke-width="2"
-          />
-          <text
-            x="572"
-            y="316"
-            class="geo-label"
-          >A ploughed field: bare soil</text>
-        </g>
-      </svg>
-    </div>
+    <img
+      class="bg"
+      :src="HERO_IMAGE"
+      :alt="HERO_IMAGE_ALT"
+      fetchpriority="high"
+    >
     <div
       class="scrim"
       aria-hidden="true"
     />
-
-    <div class="hero-content">
+    <div
+      class="vgrid"
+      aria-hidden="true"
+    >
+      <span /><span /><span /><span />
+    </div>
+    <svg
+      class="lines draw"
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
+      style="opacity:.5"
+    >
+      <path d="M-20 220 C220 160 420 260 640 210 C860 160 1040 90 1460 150" />
+      <path d="M-20 252 C230 196 430 292 650 244 C870 196 1050 128 1460 186" />
+      <path d="M-20 284 C240 232 440 324 660 278 C880 232 1060 166 1460 222" />
+    </svg>
+    <div class="home-inner">
       <div class="wrap">
-        <p class="eyebrow">
-          Global science. Local roots.
+        <p class="kicker">
+          Global science · Local roots
         </p>
-        <h1 id="hero-title">
-          <span class="reveal-line"><span>Know your land.</span></span>
-          <span class="reveal-line"><span>Grow your future.</span></span>
+        <h1
+          id="h-home"
+          class="h-home"
+          style="margin-top:1rem"
+        >
+          <span class="rise"><span>Know your land.</span></span><span class="rise"><span>Grow your future.</span></span>
         </h1>
-        <div class="hero-meta">
-          <p class="lead">
-            Explore smarter crop rotations for your farm with NASA Earth observations and Irish agricultural knowledge.
-          </p>
-          <div class="hero-ctas">
-            <RouterLink
-              to="/app"
-              class="btn btn-primary btn-arrow"
-            >
-              Find my field
-              <span
-                class="ar"
-                aria-hidden="true"
-              ><svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.4"
-              ><path d="M7 17L17 7M9 7h8v8" /></svg></span>
-            </RouterLink>
-            <RouterLink
-              to="/app?farm=sample"
-              class="btn btn-ghost-light"
-            >
-              Try a sample farm
-            </RouterLink>
-          </div>
-        </div>
-        <p class="footnote">
-          No account needed · Four short steps · You decide
+        <p
+          class="lead"
+          style="margin-top:1.5rem;max-width:min(38rem,100%)"
+        >
+          Compare crop rotations using NASA Earth observations and your farming knowledge.
         </p>
+        <div class="hero-cta">
+          <RouterLink
+            class="btn btn-primary"
+            to="/app"
+          >
+            Check my field <span
+              class="ar"
+              aria-hidden="true"
+            >→</span>
+          </RouterLink>
+          <RouterLink
+            id="explore-example"
+            class="link"
+            to="/app?farm=sample"
+          >
+            Explore an example farm
+          </RouterLink>
+        </div>
+        <ol
+          class="hsteps"
+          aria-label="How GrowÉire works"
+        >
+          <li>
+            <span
+              class="n"
+              aria-hidden="true"
+            >1</span><span>Answer three short questions about one field</span>
+          </li>
+          <li>
+            <span
+              class="n"
+              aria-hidden="true"
+            >2</span><span>See what satellite data shows for your area</span>
+          </li>
+          <li>
+            <span
+              class="n"
+              aria-hidden="true"
+            >3</span><span>Compare your rotation with two alternatives</span>
+          </li>
+        </ol>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-/*
- * The hero fills the window (capped at 1000px) and its content always flows inside it,
- * bottom-aligned, so nothing can fall below the fold or overflow the photo, whatever the
- * window height or display scaling (e.g. 14" @ 175% ≈ 1097×530).
- */
-.hero {
+/* All values from final-header/groweire-v7.3 */
+.dark {
+  background: #0c2019;
+  color: #ffffff;
+}
+.dark :focus-visible { outline-color: #c8f36b; }
+
+.home {
   position: relative;
+  min-height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-height: clamp(28rem, 100vh, 62.5rem);
-  min-height: clamp(28rem, 100svh, 62.5rem);
-  padding-top: 7rem; /* clear the floating header */
-  overflow: hidden;
-  background: var(--color-forest-night);
 }
-.hero-media {
-  position: absolute;
-  inset: 0;
-}
-.hero-img {
+.home .bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 50%;
+  animation: settle 16s ease-out both;
 }
-.scrim {
+@keyframes settle {
+  from { transform: scale(1.06); }
+  to { transform: none; }
+}
+.home .scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(11, 29, 23, 0.25) 0%,
-    rgba(11, 29, 23, 0) 30%,
-    rgba(11, 29, 23, 0.35) 55%,
-    rgba(11, 29, 23, 0.9) 100%
-  );
+  background: linear-gradient(180deg, rgba(12, 32, 25, 0.45) 0%, rgba(12, 32, 25, 0.08) 32%, rgba(12, 32, 25, 0.55) 66%, rgba(12, 32, 25, 0.92) 100%);
 }
-.geo {
+
+/* Vertical grid */
+.vgrid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  pointer-events: none;
+}
+.vgrid span { border-left: 1px solid rgba(255, 255, 255, 0.1); }
+
+/* Lines */
+.lines {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
 }
-.geo-label {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 30px;
-  fill: #ffffff;
-  paint-order: stroke;
-  stroke: rgba(11, 29, 23, 0.7);
-  stroke-width: 6px;
+.lines path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.1;
+  vector-effect: non-scaling-stroke;
 }
+.lines.draw path {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+  animation: draw 3.2s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.lines.draw path:nth-child(2) { animation-delay: 0.25s; }
+.lines.draw path:nth-child(3) { animation-delay: 0.5s; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
 
-.hero-content {
+.home-inner {
   position: relative;
-  padding-bottom: clamp(1.5rem, 5svh, 3rem);
+  padding: 8rem 0 3rem;
 }
 .wrap {
-  max-width: var(--hero-wrap);
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 var(--hero-pad);
-}
-.eyebrow {
-  margin-bottom: clamp(0.5rem, 2svh, 1rem);
-  font-weight: 700;
-  font-size: 1.0625rem;
-  color: var(--color-lime);
-}
-h1 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 500;
-  /* scales with width AND height, so short laptop windows don't get a screen-filling headline */
-  font-size: clamp(2.5rem, min(6.6vw, 11.5svh), 6.25rem);
-  line-height: 0.98;
-  letter-spacing: -0.05em;
-  color: #ffffff;
-}
-.reveal-line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.06em;
-}
-.reveal-line > span { display: block; }
-.hero-meta {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: 1.5rem;
-  align-items: end;
-  margin-top: clamp(1rem, 3svh, 1.75rem);
-}
-.lead {
-  grid-column: 1 / span 6;
-  font-size: 1.3125rem;
-  line-height: 1.5;
-  color: #ffffff;
-}
-.hero-ctas {
-  grid-column: 7 / span 6;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: flex-end;
-}
-.footnote {
-  margin-top: clamp(0.75rem, 2.5svh, 1.25rem);
-  font-size: 1rem;
-  color: #e6ebe7;
+  padding: 0 3rem;
 }
 
-/* --- Motion 01: Living Landscape (off for reduced motion and ?static=1, via style.css) --- */
-.hero-media { animation: drift 18s ease-out both; }
-@keyframes drift {
-  from { transform: scale(1.06); }
-  to { transform: none; }
+.kicker {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #c8f36b;
 }
-.reveal-line > span { animation: line-up 0.9s var(--ease-grow) both; }
-.reveal-line:nth-child(2) > span { animation-delay: 0.12s; }
-@keyframes line-up {
+.h-home {
+  margin: 0;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: clamp(3rem, 7.4vw, 7.5rem);
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+  color: inherit;
+}
+.rise {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.05em;
+}
+.rise > span {
+  display: block;
+  animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.rise:nth-child(2) > span { animation-delay: 0.12s; }
+@keyframes rise {
   from { transform: translateY(105%); }
   to { transform: none; }
 }
-.draw {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: draw 2.4s var(--ease-grow) 0.3s forwards;
-}
-@keyframes draw { to { stroke-dashoffset: 0; } }
-.fade {
-  opacity: 0;
-  animation: fade-in 0.8s ease 1.6s forwards;
-}
-@keyframes fade-in { to { opacity: 1; } }
-
-/* --- Short windows: the field outline would sit under the header / behind the headline --- */
-@media (max-height: 700px) {
-  .fade { display: none; }
-  .lead { font-size: 1.1875rem; }
+.lead {
+  font-size: 1.25rem;
+  line-height: 1.5;
 }
 
-/* --- Narrow screens (960px and below): single column --- */
-@media (max-width: 960px) {
-  h1 { font-size: clamp(2.25rem, min(11vw, 9svh), 3.75rem); }
-  .fade { display: none; }
-  .hero-meta {
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+}
+.hero-cta .btn {
+  gap: 0.6rem;
+  min-height: 3.5rem;
+  padding: 0 1.6rem;
+  font-size: 1.125rem;
+  line-height: 1.2;
+  text-align: center;
+}
+.btn .ar {
+  display: inline-flex;
+  transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.btn:hover .ar { transform: translateX(4px); }
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0;
+  font-weight: 700;
+  font-size: 1.1875rem;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  color: inherit;
+  cursor: pointer;
+}
+
+.hsteps {
+  list-style: none;
+  margin: 2.75rem 0 0;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid rgba(246, 245, 239, 0.22);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.hsteps li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  font-size: 1.0625rem;
+}
+.hsteps .n {
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1.5px solid #c8f36b;
+  color: #c8f36b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+@media (max-width: 1060px) {
+  .wrap { padding: 0 1.25rem; }
+  .h-home { font-size: clamp(2.5rem, 11.5vw, 4rem); }
+  .vgrid { grid-template-columns: repeat(2, 1fr); }
+  .hsteps {
     grid-template-columns: 1fr;
-    row-gap: 1.25rem;
+    gap: 1rem;
+    margin-top: 2rem;
   }
-  .lead,
-  .hero-ctas { grid-column: auto; }
-  .lead { font-size: 1.1875rem; max-width: 40rem; }
-  .hero-ctas { justify-content: flex-start; }
-}
-
-/* --- Phones: full-width buttons --- */
-@media (max-width: 640px) {
-  .hero-ctas { justify-content: stretch; }
-  .hero-ctas .btn { flex: 1 1 100%; }
+  .hero-cta .btn {
+    max-width: 100%;
+    padding: 0 1.1rem;
+  }
 }
 </style>
