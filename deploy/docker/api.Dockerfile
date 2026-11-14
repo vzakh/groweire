@@ -2,7 +2,9 @@
 # AgroLens API image (brief §12.5). Build context = repo root:
 #   docker build -f deploy/docker/api.Dockerfile --build-arg MODEL_VERSION=$(cat ml/artifacts/CURRENT) .
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS build
-ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
+# The venv is built at its final path: console scripts (alembic, uvicorn) hard-code it in their
+# shebang, so a venv built elsewhere and copied over would not start.
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0 UV_PROJECT_ENVIRONMENT=/srv/.venv
 WORKDIR /src
 # 1) third-party deps only: cached until uv.lock / pyproject files change
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -25,7 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd -r app && useradd -r -g app -u 10001 app
 WORKDIR /srv/app
-COPY --from=build --chown=app:app /src/.venv /srv/.venv
+COPY --from=build --chown=app:app /srv/.venv /srv/.venv
 COPY --from=build --chown=app:app /src/backend/app /srv/app
 COPY --from=build --chown=app:app /src/backend/alembic /srv/alembic
 COPY --from=build --chown=app:app /src/backend/alembic.ini /srv/alembic.ini
