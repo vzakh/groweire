@@ -1,0 +1,16 @@
+# uv workspace root (virtual, no code). Brief §12.2.
+# `backend` joins `members` in PLAN_20 (uv rejects a member directory that does not exist yet).
+[tool.uv.workspace]
+members = ["ml"]
+
+[dependency-groups]
+dev = ["pytest>=8", "black>=24", "pylint>=3"]
+
+[tool.pytest.ini_options]
+testpaths = ["ml/tests"]
+markers = ["contract: ML -> Backend contract tests (brief §13.2), parametrised by --bundle/--data"]
+addopts = "-ra"
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
