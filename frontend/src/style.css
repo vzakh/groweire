@@ -8,7 +8,7 @@
 @import "tw-animate-css";
 
 /*
- * GrowÉire design tokens (DESIGN.md §01).
+ * GrowÉire design tokens.
  * Zero black anywhere: the darkest ink is forest #122B23 / #0B1D17.
  */
 
@@ -97,7 +97,7 @@
 
   --toolbar-h: 4.5rem; /* 72px at 100% text size */
 
-  /* Page frame from header-reference/groweire */
+  /* Page frame */
   --hero-wrap: 81rem; /* 1296px */
   --hero-pad: 3rem;
 }
@@ -109,7 +109,7 @@
 html.text-125 { font-size: 125%; }
 html.text-150 { font-size: 150%; }
 
-/* Buttons, ported from header-reference/groweire */
+/* Buttons */
 @layer components {
   .btn {
     display: inline-flex;

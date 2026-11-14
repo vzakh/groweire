@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * A titled row of source logos, evenly spaced. Each logo opens a one-line note on what the
- * source is used for. Logo files and their licence status: web/public/logos/SOURCES.md.
+ * source is used for. Logo files and their licence status: public/logos/SOURCES.md.
  */
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 

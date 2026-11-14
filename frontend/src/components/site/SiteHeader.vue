@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Homepage header, ported from header-reference/groweire (site-header.over):
+ * Homepage header:
  * a floating glass pill, fixed to the top. Transparent glass over the hero; once the page
  * scrolls it fills with solid forest (the reference's dark header colour). On narrow screens (and at large text sizes)
  * the links collapse into a full-screen menu.

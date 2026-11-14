@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Section 3 · Two-row country flag marquee, then the stat strip (DESIGN.md §3, sample_design.png pattern).
+ * Section 3 · Two-row country flag marquee, then the stat strip.
  * Flags come from the `flag-icons` package (MIT): drawn SVGs, since Windows can't render flag emoji.
  */
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'

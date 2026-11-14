@@ -5,7 +5,7 @@ export const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', name: 'home', component: HomeView },
-    // Full-screen field workspace: built in DESIGN.md Section 5
+    // Full-screen field workspace (shell for now)
     { path: '/app', name: 'workspace', component: () => import('./views/WorkspaceView.vue') },
   ],
   scrollBehavior(to, _from, saved) {

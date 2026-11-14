@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Section 2 · Headline + 3 audience scenario cards (DESIGN.md §2, sample_design.png pattern).
+ * Section 2 · Headline + 3 audience scenario cards.
  */
 import { ClipboardCheck, Satellite, Tractor } from 'lucide-vue-next'
 

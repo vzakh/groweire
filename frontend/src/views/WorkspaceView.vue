@@ -5,7 +5,7 @@ import GrowEireLogo from '@/components/brand/GrowEireLogo.vue'
 </script>
 
 <template>
-  <!-- Workspace shell only. The four workspace modules are DESIGN.md Section 5. -->
+  <!-- Workspace shell only; the field workspace modules come next. -->
   <div class="flex min-h-svh flex-col bg-mist">
     <header class="flex min-h-(--toolbar-h) items-center gap-4 border-b border-hairline bg-white px-4 sm:px-6">
       <RouterLink

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Homepage hero, ported from header-reference/groweire (D01 · Homepage).
+ * Homepage hero: full-bleed aerial photo with the drawn field overlay and intro motion.
  * Copy is the approved current version.
  */
 import { RouterLink } from 'vue-router'

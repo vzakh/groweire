@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Section 4 · How It Works: Data Fusion & Crop Rotation (DESIGN.md §4, howItWorks-section.jpeg).
+ * Section 4 · How It Works: Data Fusion & Crop Rotation.
  * Top: framed interface screenshot (placeholder until the real UI exists) + 3 steps.
  * Bottom: 4 feature cards straddling the dark/light edge, then the two source strips.
  */

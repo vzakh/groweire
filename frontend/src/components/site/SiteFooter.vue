@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Section 6 · Footer (DESIGN.md §6). Deep forest, never black.
+ * Section 6 · Footer. Deep forest, never black.
  * Links only point at things that exist; external data sources open in a new tab.
  */
 import { RouterLink } from 'vue-router'
