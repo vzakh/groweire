@@ -19,7 +19,9 @@ TEST_URL = ADMIN_URL.rsplit("/", 1)[0] + "/" + TEST_DB
 os.environ["APP_ENV"] = "test"
 os.environ["DATABASE_URL"] = TEST_URL  # never the dev or prod database
 os.environ.setdefault("ALLOW_STUB_MODEL", "true")
-os.environ.pop("MODEL_DIR", None)
+# Unit tests always run on the committed stub (plan 20), whatever ml/artifacts/CURRENT promotes.
+# The real bundle is exercised by the task 28 integration tests.
+os.environ["MODEL_DIR"] = str(Path(__file__).resolve().parents[2] / "ml" / "artifacts" / "stub_v0")
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
@@ -38,7 +40,7 @@ TEST_BBOX = (-7.6, 52.3, -6.4, 53.1)  # lon_min, lat_min, lon_max, lat_max: Carl
 
 @pytest.fixture(scope="session")
 def stub_model():
-    """The SAME stub ML ships (task 05), read through CURRENT. Not a hand-made mock."""
+    """The SAME stub ML ships (task 05), pinned through MODEL_DIR. Not a hand-made mock."""
     return load_bundle(get_settings().resolved_model_dir())
 
 

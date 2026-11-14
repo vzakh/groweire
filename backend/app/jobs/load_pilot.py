@@ -297,9 +297,7 @@ def load_pilot(engine: Engine, data_dir: Path) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument(
-        "data_dir", type=Path, nargs="?", help="data/synthetic or data/processed"
-    )
+    parser.add_argument("data_dir", type=Path, nargs="?", help="data/synthetic or data/processed")
     parser.add_argument(
         "--gazetteer-only",
         action="store_true",
