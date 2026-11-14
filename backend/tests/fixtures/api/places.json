@@ -1,5 +1,5 @@
 {
-  "_fixture_source": "stub-0",
+  "_fixture_source": "counted-1",
   "_request": {
     "method": "GET",
     "path": "/api/v1/places?q=Bagenalstown",

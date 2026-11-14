@@ -35,6 +35,11 @@ class Trends(BaseModel):
     n_years: int
 
 
+class SoilFact(BaseModel):
+    label: str = Field(examples=["Drainage"])
+    text: str = Field(examples=["Drains well"])
+
+
 class Soil(BaseModel):
     source: Literal["pilot_grid", "soilgrids"]
     clay: float | None = Field(description="%")
@@ -46,6 +51,10 @@ class Soil(BaseModel):
     elev_m: float | None
     slope_deg: float | None
     uncertainty: dict[str, float] | None = None
+    plain: list[SoilFact] = Field(
+        default_factory=list,
+        description='The "Your soil" card: the values above in farmer words, no judgement',
+    )
 
 
 class Series(BaseModel):
@@ -57,6 +66,15 @@ class Series(BaseModel):
     sm_rootzone: list[float | None]
 
 
+class GreennessHistory(BaseModel):
+    """How green the land around the field was each summer (June-August mean NDVI), pilot only."""
+
+    years: list[int]
+    summer_ndvi: list[float | None] = Field(description="null = too few clear satellite views")
+    lowest_years: list[int] = Field(description="The least green summers, lowest first (max 3)")
+    text: str
+
+
 class ConditionsOut(BaseModel):
     field_id: str
     pilot_coverage: bool
@@ -64,6 +82,7 @@ class ConditionsOut(BaseModel):
     trends: Trends | None
     soil: Soil | None
     series: Series | None
+    greenness_history: GreennessHistory | None = None
     data_quality: list[str]
     information_gaps: list[InformationGap]
     provenance: list[Provenance]

@@ -46,7 +46,7 @@ GRID_STATIC = [f.name for f in schemas.GRID_CELLS_SCHEMA if f.name not in ("cell
 CELL_MONTH_FIXED = [
     f.name for f in schemas.CELL_MONTH_FIXED_FIELDS if f.name not in ("cell_id", "month")
 ]
-RISK_COLUMNS = list(schemas.RISK_GRID_SCHEMA.names)
+RISK_COLUMNS = list(schemas.RISK_COUNTS_SCHEMA.names)
 
 
 class LoadError(Exception):
@@ -160,11 +160,21 @@ def _load_cell_month(cur, path: Path) -> int:
     return total
 
 
+def _pg_value(value):
+    """NaN -> NULL; a list -> a Postgres array literal."""
+    if isinstance(value, list):
+        return "{" + ",".join(str(int(v)) for v in value) + "}"
+    return _clean(value)
+
+
 def _load_risk(cur, path: Path) -> int:
     total = 0
     for rows in _batches(path):
         total += _copy(
-            cur, "risk_grid", RISK_COLUMNS, ([_clean(r[c]) for c in RISK_COLUMNS] for r in rows)
+            cur,
+            "risk_counts",
+            RISK_COLUMNS,
+            ([_pg_value(r[c]) for c in RISK_COLUMNS] for r in rows),
         )
     return total
 
@@ -249,7 +259,7 @@ def load_gazetteer(engine: Engine, geonames_dir: Path) -> int | None:
 
 
 def load_pilot(engine: Engine, data_dir: Path) -> dict:
-    """Validate, then replace grid_cells / cell_month / risk_grid / dataset_meta atomically."""
+    """Validate, then replace grid_cells / cell_month / risk_counts / dataset_meta atomically."""
     data_dir = Path(data_dir)
     manifest = read_manifest(data_dir)
     files = {
@@ -258,7 +268,7 @@ def load_pilot(engine: Engine, data_dir: Path) -> dict:
             data_dir / "cell_month_features.parquet",
             schemas.cell_month_schema(FEATURE_NAMES),
         ),
-        "risk_grid": (data_dir / "risk_grid.parquet", schemas.RISK_GRID_SCHEMA),
+        "risk_counts": (data_dir / "risk_counts.parquet", schemas.RISK_COUNTS_SCHEMA),
     }
     for path, expected in files.values():
         _check_schema(path, expected)
@@ -266,11 +276,11 @@ def load_pilot(engine: Engine, data_dir: Path) -> dict:
     raw = engine.raw_connection()
     try:
         with raw.cursor() as cur:
-            cur.execute("TRUNCATE grid_cells, cell_month, risk_grid, dataset_meta")
+            cur.execute("TRUNCATE grid_cells, cell_month, risk_counts, dataset_meta")
             counts = {
                 "grid_cells": _load_grid(cur, files["grid_cells"][0]),
                 "cell_month": _load_cell_month(cur, files["cell_month_features"][0]),
-                "risk_grid": _load_risk(cur, files["risk_grid"][0]),
+                "risk_counts": _load_risk(cur, files["risk_counts"][0]),
             }
             cur.execute(
                 "INSERT INTO dataset_meta (source, contract_version, feature_names_sha256,"
@@ -285,7 +295,7 @@ def load_pilot(engine: Engine, data_dir: Path) -> dict:
             )
             cur.execute("ANALYZE grid_cells")
             cur.execute("ANALYZE cell_month")
-            cur.execute("ANALYZE risk_grid")
+            cur.execute("ANALYZE risk_counts")
         raw.commit()
     except Exception:
         raw.rollback()

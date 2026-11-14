@@ -1,5 +1,5 @@
 {
-  "_fixture_source": "stub-0",
+  "_fixture_source": "counted-1",
   "_request": {
     "method": "GET",
     "path": "/api/v1/fields/f_00000003/conditions",
@@ -168,9 +168,20 @@
       "soc": 3.5,
       "phh2o": 0.6,
       "bdod": 0.12
-    }
+    },
+    "plain": [
+      {
+        "label": "Soil mix",
+        "text": "About 22 parts clay and 40 parts sand in 100"
+      },
+      {
+        "label": "Acidity",
+        "text": "pH about 6.4 (7 is neutral, lower is more acid)"
+      }
+    ]
   },
   "series": null,
+  "greenness_history": null,
   "data_quality": [
     "outside_pilot"
   ],

@@ -62,11 +62,14 @@ geonames:        ## download the GeoNames IE + GB dumps (CC BY 4.0) for the plac
 load-gazetteer:  ## GeoNames dumps -> gazetteer table only (pilot tables are left alone)
 	$(BE) python -m jobs.load_pilot --gazetteer-only
 
-build:           ## build the API image with the promoted model bundle baked in
-	MODEL_VERSION=$$(cat ml/artifacts/CURRENT) $(COMPOSE) build api
+build:           ## build the API image (no model bundle: the risk is counted, PLAN_40)
+	$(COMPOSE) build api
 
 up:              ## db + redis + migrate + api in containers (API_PORT=8081 to move the host port)
-	MODEL_VERSION=$$(cat ml/artifacts/CURRENT) $(COMPOSE) up -d --build --wait api
+	$(COMPOSE) up -d --build --wait api
+
+risk-counts:     ## count the monthly risks from POWER daily -> data/processed/risk_counts.parquet
+	$(ML) python -m agrolens_ml.cli risk-counts
 
 load-pilot-docker: ## same as load-pilot, inside the API image: make load-pilot-docker PILOT_DATA=synthetic
 	$(COMPOSE) --profile ops run --rm load-pilot

@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "AgroLens API",
-    "description": "Monthly crop-stress risk and rotation comparison for Irish farms. This tool supports, not replaces, your judgment and local agronomic advice.",
-    "version": "1.0.0"
+    "description": "Counted monthly weather risk and rotation comparison for Irish farms. This tool supports, not replaces, your judgment and local agronomic advice.",
+    "version": "2.0.0"
   },
   "paths": {
     "/api/v1/health/live": {
@@ -32,7 +32,7 @@
         "tags": [
           "health"
         ],
-        "summary": "DB, cache and model are usable",
+        "summary": "DB, cache and the counted risks are usable",
         "operationId": "ready_api_v1_health_ready_get",
         "responses": {
           "200": {
@@ -267,7 +267,7 @@
         "tags": [
           "predict"
         ],
-        "summary": "Monthly probability of crop stress for a field, with uncertainty and reasons",
+        "summary": "How often each month was too dry, too wet, too hot or frosty for a field, counted from NASA weather history",
         "operationId": "stress_risk_api_v1_predict_stress_risk_post",
         "requestBody": {
           "content": {
@@ -443,7 +443,7 @@
         "tags": [
           "layers"
         ],
-        "summary": "Pilot grid as GeoJSON with the stress risk per cell for one month",
+        "summary": "Pilot grid as GeoJSON: how often a month was too dry, wet, hot or frosty per cell",
         "operationId": "stress_risk_layer_api_v1_layers_stress_risk_get",
         "parameters": [
           {
@@ -458,6 +458,30 @@
               "title": "Month"
             },
             "description": "Calendar month, March (3) to October (10)"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "drought",
+                    "waterlogging",
+                    "heat",
+                    "frost"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "drought | waterlogging | heat | frost. Omit for each cell's most frequent.",
+              "title": "Type"
+            },
+            "description": "drought | waterlogging | heat | frost. Omit for each cell's most frequent."
           }
         ],
         "responses": {
@@ -743,6 +767,17 @@
             "type": "string",
             "title": "Field Id"
           },
+          "same_crop_note": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SameCropNote"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Only when the current rotation is one arable crop every year"
+          },
           "strategies": {
             "items": {
               "$ref": "#/components/schemas/Strategy"
@@ -844,6 +879,16 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Series"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "greenness_history": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GreennessHistory"
               },
               {
                 "type": "null"
@@ -1105,7 +1150,8 @@
         "properties": {
           "feature": {
             "type": "string",
-            "title": "Feature"
+            "title": "Feature",
+            "description": "Stress type: drought | waterlogging | heat | frost"
           },
           "value": {
             "anyOf": [
@@ -1116,7 +1162,8 @@
                 "type": "null"
               }
             ],
-            "title": "Value"
+            "title": "Value",
+            "description": "Years in which it happened (years_hit)"
           },
           "contribution": {
             "anyOf": [
@@ -1127,12 +1174,16 @@
                 "type": "null"
               }
             ],
-            "title": "Contribution"
+            "title": "Contribution",
+            "description": "Its counted frequency, 0..1"
           },
           "text": {
             "type": "string",
             "title": "Text",
-            "description": "Farmer words, written by the ML package"
+            "description": "Farmer words: a sentence that can be checked against memory",
+            "examples": [
+              "July was too dry here in 3 of the last 25 years: 2018, 2006 and 2022."
+            ]
           }
         },
         "type": "object",
@@ -1142,7 +1193,8 @@
           "contribution",
           "text"
         ],
-        "title": "Driver"
+        "title": "Driver",
+        "description": "One counted fact behind a month (2.0: evidence, no longer a model feature)."
       },
       "ErrorOut": {
         "properties": {
@@ -1455,6 +1507,53 @@
         ],
         "title": "GlossaryTerm"
       },
+      "GreennessHistory": {
+        "properties": {
+          "years": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Years"
+          },
+          "summer_ndvi": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Summer Ndvi",
+            "description": "null = too few clear satellite views"
+          },
+          "lowest_years": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Lowest Years",
+            "description": "The least green summers, lowest first (max 3)"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "years",
+          "summer_ndvi",
+          "lowest_years",
+          "text"
+        ],
+        "title": "GreennessHistory",
+        "description": "How green the land around the field was each summer (June-August mean NDVI), pilot only."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -1713,21 +1812,10 @@
             "minimum": 1.0,
             "title": "Month"
           },
-          "year": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Year",
-            "description": "Only for mode=next_month"
-          },
           "probability": {
             "type": "number",
-            "title": "Probability"
+            "title": "Probability",
+            "description": "Counted frequency of the most frequent stress type in this month"
           },
           "interval": {
             "prefixItems": [
@@ -1741,14 +1829,34 @@
             "type": "array",
             "maxItems": 2,
             "minItems": 2,
-            "title": "Interval"
+            "title": "Interval",
+            "description": "90% range for that frequency, given the number of years counted"
+          },
+          "years_hit": {
+            "type": "integer",
+            "title": "Years Hit",
+            "description": "Years the most frequent stress type happened"
+          },
+          "years_total": {
+            "type": "integer",
+            "title": "Years Total",
+            "description": "Years of weather history counted"
           },
           "stress_types": {
             "items": {
               "type": "string"
             },
             "type": "array",
-            "title": "Stress Types"
+            "title": "Stress Types",
+            "description": "The most frequent stress type; empty when nothing was counted in any year"
+          },
+          "counts": {
+            "items": {
+              "$ref": "#/components/schemas/TypeCountOut"
+            },
+            "type": "array",
+            "title": "Counts",
+            "description": "Every stress type, most frequent first"
           },
           "drivers": {
             "items": {
@@ -1799,6 +1907,7 @@
           "frequency_text": {
             "type": "string",
             "title": "Frequency Text",
+            "description": "How often the weather was like this (the counted frequency, never crop-weighted)",
             "examples": [
               "about 2 years in 10"
             ]
@@ -1813,7 +1922,10 @@
           "month",
           "probability",
           "interval",
+          "years_hit",
+          "years_total",
           "stress_types",
+          "counts",
           "drivers",
           "crop_sensitivity",
           "crop_weighted_risk",
@@ -1964,11 +2076,9 @@
           },
           "mode": {
             "type": "string",
-            "enum": [
-              "next_month",
-              "seasonal_profile"
-            ],
+            "const": "seasonal_profile",
             "title": "Mode",
+            "description": "Kept for older clients. The only mode: `next_month` was removed in 2.0.",
             "default": "seasonal_profile"
           },
           "crop_id": {
@@ -2003,11 +2113,15 @@
           },
           "mode": {
             "type": "string",
-            "enum": [
-              "next_month",
-              "seasonal_profile"
-            ],
-            "title": "Mode"
+            "const": "seasonal_profile",
+            "title": "Mode",
+            "default": "seasonal_profile"
+          },
+          "method": {
+            "type": "string",
+            "const": "counted_history",
+            "title": "Method",
+            "default": "counted_history"
           },
           "crop_id": {
             "anyOf": [
@@ -2022,7 +2136,11 @@
           },
           "model_version": {
             "type": "string",
-            "title": "Model Version"
+            "title": "Model Version",
+            "description": "Version of the counting rules (no trained model)",
+            "examples": [
+              "counted-1"
+            ]
           },
           "calibrated_region": {
             "type": "string",
@@ -2063,7 +2181,8 @@
               {
                 "type": "null"
               }
-            ]
+            ],
+            "description": "Always null in 2.0: 25 years of counts are too few for a trend"
           },
           "data_quality": {
             "items": {
@@ -2099,14 +2218,12 @@
         "type": "object",
         "required": [
           "field_id",
-          "mode",
           "crop_id",
           "model_version",
           "pilot_coverage",
           "headline",
           "months",
           "riskiest_month",
-          "trend",
           "data_quality",
           "information_gaps",
           "needs_local_review",
@@ -2157,11 +2274,13 @@
           },
           "model_version": {
             "type": "string",
-            "title": "Model Version"
+            "title": "Model Version",
+            "description": "Version of the counting rules (no trained model)"
           },
           "model_kind": {
             "type": "string",
-            "title": "Model Kind"
+            "title": "Model Kind",
+            "description": "Always `counted_history` since contract 2.0"
           },
           "data_source": {
             "type": "string",
@@ -2210,6 +2329,33 @@
           "ie_crop_rotation_2_of_4"
         ],
         "title": "RuleCompliance"
+      },
+      "SameCropNote": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source",
+            "description": "Source id for the claim, or null for a plain prompt"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "source"
+        ],
+        "title": "SameCropNote",
+        "description": "Shown first when the farmer grows one crop every year (the cost of no rotation)."
       },
       "Series": {
         "properties": {
@@ -2395,6 +2541,14 @@
               }
             ],
             "title": "Uncertainty"
+          },
+          "plain": {
+            "items": {
+              "$ref": "#/components/schemas/SoilFact"
+            },
+            "type": "array",
+            "title": "Plain",
+            "description": "The \"Your soil\" card: the values above in farmer words, no judgement"
           }
         },
         "type": "object",
@@ -2410,6 +2564,30 @@
           "slope_deg"
         ],
         "title": "Soil"
+      },
+      "SoilFact": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "examples": [
+              "Drainage"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "examples": [
+              "Drains well"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "text"
+        ],
+        "title": "SoilFact"
       },
       "Strategy": {
         "properties": {
@@ -2514,6 +2692,18 @@
             "type": "integer",
             "title": "Month"
           },
+          "stress_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stress Type",
+            "description": "The requested type; null = each cell shows its most frequent type"
+          },
           "features": {
             "items": {
               "additionalProperties": true,
@@ -2545,12 +2735,13 @@
         "type": "object",
         "required": [
           "month",
+          "stress_type",
           "features",
           "data_quality",
           "provenance"
         ],
         "title": "StressRiskLayer",
-        "description": "GeoJSON FeatureCollection: one polygon per pilot cell, `properties.p` = risk in that month."
+        "description": "GeoJSON FeatureCollection: one polygon per pilot cell.\n\n`properties.p` = counted frequency of `properties.stress_type` in that month."
       },
       "Trend": {
         "properties": {
@@ -2632,6 +2823,58 @@
         ],
         "title": "Trends",
         "description": "Sen's slope per decade over complete calendar years."
+      },
+      "TypeCountOut": {
+        "properties": {
+          "stress_type": {
+            "type": "string",
+            "title": "Stress Type",
+            "description": "drought | waterlogging | heat | frost"
+          },
+          "years_hit": {
+            "type": "integer",
+            "title": "Years Hit"
+          },
+          "years_total": {
+            "type": "integer",
+            "title": "Years Total"
+          },
+          "frequency": {
+            "type": "number",
+            "title": "Frequency",
+            "description": "years_hit / years_total"
+          },
+          "recent_frequency": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recent Frequency",
+            "description": "The same over the last 10 years"
+          },
+          "example_years": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Example Years",
+            "description": "Years it happened, worst first (max 5)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stress_type",
+          "years_hit",
+          "years_total",
+          "frequency",
+          "recent_frequency",
+          "example_years"
+        ],
+        "title": "TypeCountOut"
       },
       "ValidationError": {
         "properties": {

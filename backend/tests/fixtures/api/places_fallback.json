@@ -1,5 +1,5 @@
 {
-  "_fixture_source": "stub-0",
+  "_fixture_source": "counted-1",
   "_request": {
     "method": "GET",
     "path": "/api/v1/places?q=bagenalstwn",
@@ -11,6 +11,13 @@
       "name": "Bagenalstown, Carlow",
       "lon": -6.96,
       "lat": 52.7,
+      "bbox": null,
+      "kind": "village"
+    },
+    {
+      "name": "Bagenalstown, County Carlow",
+      "lon": -6.96181,
+      "lat": 52.70031,
       "bbox": null,
       "kind": "village"
     }

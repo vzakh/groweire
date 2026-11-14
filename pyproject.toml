@@ -13,6 +13,7 @@ asyncio_default_fixture_loop_scope = "function"
 markers = [
     "contract: ML -> Backend contract tests (brief §13.2), parametrised by --bundle/--data",
     "db: needs the local PostGIS from `make db-up` (skipped when it is not reachable)",
+    "integration: counted risks on the REAL tables in the dev database (PLAN_40); skipped without them",
 ]
 addopts = "-ra"
 

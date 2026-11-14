@@ -2,10 +2,10 @@
 
     make fixtures        # needs `make db-up migrate` and `make load-pilot DATA=...` first
 
-Boots the real app on the loaded database, with the model from ml/artifacts/CURRENT, an
-in-memory Redis and mocked external APIs (no network). Field ids and the clock are fixed, so a
-re-export only changes values when the model or the data changed. Each file carries
-`_fixture_source` (the model version) and `_request`.
+Boots the real app on the loaded database, with an in-memory Redis and mocked external APIs
+(no network). Field ids and the clock are fixed, so a re-export only changes values when the
+counting rules or the data changed. Each file carries `_fixture_source` (the rules version)
+and `_request`.
 """
 
 from __future__ import annotations
@@ -19,6 +19,7 @@ import respx
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 
+from agrolens_ml import RISK_RULES_VERSION
 from clients import nominatim, power, soilgrids
 from clients.cache import Cache
 from core.config import REPO_ROOT
@@ -73,7 +74,7 @@ def main() -> int:
         mock.get(power.POWER_URL).mock(side_effect=power_responder)
         mock.get(soilgrids.SOILGRIDS_URL).respond(json=soil_payload())
         osm = mock.get(nominatim.NOMINATIM_URL).respond(json=nominatim_payload())
-        source = app.state.stress_model.version
+        source = RISK_RULES_VERSION
         engine = app.state.engine
 
         def save(name: str, method: str, path: str, body=None, expect: int = 200, trim=None):
@@ -141,12 +142,6 @@ def main() -> int:
                 {"field_id": pilot, "mode": "seasonal_profile"},
             )
             save(
-                "predict_next_month",
-                "POST",
-                "/predict/stress-risk",
-                {"field_id": pilot, "mode": "next_month", "crop_id": "spring_barley"},
-            )
-            save(
                 "predict_non_pilot",
                 "POST",
                 "/predict/stress-risk",
@@ -161,6 +156,12 @@ def main() -> int:
                 payload["features"] = payload["features"][:MAX_LAYER_FEATURES]
 
             save("layers_stress_risk", "GET", "/layers/stress-risk?month=7", trim=sample)
+            save(
+                "layers_stress_risk_drought",
+                "GET",
+                "/layers/stress-risk?month=7&type=drought",
+                trim=sample,
+            )
             save("glossary", "GET", "/glossary")
             save("error_field_not_found", "GET", "/fields/f_ffffffff", expect=404)
             save("error_validation", "POST", "/fields", {"name": "no shape"}, 422)

@@ -5,6 +5,7 @@ Shared by the conditions, predict and rotation services, so each fact is compute
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 
@@ -12,7 +13,13 @@ import httpx
 import pandas as pd
 from sqlalchemy import text
 
-from agrolens_ml import CELL_STATIC_KEYS, MONTHLY_INPUT_COLUMNS, power_daily_to_monthly
+from agrolens_ml import (
+    CELL_STATIC_KEYS,
+    MONTHLY_INPUT_COLUMNS,
+    RISK_RULES_VERSION,
+    count_risks,
+    power_daily_to_monthly,
+)
 from clients import power
 from clients.cache import Cache
 from core.deps import read_data_source
@@ -124,3 +131,42 @@ async def monthly_history(
     frame[numeric] = frame[numeric].apply(pd.to_numeric, errors="coerce").astype(float)
     frame["month"] = pd.PeriodIndex(frame["month"], freq="M")
     return frame, blob.get("elevation_m")
+
+
+async def counted_risks(
+    http: httpx.AsyncClient,
+    cache: Cache,
+    lat: float,
+    lon: float,
+    elev_m: float | None,
+    drainage_class: int | None,
+    years: int = HISTORY_YEARS,
+) -> list[dict]:
+    """Counted risks for any point: live POWER daily -> agrolens_ml.count_risks, cached.
+
+    The SAME rules and code as the pilot `risk_counts` table. Like that table, ET0 uses the
+    POWER node's latitude and elevation. Rows have the risk_counts columns (no cell_id).
+
+    Raises UpstreamError("power_unavailable").
+    """
+    start, end = history_range(years)
+    node_lat, node_lon = power.snap(lat, lon)
+    key = (
+        f"counts:{RISK_RULES_VERSION}:{node_lat:.3f}:{node_lon:.4f}:{start}:{end}:"
+        f"{drainage_class}"
+    )
+
+    async def load() -> dict:
+        payload = await power.fetch_daily(http, cache, lat, lon, start, end)
+        elevation = payload.get("elevation_m")
+        if elevation is None:
+            elevation = elev_m if elev_m is not None else 0.0
+        counts = count_risks(
+            power.daily_frame(payload),
+            elev_m=elevation,
+            lat=node_lat,
+            drainage_class=drainage_class,
+        )
+        return {"rows": json.loads(counts.to_json(orient="records"))}
+
+    return (await cache.get_or_set(key, power.TTL_S, load))["rows"]

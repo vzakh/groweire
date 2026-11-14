@@ -19,8 +19,9 @@ class Settings(BaseSettings):
     version: str = "0.1.0"
     database_url: str = "postgresql+psycopg2://agrolens:agrolens@localhost:55432/agrolens"
     redis_url: str = "redis://localhost:56379/0"
-    model_dir: Path | None = None  # baked into the image; in dev resolved from ml/artifacts/CURRENT
-    allow_stub_model: bool = True  # false in prod: /health/ready then refuses stub / synthetic
+    # False in prod: /health/ready then refuses synthetic tables. (The name is kept from the
+    # model era so deploy env files keep working; no model is loaded any more, PLAN_40.)
+    allow_stub_model: bool = True
     log_level: str = "INFO"
     frontend_origin: str = "http://localhost:5173"
     domain: str = "localhost"
@@ -31,16 +32,6 @@ class Settings(BaseSettings):
     @property
     def is_prod(self) -> bool:
         return self.app_env == "prod"
-
-    def resolved_model_dir(self) -> Path:
-        """MODEL_DIR if set, else ml/artifacts/<CURRENT>. The folder name is never hard-coded."""
-        if self.model_dir is not None:
-            return self.model_dir
-        artifacts = REPO_ROOT / "ml" / "artifacts"
-        current = (artifacts / "CURRENT").read_text(encoding="utf-8").strip()
-        if not current:
-            raise RuntimeError(f"{artifacts / 'CURRENT'} is empty")
-        return artifacts / current
 
 
 @lru_cache

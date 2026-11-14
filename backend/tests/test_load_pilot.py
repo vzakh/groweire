@@ -21,13 +21,13 @@ def test_loaded_counts_and_meta(pg_engine, pilot_dir):
         meta = c.execute(text("SELECT * FROM dataset_meta")).mappings().one()
         cells = c.execute(text("SELECT count(*) FROM grid_cells")).scalar_one()
         months = c.execute(text("SELECT count(*) FROM cell_month")).scalar_one()
-        risk = c.execute(text("SELECT count(*) FROM risk_grid")).scalar_one()
+        risk = c.execute(text("SELECT count(*) FROM risk_counts")).scalar_one()
     assert meta["source"] == "synthetic"
     assert meta["contract_version"] == manifest["contract_version"]
     assert (cells, months, risk) == (
         manifest["rows"]["grid_cells"],
         manifest["rows"]["cell_month_features"],
-        manifest["rows"]["risk_grid"],
+        manifest["rows"]["risk_counts"],
     )
 
 
@@ -39,19 +39,31 @@ def test_features_jsonb_has_exactly_feature_names_and_null_for_nan(pg_engine):
     assert all(v is None or isinstance(v, (int, float)) for v in values)
 
 
-def test_db_features_predict_like_the_parquet_row(pg_engine, pilot_dir, stub_model):
-    """jsonb / NaN / float conversion must not change what the model sees."""
-    row = pq.read_table(pilot_dir / "cell_month_features.parquet").slice(100, 1).to_pylist()[0]
+def test_risk_counts_rows_survive_the_load(pg_engine, pilot_dir):
+    """Counts, frequencies and the example-year lists must come back as they were written."""
+    rows = pq.read_table(pilot_dir / "risk_counts.parquet").to_pylist()
+    wanted = next(r for r in rows if len(r["example_years"]) >= 2)
+    empty = next(r for r in rows if r["years_hit"] == 0)
     with pg_engine.connect() as c:
-        from_db = c.execute(
-            text("SELECT features FROM cell_month WHERE cell_id = :c AND month = :m"),
-            {"c": row["cell_id"], "m": f"{row['month']}-01"},
-        ).scalar_one()
-    from_parquet = {k: row[k] for k in FEATURE_NAMES}
-    nan = float("nan")
-    a = stub_model.predict([{k: nan if v is None else v for k, v in from_db.items()}])[0]
-    b = stub_model.predict([{k: nan if v is None else v for k, v in from_parquet.items()}])[0]
-    assert a["probability"] == pytest.approx(b["probability"], abs=1e-9)
+        for row in (wanted, empty):
+            got = (
+                c.execute(
+                    text("""
+                        SELECT years_hit, years_total, frequency, recent_frequency, example_years
+                        FROM risk_counts
+                        WHERE cell_id = :cell_id AND calendar_month = :calendar_month
+                          AND stress_type = :stress_type
+                        """),
+                    row,
+                )
+                .mappings()
+                .one()
+            )
+            assert (got["years_hit"], got["years_total"]) == (row["years_hit"], row["years_total"])
+            assert got["frequency"] == pytest.approx(row["frequency"])
+            assert got["recent_frequency"] == pytest.approx(row["recent_frequency"])
+            assert list(got["example_years"]) == row["example_years"]
+        assert c.execute(text("SELECT to_regclass('risk_grid')")).scalar_one() is None
 
 
 def test_wrong_contract_version_is_refused_and_db_untouched(pg_engine, pilot_dir, tmp_path):

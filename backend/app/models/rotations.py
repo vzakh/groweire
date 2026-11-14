@@ -137,8 +137,18 @@ class Strategy(BaseModel):
     advisor_questions: list[str] = Field(min_length=2, max_length=4)
 
 
+class SameCropNote(BaseModel):
+    """Shown first when the farmer grows one crop every year (the cost of no rotation)."""
+
+    text: str
+    source: str | None = Field(description="Source id for the claim, or null for a plain prompt")
+
+
 class CompareOut(BaseModel):
     field_id: str
+    same_crop_note: SameCropNote | None = Field(
+        default=None, description="Only when the current rotation is one arable crop every year"
+    )
     strategies: list[Strategy]
     weights_used: dict[str, int]
     data_quality: list[str]

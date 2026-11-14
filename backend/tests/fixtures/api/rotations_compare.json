@@ -1,5 +1,5 @@
 {
-  "_fixture_source": "stub-0",
+  "_fixture_source": "counted-1",
   "_request": {
     "method": "POST",
     "path": "/api/v1/rotations/compare",
@@ -33,6 +33,10 @@
     "status": 200
   },
   "field_id": "f_00000001",
+  "same_crop_note": {
+    "text": "You grow spring barley every year. With one cereal year after year, its diseases and weeds build up in the soil, and yields often fall. A different crop in between can break that cycle.",
+    "source": "teagasc_rotation"
+  },
   "strategies": [
     {
       "id": "current",
@@ -48,9 +52,9 @@
       "headline": "Your rotation: spring barley every year",
       "one_line_why": "This is what you grow now. We compare the others against it.",
       "vs_current": null,
-      "score": 0.621,
+      "score": 0.627,
       "criteria": {
-        "climate_risk": 0.0,
+        "climate_risk": 0.043,
         "income_stability": 0.727,
         "simplicity": 1.0,
         "soil_cover": 0.167,
@@ -62,7 +66,7 @@
       },
       "metrics": {
         "bare_months_per_year": 7.0,
-        "crop_weighted_stress": 0.569,
+        "crop_weighted_stress": 0.556,
         "water_demand_mm": 446.0,
         "workability_risk": 0.0,
         "erosion_index": 0.0,
@@ -122,13 +126,13 @@
       ]
     },
     {
-      "id": "current_plus_winter_oilseed_rape",
-      "label": "Your rotation with winter oilseed rape",
+      "id": "current_plus_spring_oats",
+      "label": "Your rotation with spring oats",
       "sequence": [
         "spring_barley",
         "spring_barley",
         "spring_barley",
-        "winter_oilseed_rape"
+        "spring_oats"
       ],
       "cover_crops": [
         {
@@ -140,40 +144,44 @@
           "crop_id": "cover_oats_vetch"
         },
         {
+          "after_year": 3,
+          "crop_id": "cover_oats_vetch"
+        },
+        {
           "after_year": 4,
           "crop_id": "cover_oats_vetch"
         }
       ],
       "is_current": false,
-      "headline": "Add winter oilseed rape in year 4",
+      "headline": "Add spring oats in year 4",
       "one_line_why": "Spreads your income over more crops. Less bare soil.",
       "vs_current": {
-        "risk": "same",
+        "risk": "lower",
         "bare_soil": "less",
         "workload": "more"
       },
-      "score": 0.786,
+      "score": 0.773,
       "criteria": {
-        "climate_risk": 0.522,
+        "climate_risk": 0.435,
         "income_stability": 1.0,
-        "simplicity": 0.615,
-        "soil_cover": 0.75,
+        "simplicity": 0.571,
+        "soil_cover": 0.833,
         "water_use": 0.924,
-        "forage_value": 0.0,
+        "forage_value": 0.158,
         "nitrogen_fixing": 0.0,
         "pest_break": 0.5,
         "market_suitability": 0.75
       },
       "metrics": {
         "bare_months_per_year": 1.0,
-        "crop_weighted_stress": 0.542,
+        "crop_weighted_stress": 0.52,
         "water_demand_mm": 446.0,
         "workability_risk": 0.0,
         "erosion_index": 0.0,
         "n_fixing_years": 0,
         "pest_break_score": 0.5,
-        "organic_matter_score": 0.69,
-        "forage_score": 0.08,
+        "organic_matter_score": 0.75,
+        "forage_score": 0.1,
         "market_score": 0.75,
         "rule_compliance": {
           "ie_crop_rotation_2_of_4": true,
@@ -207,11 +215,11 @@
         "benefits": [
           "Bare soil months drop from 7.0 to 1.0 a year",
           "2 of 4 crop changes break a disease cycle",
+          "Lower weather stress on the crops in the risky months",
           "Meets the crop rotation rule for arable land"
         ],
         "information_gaps": [
           "How much each crop suffers in each month is a first estimate, not yet checked.",
-          "No water-use figures for: winter oilseed rape.",
           "We do not know your tillage area, so we did not check the two-crop rule.",
           "We did not ask which machinery you have.",
           "No field-level soil test provided (soil values are map estimates)."
@@ -219,7 +227,7 @@
         "risks_needing_local_review": [
           "Wheat or barley after wheat or barley can build up take-all.",
           "Some of these crops are in a sensitive stage in the dry-risk months.",
-          "Check there is a buyer for winter oilseed rape near you.",
+          "Check there is a buyer for spring oats near you.",
           "Local soil, weather and markets can change which rotation suits this field."
         ]
       },
@@ -261,15 +269,15 @@
       "headline": "Bring in beans and spring oats",
       "one_line_why": "Spreads your income over more crops. Less bare soil.",
       "vs_current": {
-        "risk": "same",
+        "risk": "lower",
         "bare_soil": "less",
         "workload": "more"
       },
-      "score": 0.692,
+      "score": 0.685,
       "criteria": {
-        "climate_risk": 0.293,
+        "climate_risk": 0.391,
         "income_stability": 1.0,
-        "simplicity": 0.359,
+        "simplicity": 0.286,
         "soil_cover": 0.833,
         "water_use": 0.762,
         "forage_value": 0.789,
@@ -279,7 +287,7 @@
       },
       "metrics": {
         "bare_months_per_year": 1.0,
-        "crop_weighted_stress": 0.554,
+        "crop_weighted_stress": 0.524,
         "water_demand_mm": 455.0,
         "workability_risk": 0.0,
         "erosion_index": 0.0,
@@ -329,7 +337,7 @@
           "Bare soil months drop from 7.0 to 1.0 a year",
           "3 of 4 crop changes break a disease cycle",
           "A nitrogen-fixing crop in 1 of 4 years",
-          "More feed for livestock",
+          "Lower weather stress on the crops in the risky months",
           "Meets the crop rotation rule for arable land"
         ],
         "information_gaps": [
@@ -387,11 +395,11 @@
         "bare_soil": "less",
         "workload": "more"
       },
-      "score": 0.68,
+      "score": 0.682,
       "criteria": {
-        "climate_risk": 0.0,
+        "climate_risk": 0.043,
         "income_stability": 0.727,
-        "simplicity": 0.872,
+        "simplicity": 0.857,
         "soil_cover": 0.833,
         "water_use": 0.924,
         "forage_value": 0.158,
@@ -401,7 +409,7 @@
       },
       "metrics": {
         "bare_months_per_year": 1.0,
-        "crop_weighted_stress": 0.569,
+        "crop_weighted_stress": 0.556,
         "water_demand_mm": 446.0,
         "workability_risk": 0.0,
         "erosion_index": 0.0,
@@ -470,10 +478,16 @@
     "simplicity": 2,
     "soil_cover": 1
   },
-  "data_quality": [
-    "synthetic_data"
-  ],
+  "data_quality": [],
   "information_gaps": [
+    {
+      "code": "weather_is_area_average",
+      "text": "The weather is for your area, about 50 km wide. The soil is for your field."
+    },
+    {
+      "code": "risk_rules_unverified",
+      "text": "How many dry, wet, hot or frosty days make a bad month is our own rule. It has not been checked by an advisor yet."
+    },
     {
       "code": "crop_sensitivity_unverified",
       "text": "How much each crop suffers in each month is our first estimate. It has not been checked against field trials."
@@ -493,34 +507,28 @@
       "period": null
     },
     {
-      "dataset_id": "modis_ndvi",
-      "description": "MOD13Q1/MYD13Q1 v6.1 NDVI",
-      "url": "https://doi.org/10.5067/MODIS/MOD13Q1.061",
-      "period": "2001–present"
-    },
-    {
       "dataset_id": "power",
       "description": "NASA POWER daily weather (MERRA-2 / CERES), about 50 km grid",
       "url": "https://power.larc.nasa.gov/",
       "period": "1981–present"
     },
     {
-      "dataset_id": "smap",
-      "description": "SMAP L4 root-zone soil moisture (SPL4SMGP)",
-      "url": "https://nsidc.org/data/spl4smgp",
-      "period": "2015–present"
-    },
-    {
-      "dataset_id": "soilgrids",
-      "description": "ISRIC SoilGrids v2.0 (global soil model, 250 m)",
-      "url": "https://soilgrids.org/",
+      "dataset_id": "met_eireann_smd",
+      "description": "Met Éireann / Teagasc soil moisture deficit model (Schulte et al. 2005), run on NASA POWER weather",
+      "url": "https://www.met.ie/climate/services/agri-meteorological-data",
       "period": null
     },
     {
-      "dataset_id": "srtm",
-      "description": "SRTMGL1 elevation and slope",
-      "url": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+      "dataset_id": "irish_sis",
+      "description": "EPA / Teagasc indicative soil drainage map (Republic of Ireland)",
+      "url": "https://gis.epa.ie/",
       "period": null
+    },
+    {
+      "dataset_id": "imerg",
+      "description": "NASA GPM IMERG Final monthly rainfall (about 10 km)",
+      "url": "https://doi.org/10.5067/GPM/IMERG/3B-MONTH/07",
+      "period": "2001–2025"
     }
   ]
 }

@@ -5,7 +5,7 @@ PRD DD-8 / DD-9. No percentages and no jargon here; numbers stay under "More det
 
 from __future__ import annotations
 
-from models.rotations import VsCurrent
+from models.rotations import SameCropNote, VsCurrent
 from services.rotation.catalog import Catalog
 from services.rotation.explain import better_criteria
 from services.rotation.generate import Candidate
@@ -49,6 +49,34 @@ def headline(cand: Candidate, current: Candidate, catalog: Catalog) -> str:
         year = cand.sequence.index(new[0]) + 1
         return f"Add {_short(new[0], catalog)} in year {year}"
     return f"Bring in {_list([_short(c, catalog) for c in new[:3]])}"
+
+
+def same_crop_note(current: Candidate, catalog: Catalog) -> SameCropNote | None:
+    """A plain note when one arable crop is grown every year. No numbers (hard rule 1).
+
+    The yield claim is made only for cereals, where the catalogue's Teagasc source covers it;
+    for other crops the note states the build-up risk and points to the advisor.
+    """
+    distinct = list(dict.fromkeys(current.sequence))
+    if len(distinct) != 1 or len(current.sequence) < 2:
+        return None
+    crop = catalog.crop(distinct[0])
+    if crop.family == "ley":  # grass every year is normal farming, not a rotation problem
+        return None
+    name = _short(crop.id, catalog)
+    if crop.family == "cereal":
+        return SameCropNote(
+            text=f"You grow {name} every year. With one cereal year after year, its diseases "
+            "and weeds build up in the soil, and yields often fall. A different crop in "
+            "between can break that cycle.",
+            source="teagasc_rotation",
+        )
+    return SameCropNote(
+        text=f"You grow {name} every year. With one crop year after year, its diseases, pests "
+        "and weeds can build up in the soil. Ask your advisor if that could be holding "
+        "your yields back.",
+        source=None,
+    )
 
 
 def one_line_why(

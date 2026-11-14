@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 # Hard rule 7: every user-facing recommendation carries this framing.
 DISCLAIMER = "This tool supports, not replaces, your judgment and local agronomic advice."
 
-# data_quality flag added whenever the stub model or synthetic tables are behind a response.
+# data_quality flag added whenever synthetic tables are behind a response.
 SYNTHETIC_DATA = "synthetic_data"
 OUTSIDE_PILOT = "outside_pilot"
 
@@ -38,6 +38,11 @@ _SOURCES: dict[str, tuple[str, str, str | None]] = {
         "https://power.larc.nasa.gov/",
         "1981–present",
     ),
+    "imerg": (
+        "NASA GPM IMERG Final monthly rainfall (about 10 km)",
+        "https://doi.org/10.5067/GPM/IMERG/3B-MONTH/07",
+        "2001–2025",
+    ),
     "modis_ndvi": (
         "MOD13Q1/MYD13Q1 v6.1 NDVI",
         "https://doi.org/10.5067/MODIS/MOD13Q1.061",
@@ -66,6 +71,12 @@ _SOURCES: dict[str, tuple[str, str, str | None]] = {
     "irish_sis": (
         "EPA / Teagasc indicative soil drainage map (Republic of Ireland)",
         "https://gis.epa.ie/",
+        None,
+    ),
+    "met_eireann_smd": (
+        "Met Éireann / Teagasc soil moisture deficit model (Schulte et al. 2005), run on NASA "
+        "POWER weather",
+        "https://www.met.ie/climate/services/agri-meteorological-data",
         None,
     ),
     "crops_ie": (
