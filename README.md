@@ -139,7 +139,7 @@ flowchart LR
     C --> OSM
 
     subgraph Offline["Offline, on a laptop (not deployed)"]
-        DL["data/raw · data/processed<br/>POWER · MODIS · IMERG · SoilGrids · soil map (downloaded by hand)"]
+        DL["data/raw · data/processed<br/>POWER · MODIS · IMERG · SoilGrids · soil map (ml/pipelines/download)"]
         CLI["python -m agrolens_ml.cli<br/>grid · labels · features · risk-counts"]
         PQ[/"data/processed/*.parquet<br/>+ _MANIFEST.json"/]
         DL --> CLI --> PQ
@@ -333,6 +333,7 @@ That is why field-level outputs are *risk indicators*, not measurements.
 ├── ml/                          uv member `agrolens-ml`
 │   ├── src/agrolens_ml/         contract · config · risk_counts · features/ · labels/ · model/ · grid · pipeline · synthetic · cli
 │   ├── config/                  Ireland outline + 0.05° / 0.1° / 0.25° analysis grids
+│   ├── pipelines/download/      scripts that fetch the raw pilot inputs into data/
 │   ├── artifacts/               stress_lgbm_v1 (earlier model, metrics, model card) · stub_v0 · reports/
 │   └── tests/                   unit tests + contract/ (ML → Backend)
 ├── frontend/                    Vue 3 SPA (npm project)
@@ -565,7 +566,7 @@ make contract BUNDLE=ml/artifacts/stub_v0 DATA=data/synthetic # ML → Backend c
 
 ## Building the real pilot data
 
-The pilot data is built offline on a laptop. The source datasets were downloaded by hand from the providers listed in [`REFERENCES.md`](REFERENCES.md); a free [Earthdata Login](https://urs.earthdata.nasa.gov/users/new) is needed for the NASA ones. Processing needs the training extras: `uv sync --all-packages --all-extras`.
+The pilot data is built offline on a laptop. The source datasets come from the providers listed in [`REFERENCES.md`](REFERENCES.md) and are fetched by the scripts in [`ml/pipelines/download/`](ml/pipelines/download/) (the soil drainage map is downloaded by hand); a free [Earthdata Login](https://urs.earthdata.nasa.gov/users/new) is needed for the NASA ones. Processing needs the training extras: `uv sync --all-packages --all-extras`.
 
 **Inputs.** Place the downloads in the gitignored `data/` folder. The analysis grid and the Ireland outline are committed in [`ml/config/`](ml/config/).
 
