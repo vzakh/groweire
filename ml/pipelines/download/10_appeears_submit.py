@@ -14,8 +14,8 @@ Layer names are resolved against the live AppEEARS product catalogue, so a renam
 loudly with the list of available layers instead of silently submitting a bad job.
 Task IDs are saved to data/raw/appeears/tasks.json for 11_appeears_download.py.
 
-  python scripts/10_appeears_submit.py --dry-run     # print the job JSON, submit nothing
-  python scripts/10_appeears_submit.py --only ndvi   # submit a subset: ndvi|landcover|srtm|smap
+  python 10_appeears_submit.py --dry-run     # print the job JSON, submit nothing
+  python 10_appeears_submit.py --only ndvi   # submit a subset: ndvi|landcover|srtm|smap
 """
 from __future__ import annotations
 

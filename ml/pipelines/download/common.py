@@ -8,9 +8,11 @@ import os
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-CONFIG = ROOT / "config"
-# Repo-root data/ (brief §12.1): scripts now live in ml/pipelines/download/.
+HERE = Path(__file__).resolve().parent  # ml/pipelines/download/
+ROOT = HERE.parent  # ml/pipelines/
+# Analysis grids + Ireland outline, shared with agrolens_ml.
+CONFIG = ROOT.parent / "config"  # ml/config/
+# Repo-root data/ (brief §12.1).
 DATA = ROOT.parent.parent / "data"
 RAW = Path(os.environ.get("AGROLENS_RAW", DATA / "raw"))
 PROCESSED = Path(os.environ.get("AGROLENS_PROCESSED", DATA / "processed"))
@@ -26,8 +28,8 @@ log = logging.getLogger("agrolens")
 
 
 def load_env() -> None:
-    """Load KEY=VALUE pairs from ROOT/.env into os.environ (no external dependency)."""
-    env = ROOT / ".env"
+    """Load KEY=VALUE pairs from .env (next to .env.example) into os.environ (no external dependency)."""
+    env = HERE / ".env"
     if not env.exists():
         return
     for line in env.read_text().splitlines():

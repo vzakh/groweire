@@ -1,7 +1,7 @@
 """Pilot grid & masks -> grid_cells.parquet (PLAN_10 task 10, brief §7.1).
 
 Inputs (all offline):
-  ml/pipelines/config/grid_005deg.csv             0.05° cell centroids (cell_id, lon, lat)
+  ml/config/grid_005deg.csv             0.05° cell centroids (cell_id, lon, lat)
   data/raw/direct/mcd12q1/MCD12Q1.A<y>*.hdf       IGBP land cover (LC_Type1), MODIS sinusoidal 500 m
   data/raw/direct/srtmgl1/*.SRTMGL1.hgt.zip       1-arcsec elevation tiles
   data/processed/soil_cell.parquet                SoilGrids 0-5/5-15/15-30 cm at centroids

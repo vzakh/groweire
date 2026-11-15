@@ -5,7 +5,7 @@ random values in plausible Irish ranges. NOT data: every value is invented, and 
 `source: "synthetic"`. risk_grid is produced by running the stub over the synthetic feature rows,
 so the two always agree.
 
-    python -m agrolens_ml.synthetic [--grid ml/pipelines/config/grid_005deg.csv] [--out data/synthetic]
+    python -m agrolens_ml.synthetic [--grid ml/config/grid_005deg.csv] [--out data/synthetic]
 """
 
 from __future__ import annotations
@@ -291,7 +291,7 @@ def make_synthetic_tables(grid_csv: str | Path, out_dir: str | Path, seed: int =
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0])
-    ap.add_argument("--grid", default="ml/pipelines/config/grid_005deg.csv")
+    ap.add_argument("--grid", default="ml/config/grid_005deg.csv")
     ap.add_argument("--out", default="data/synthetic")
     ap.add_argument("--seed", type=int, default=7)
     args = ap.parse_args()

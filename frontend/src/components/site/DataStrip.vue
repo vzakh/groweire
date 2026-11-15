@@ -1,15 +1,15 @@
 <script setup lang="ts">
 /**
- * A titled row of source logos, evenly spaced. Each logo opens a one-line note on what the
- * source is used for. Logo files and their licence status: public/logos/SOURCES.md.
+ * A titled row of data sources, evenly spaced. Each tile shows the source's name and what it
+ * gives us (no official logos: we may not use them). Tapping a tile opens a one-line note on
+ * what the source is used for.
  */
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
 export interface Source {
   name: string
-  logo: string
-  /** optional visual scale for wide wordmarks, 0–1 of the tile height */
-  scale?: number
+  /** what the source gives us, in two or three words */
+  tag: string
   what: string
 }
 
@@ -34,14 +34,8 @@ defineProps<{ title: string; items: Source[] }>()
             class="src"
             :aria-label="`${s.name}: what we use it for`"
           >
-            <span class="src-logo">
-              <img
-                :src="s.logo"
-                alt=""
-                :style="s.scale ? { maxHeight: `${s.scale * 100}%` } : undefined"
-              >
-            </span>
             <span class="src-name">{{ s.name }}</span>
+            <span class="src-tag">{{ s.tag }}</span>
           </PopoverTrigger>
           <PopoverContent
             class="w-72 rounded-2xl border-hairline p-4"
@@ -78,40 +72,45 @@ defineProps<{ title: string; items: Source[] }>()
   list-style: none;
 }
 @media (max-width: 640px) {
-  .strip-list { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 1.25rem; }
+  .strip-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .src {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
-  width: 100%;
-  min-height: 3rem;
-  padding: 0.25rem;
-  border-radius: 14px;
-  cursor: pointer;
-}
-.src-logo {
-  display: flex;
-  align-items: center;
   justify-content: center;
+  gap: 0.35rem;
   width: 100%;
-  height: 4.25rem;
-  transition: transform 0.2s var(--ease-out-expo);
+  height: 100%;
+  min-height: 5.5rem;
+  padding: 0.85rem 0.5rem;
+  border-radius: 14px;
+  border: 1.5px solid var(--color-hairline);
+  background: var(--color-mist);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.18s, background-color 0.18s, transform 0.2s var(--ease-out-expo);
 }
-.src-logo img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+.src:hover,
+.src[data-state='open'] {
+  border-color: var(--color-emerald);
+  background: var(--color-mint);
 }
 .src-name {
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.9375rem;
-  line-height: 1.2;
-  text-align: center;
+  font-size: 1.0625rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   color: var(--color-forest);
+  overflow-wrap: anywhere;
+}
+.src-tag {
+  font-size: 0.875rem;
+  line-height: 1.25;
+  color: var(--color-muted-ink);
 }
 @media (hover: hover) {
-  .src:hover .src-logo { transform: translateY(-3px); }
+  .src:hover { transform: translateY(-2px); }
 }
 </style>

@@ -94,6 +94,18 @@ function backToTop() {
           <p class="mt-4 max-w-[26rem] text-[1rem] leading-relaxed text-white/70">
             Crop-rotation planning for Irish farms, built on NASA Earth observations and Irish agricultural guidance.
           </p>
+          <div class="mt-8">
+            <img
+              src="/brand/space-apps-2026.png"
+              alt="NASA Space Apps Challenge 2026"
+              width="440"
+              height="172"
+              class="h-auto w-[11rem]"
+            >
+            <p class="mt-3 max-w-[26rem] text-[0.9375rem] leading-relaxed text-white/65">
+              Built at NASA Space Apps Challenge 2026, Hack Athlone. Uses openly available NASA data; not endorsed by NASA.
+            </p>
+          </div>
         </div>
 
         <nav

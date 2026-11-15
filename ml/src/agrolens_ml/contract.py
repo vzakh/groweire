@@ -24,7 +24,7 @@ RISK_RULES_VERSION: str = "counted-1"
 STRESS_TYPES: tuple[str, ...] = ("drought", "waterlogging", "heat", "frost", "other")
 
 # Exact NASA POWER daily parameter names (AG community) the backend must request for a live point.
-# Same set as PARAMS in ml/pipelines/download/01_power.py, so training and serving use one input.
+# The pilot POWER download used this same set, so the pilot tables and a live point use one input.
 POWER_DAILY_PARAMETERS: tuple[str, ...] = (
     "T2M",
     "T2M_MAX",

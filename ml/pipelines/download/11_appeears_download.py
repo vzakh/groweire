@@ -1,7 +1,7 @@
 """Poll AppEEARS tasks from 10_appeears_submit.py and download finished bundles.
 
-  python scripts/11_appeears_download.py            # check once, download what's done
-  python scripts/11_appeears_download.py --wait     # keep polling every 10 min until all done
+  python 11_appeears_download.py            # check once, download what's done
+  python 11_appeears_download.py --wait     # keep polling every 10 min until all done
 Files land in data/raw/appeears/<task_name>/ (re-runs skip files already downloaded).
 """
 from __future__ import annotations
