@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import GrowEireLogo from '@/components/brand/GrowEireLogo.vue'
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
+import { SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar'
 import { copy } from '@/copy/en'
 import { hectares } from '@/lib/format'
 import { useFieldStore } from '@/stores/field'
@@ -23,18 +23,17 @@ const label = computed(() => {
 <template>
   <SidebarMenu>
     <SidebarMenuItem>
-      <SidebarMenuButton
-        as-child
-        size="lg"
-        class="h-auto min-h-14 pt-3 hover:bg-white/10 hover:text-white active:bg-white/10 active:text-white"
+      <!--
+        A plain link, not SidebarMenuButton: that one truncates its last child (overflow hidden),
+        which cut off the sprout over the E.
+      -->
+      <RouterLink
+        to="/"
+        class="flex min-h-14 items-center rounded-md px-2 pt-3 pb-1 outline-hidden hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-sidebar-ring"
+        :aria-label="copy.field.home"
       >
-        <RouterLink
-          to="/"
-          :aria-label="copy.field.home"
-        >
-          <GrowEireLogo on-dark />
-        </RouterLink>
-      </SidebarMenuButton>
+        <GrowEireLogo on-dark />
+      </RouterLink>
       <p class="truncate px-2 pb-1 text-sm text-white/85">
         {{ label }}
       </p>
