@@ -174,3 +174,24 @@ def test_place_search_drops_duplicates_and_scotland():
         item("Lisburn", "County Antrim", {"country_code": "gb", "state": "Northern Ireland"}),
     ])
     assert [r["name"] for r in results] == ["Athlone, County Westmeath", "Lisburn, County Antrim"]
+
+
+async def test_no_redis_fails_fast_and_degrades():
+    """REDIS_URL="" (free hosting): the cache and the Nominatim limiter degrade with no wait."""
+    import time  # pylint: disable=import-outside-toplevel
+
+    from clients import nominatim  # pylint: disable=import-outside-toplevel
+    from main import NoRedis  # pylint: disable=import-outside-toplevel
+
+    cache = Cache(NoRedis())  # no Postgres either: a miss, never an error
+    start = time.monotonic()
+    assert await cache.get("k") is None
+    await cache.set("k", {"v": 1}, ttl_s=60)
+    assert await cache.get_or_set("k", 60, _one) == 1
+    assert time.monotonic() - start < 0.5
+    nominatim._local_last_call = 0.0  # pylint: disable=protected-access
+    assert await nominatim.acquire_token(NoRedis()) is True
+
+
+async def _one():
+    return 1

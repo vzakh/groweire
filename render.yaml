@@ -1,0 +1,40 @@
+# Render Blueprint: the GrowÉire API on Render's free plan (see docs/DEPLOY.md).
+# The database is Neon (free, PostGIS); Redis is off (REDIS_URL="" -> Postgres cache).
+services:
+  - type: web
+    name: groweire-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./deploy/docker/api.Dockerfile
+    dockerContext: .
+    # Free plan has no pre-deploy step, so migrations run on start (they are idempotent).
+    dockerCommand: >-
+      sh -c "cd /srv && alembic -c alembic.ini upgrade head && cd /srv/app &&
+      exec uvicorn main:app --host 0.0.0.0 --port 8080 --workers 1
+      --proxy-headers --forwarded-allow-ips='*' --no-server-header"
+    healthCheckPath: /api/v1/health/live
+    autoDeploy: false
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: APP_ENV
+        value: prod
+      - key: DATABASE_URL # Neon connection string (postgresql://…?sslmode=require)
+        sync: false
+      - key: REDIS_URL
+        value: ""
+      - key: ALLOW_STUB_MODEL
+        value: "false"
+      - key: FRONTEND_ORIGIN # the Vercel URL, e.g. https://groweire.vercel.app
+        sync: false
+      - key: DOMAIN # Render's router checks the host; its health checks use an internal one
+        value: "*"
+      - key: ENABLE_DOCS
+        value: "true"
+      - key: REPO_URL
+        value: https://github.com/vzakh/groweire
+      - key: CONTACT_EMAIL # public contact for the Nominatim User-Agent
+        sync: false
+      - key: LOG_LEVEL
+        value: INFO
