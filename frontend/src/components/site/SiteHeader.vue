@@ -8,6 +8,7 @@
  */
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { Mail } from 'lucide-vue-next'
 import GrowEireLogo from '@/components/brand/GrowEireLogo.vue'
 import { useTextScale } from '@/composables/useTextScale'
 
@@ -18,8 +19,9 @@ const links = [
   { to: '/app', label: 'Check my field', ch: '' },
   { to: '/#coverage', label: 'Field insights', ch: 'coverage' },
   { to: '/#solutions', label: 'Compare rotations', ch: 'solutions' },
+  { to: '/#contact', label: 'Contact', ch: 'contact' },
 ]
-const tracked = ['solutions', 'coverage', 'how-it-works'] // in page order
+const tracked = ['solutions', 'coverage', 'how-it-works', 'contact'] // in page order
 
 
 const solid = ref(false)
@@ -32,6 +34,9 @@ function onScroll() {
     const el = document.getElementById(id)
     if (el && el.getBoundingClientRect().top < window.innerHeight * 0.4) cur = id
   }
+  // The contact row is in the footer and never scrolls up that far: at the very bottom, it is current
+  const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4
+  if (atBottom) cur = 'contact'
   current.value = cur
 }
 
@@ -87,6 +92,18 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
         </ol>
       </nav>
       <div style="display:flex;gap:.6rem;align-items:center">
+        <!-- Contact for narrow screens, where the nav links (with "Contact") are hidden -->
+        <a
+          href="/#contact"
+          class="aplus contact-btn"
+          aria-label="Contact"
+          title="Contact"
+        >
+          <Mail
+            class="size-5"
+            aria-hidden="true"
+          />
+        </a>
         <button
           type="button"
           class="aplus"
@@ -188,10 +205,29 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
 }
 .aplus:hover { background: rgba(246, 245, 239, 0.16); }
 .find { white-space: nowrap; }
+.contact-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
 
 @media (max-width: 1060px) {
   .top .wrap { padding: 0 1.25rem; }
   .top nav { display: none; }
+  .contact-btn { display: inline-flex; }
+}
+/* Phones: logo, ✉, A+ and "Find my field" must fit on one row */
+@media (max-width: 480px) {
+  .top .wrap { padding: 0 0.875rem; gap: 0.5rem; }
+  .top .wrap > div { gap: 0.375rem !important; }
+  .wordmark { font-size: 1.3rem; }
+  .aplus { min-width: 2.75rem; min-height: 2.75rem; margin: 0; font-size: 1rem; }
+  .find { padding: 0 0.85rem; }
+}
+/* The very smallest phones: no room for ✉ (the contact row is still at the foot of the page) */
+@media (max-width: 340px) {
+  .contact-btn { display: none !important; }
 }
 @media (max-width: 370px) {
   .top .wrap { gap: 0.5rem; }
@@ -203,8 +239,14 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
 <style>
 /* Unscoped on purpose: keys off the A+ text-size class on <html>.
    Larger text needs more room, so the links collapse earlier and the bar never wraps. */
-@media (max-width: 1360px) { html.text-125 header.top nav { display: none; } }
-@media (max-width: 1640px) { html.text-150 header.top nav { display: none; } }
+@media (max-width: 1360px) {
+  html.text-125 header.top nav { display: none; }
+  html.text-125 header.top .contact-btn { display: inline-flex; }
+}
+@media (max-width: 1640px) {
+  html.text-150 header.top nav { display: none; }
+  html.text-150 header.top .contact-btn { display: inline-flex; }
+}
 /* Small phones at large text: keep the header controls at their 100% size so they fit;
    the rest of the page still scales */
 @media (max-width: 520px) {

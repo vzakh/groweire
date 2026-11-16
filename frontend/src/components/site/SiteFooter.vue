@@ -164,7 +164,9 @@ function backToTop() {
       </div>
 
       <!-- Owner: one quiet line, who runs this copy and how to reach them -->
-      <div class="owner flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-white/12 py-5">
+      <div
+        id="contact"
+        class="owner flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-white/12 py-5">
         <p class="text-[0.9375rem] text-white/75">
           This version is built and maintained by
           <a
@@ -273,6 +275,8 @@ function backToTop() {
     #0b1d17;
   color: #ffffff;
 }
+/* Clear the fixed top bar when the nav's "Contact" link scrolls here */
+.owner { scroll-margin-top: 6rem; }
 .owner-name {
   color: #ffffff;
   font-weight: 700;
