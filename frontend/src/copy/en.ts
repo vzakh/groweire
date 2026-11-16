@@ -58,7 +58,7 @@ export const copy = {
 
   where: {
     searchLabel: 'Town or townland',
-    searchPlaceholder: 'For example Athlone',
+    searchPlaceholder: 'e.g. Athlone',
     searchButton: 'Find',
     searching: 'Searching…',
     noResults: "We couldn't find that place. Tap your field on the map instead.",
@@ -257,6 +257,8 @@ export const copy = {
     sources: { label: 'Data and sources', hint: 'Where the numbers come from, and what we do not know yet.' },
   },
   whatDoesThisMean: 'What does this mean?',
+  startAgain: 'Start again',
+  startAgainLabel: 'Start again: clear the field, the search and the map',
   words: 'Words',
 
   maps: {

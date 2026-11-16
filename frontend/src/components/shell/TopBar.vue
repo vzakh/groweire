@@ -9,6 +9,7 @@ import {
   InfoIcon,
   MapIcon,
   PanelLeftIcon,
+  RotateCcwIcon,
 } from '@lucide/vue'
 import GrowEireLogo from '@/components/brand/GrowEireLogo.vue'
 import {
@@ -31,6 +32,7 @@ import { copy } from '@/copy/en'
 import { STEP_COUNT } from '@/lib/query'
 import { useFlowStore } from '@/stores/flow'
 import TextSizeButton from './TextSizeButton.vue'
+import { useStartAgain } from '@/composables/useStartAgain'
 
 /**
  * Bar above the map. Wide screens: show/hide the steps, where you are, text size, word help.
@@ -41,6 +43,7 @@ defineProps<{ compact?: boolean }>()
 
 const flow = useFlowStore()
 const { state, toggleSidebar } = useSidebar()
+const startAgain = useStartAgain()
 
 /** Buttons on the dark green phone bar: outlined in white, like the sidebar header on desktop. */
 const ON_DARK =
@@ -84,6 +87,15 @@ const here = computed(() =>
     </Breadcrumb>
 
     <div class="ml-auto flex items-center gap-2">
+      <Button
+        variant="outline"
+        size="tap"
+        :aria-label="copy.startAgainLabel"
+        @click="startAgain"
+      >
+        <RotateCcwIcon data-icon="inline-start" />
+        <span class="@max-[44rem]:hidden">{{ copy.startAgain }}</span>
+      </Button>
       <TextSizeButton />
       <Button
         as-child
@@ -142,6 +154,13 @@ const here = computed(() =>
             class="min-w-64"
           >
             <DropdownMenuGroup>
+              <DropdownMenuItem
+                class="min-h-12"
+                @select="startAgain"
+              >
+                <RotateCcwIcon aria-hidden="true" />
+                {{ copy.startAgain }}
+              </DropdownMenuItem>
               <DropdownMenuItem
                 as-child
                 class="min-h-12"
