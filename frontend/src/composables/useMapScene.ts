@@ -1,4 +1,4 @@
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { GeoJSONSource, Map as MapLibreMap, MapMouseEvent, Marker, Popup } from 'maplibre-gl'
 import { copy } from '@/copy/en'
 import { bboxOf } from '@/lib/geo'
@@ -34,11 +34,14 @@ export function useMapScene() {
   /** True while a tap on the map marks the field. */
   const placing = computed(() => !flow.section && flow.step === 1)
 
-  /** The NASA picture layer to show, if any. */
+  /**
+   * The NASA picture layer to have on the map, if any. In step 1 the satellite photo is loaded
+   * even before it is asked for (see `warm`), so the button only has to make it visible.
+   */
   const picture = computed(() => {
     let id: string | null = null
     if (flow.section === 'maps') id = risk.explore.layerId === 'stress_risk' ? null : risk.explore.layerId
-    else if (placing.value && field.satellite) id = 'true_colour'
+    else if (placing.value) id = 'true_colour'
     const layer = id ? catalog.layerById.get(id) : undefined
     if (!layer || layer.kind !== 'gibs_wmts') return null
     const day = (flow.section === 'maps' && risk.explore.date) || layer.time.default
@@ -139,22 +142,72 @@ export function useMapScene() {
   }
 
   // --- NASA picture layer ---------------------------------------------------------------
+  /** True when the person should see the picture (not only have it loaded). */
+  const pictureShown = computed(() =>
+    flow.section === 'maps' ? picture.value !== null : placing.value && field.satellite,
+  )
+
+  /**
+   * NASA's tile server says "do not cache" (no-store), so every tile is a fresh download.
+   * Once the step-1 map has settled, load the photo for the current view at opacity 0;
+   * MapLibre keeps those tiles in memory and the button then shows them at once.
+   * Skipped when the browser asks to save data or the connection is slow.
+   */
+  const warm = ref(false)
+  function mayPreload(): boolean {
+    const c = (navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string; type?: string }
+    }).connection
+    if (!c) return true
+    return !c.saveData && c.type !== 'cellular' && !['slow-2g', '2g', '3g'].includes(c.effectiveType ?? '')
+  }
+  function warmWhenIdle() {
+    const m = ready()
+    if (!m || warm.value || !placing.value || !mayPreload()) return
+    // 'idle' fires only after the next render, so check whether the map has settled already
+    if (m.loaded() && m.areTilesLoaded()) {
+      warm.value = true
+      return
+    }
+    m.once('idle', () => {
+      if (placing.value) warm.value = true
+    })
+  }
+
+  let pictureKey: string | null = null
   function showPicture() {
     const m = ready()
     if (!m) return
-    if (m.getLayer('picture')) m.removeLayer('picture')
-    if (m.getSource('picture')) m.removeSource('picture')
     const wanted = picture.value
-    if (!wanted) return
-    m.addSource('picture', {
-      type: 'raster',
-      tiles: [wanted.tiles],
-      tileSize: 256,
-      maxzoom: wanted.maxzoom,
-      attribution: wanted.attribution,
-    })
-    // Under our own layers, over the basemap
-    m.addLayer({ id: 'picture', type: 'raster', source: 'picture' }, 'risk-fill')
+    // Only rebuild the source when the layer or day changes, so the loaded tiles are kept
+    if (!wanted || wanted.key !== pictureKey || !m.getSource('picture')) {
+      if (m.getLayer('picture')) m.removeLayer('picture')
+      if (m.getSource('picture')) m.removeSource('picture')
+      pictureKey = null
+      if (!wanted) return
+      m.addSource('picture', {
+        type: 'raster',
+        tiles: [wanted.tiles],
+        tileSize: 256,
+        maxzoom: wanted.maxzoom,
+        attribution: wanted.attribution,
+      })
+      // Under our own layers, over the basemap
+      m.addLayer(
+        {
+          id: 'picture',
+          type: 'raster',
+          source: 'picture',
+          paint: { 'raster-opacity': 0, 'raster-opacity-transition': { duration: 200, delay: 0 } },
+        },
+        'risk-fill',
+      )
+      pictureKey = wanted.key
+    }
+    const shown = pictureShown.value
+    // Hidden layers ('none') load nothing; a warm one loads at opacity 0
+    m.setLayoutProperty('picture', 'visibility', shown || warm.value ? 'visible' : 'none')
+    m.setPaintProperty('picture', 'raster-opacity', shown ? 1 : 0)
   }
 
   // --- the field ------------------------------------------------------------------------
@@ -287,7 +340,8 @@ export function useMapScene() {
   })
 
   watch(() => risk.view, showRisk, { deep: true })
-  watch(() => picture.value?.key, showPicture)
+  watch([() => picture.value?.key, pictureShown, warm], showPicture)
+  watch([placing, styleVersion], warmWhenIdle, { immediate: true })
   watch([outline, placing], showField)
   watch([() => outline.value?.field_id, wide, () => flow.section], () => {
     if (outline.value && flow.section !== 'maps') zoomToField()
