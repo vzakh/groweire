@@ -25,8 +25,8 @@ const flow = useFlowStore()
       v-if="!field.satellite"
       src="/img/map-switch-satellite.jpg"
       alt=""
-      width="160"
-      height="160"
+      width="288"
+      height="288"
     >
     <!-- A drawn street-map tile: fields, a river, roads (the basemap is vector, so no image) -->
     <svg
@@ -79,12 +79,13 @@ const flow = useFlowStore()
 
 <style scoped>
 .map-switch {
-  width: 4.5rem;
-  height: 4.5rem;
+  /* big enough to see what the other view looks like; smaller on phones, where the map is short */
+  width: 9rem;
+  height: 9rem;
   padding: 0;
   overflow: hidden;
-  border: 2px solid #ffffff;
-  border-radius: 0.6rem;
+  border: 3px solid #ffffff;
+  border-radius: 0.75rem;
   background: #ffffff;
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
   cursor: pointer;
@@ -99,13 +100,17 @@ const flow = useFlowStore()
 .map-switch__label {
   position: absolute;
   inset: auto 0 0;
-  padding: 0.85rem 0.25rem 0.25rem;
+  padding: 1.5rem 0.5rem 0.5rem;
   background: linear-gradient(transparent, rgb(0 0 0 / 0.65));
   color: #ffffff;
-  font-size: 0.8125rem;
+  font-size: 1.0625rem;
   font-weight: 700;
   line-height: 1;
   text-align: center;
+}
+@media (max-width: 640px) {
+  .map-switch { width: 6.5rem; height: 6.5rem; }
+  .map-switch__label { padding: 1.1rem 0.4rem 0.4rem; font-size: 0.9375rem; }
 }
 .map-switch:hover { box-shadow: 0 3px 12px rgb(0 0 0 / 0.45); }
 .map-switch:focus-visible {
