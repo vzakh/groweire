@@ -29,7 +29,7 @@ const label = computed(() => {
       -->
       <RouterLink
         to="/"
-        class="flex min-h-14 items-center rounded-md px-2 pt-3 pb-1 outline-hidden hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-sidebar-ring"
+        class="flex w-fit min-h-14 items-center rounded-md px-2 pt-3 pb-1 outline-hidden hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-sidebar-ring"
         :aria-label="copy.field.home"
       >
         <GrowEireLogo on-dark />
