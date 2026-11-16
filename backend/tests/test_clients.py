@@ -155,3 +155,22 @@ async def test_postgres_cache_respects_ttl(pg_engine):
     assert await cache.get("k:ttl") is None
     with pg_engine.begin() as c:
         c.execute(text("TRUNCATE api_cache"))
+
+
+def test_place_search_drops_duplicates_and_scotland():
+    from clients.nominatim import _Item, tidy
+
+    def item(name, county, extra):
+        return _Item.model_validate(
+            {"display_name": f"{name}, {county}", "lat": "53.4", "lon": "-7.9", "name": name,
+             "addresstype": "town", "address": {"county": county, **extra}}
+        )
+
+    ie = {"country_code": "ie"}
+    results = tidy([
+        item("Athlone", "County Westmeath", ie),
+        item("Athlone", "County Westmeath", ie),  # the municipal district, same name
+        item("Westport", "Argyll and Bute", {"country_code": "gb", "state": "Scotland"}),
+        item("Lisburn", "County Antrim", {"country_code": "gb", "state": "Northern Ireland"}),
+    ])
+    assert [r["name"] for r in results] == ["Athlone, County Westmeath", "Lisburn, County Antrim"]

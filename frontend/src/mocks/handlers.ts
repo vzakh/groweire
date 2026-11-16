@@ -33,19 +33,74 @@ function reply(name: string) {
 }
 
 const API = '/api/v1'
+
+/**
+ * Live place search for mock mode, with the same request and result shape as the backend
+ * (backend/app/clients/nominatim.py): island of Ireland only, up to 5 places. Nominatim's usage
+ * policy allows this from a browser at this volume (one search per button press, no autocomplete).
+ * Any failure gives no results, and the app then says "tap the map instead".
+ */
+interface NominatimItem {
+  display_name: string
+  lat: string
+  lon: string
+  boundingbox?: string[]
+  name?: string
+  type?: string
+  addresstype?: string
+  address?: Record<string, string>
+}
+
+async function nominatim(q: string) {
+  const params = new URLSearchParams({
+    q,
+    format: 'jsonv2',
+    countrycodes: 'ie,gb',
+    viewbox: '-10.7,55.5,-5.4,51.3',
+    bounded: '1',
+    limit: '10',
+    addressdetails: '1',
+  })
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?${params}`)
+    if (!response.ok) return []
+    const items = (await response.json()) as NominatimItem[]
+    // Same tidying as the backend: island of Ireland only (of the UK, Northern Ireland), one per name
+    const seen = new Set<string>()
+    return items
+      .filter((item) => item.address?.country_code !== 'gb' || item.address?.state === 'Northern Ireland')
+      .map((item) => {
+      const name = item.name || item.display_name.split(',')[0]!.trim()
+      const county = item.address?.county ?? item.address?.state_district
+      const box = item.boundingbox?.map(Number)
+      return {
+        name: county && county !== name ? `${name}, ${county}` : name,
+        lon: Math.round(Number(item.lon) * 1e5) / 1e5,
+        lat: Math.round(Number(item.lat) * 1e5) / 1e5,
+        kind: item.addresstype || item.type || 'place',
+        // Nominatim: south, north, west, east -> ours: west, south, east, north
+        bbox: box && box.length === 4 ? [box[2], box[0], box[3], box[1]] : null,
+      }
+    })
+      .filter((place) => !seen.has(place.name) && Boolean(seen.add(place.name)))
+      .slice(0, 5)
+  } catch {
+    return []
+  }
+}
 const PILOT_FIELDS = ['f_00000001', 'f_00000002']
 const NON_PILOT_FIELD = 'f_00000003'
 
 export const handlers = [
   http.get(`${API}/health/ready`, () => reply('health_ready')),
 
-  http.get(`${API}/places`, ({ request }) => {
+  http.get(`${API}/places`, async ({ request }) => {
     const q = (new URL(request.url).searchParams.get('q') ?? '').trim().toLowerCase()
     if (q === 'bagenalstwn') return reply('places_fallback')
     if (q.includes('bagenal')) return reply('places')
-    // Any other search: the same shape with no results
+    // Any other search: ask OpenStreetMap live, like the backend (clients/nominatim.py)
     const { attribution, source } = fixtures.places ?? {}
-    return HttpResponse.json({ results: [], attribution, source })
+    return HttpResponse.json({ results: await nominatim(q), attribution, source })
   }),
 
   http.post(`${API}/fields`, async ({ request }) => {

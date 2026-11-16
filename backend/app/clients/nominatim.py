@@ -79,6 +79,28 @@ def _to_result(item: _Item) -> dict:
     return out
 
 
+def _on_island(item: _Item) -> bool:
+    """The viewbox also covers south-west Scotland; of the UK keep only Northern Ireland."""
+    address = item.address or {}
+    return address.get("country_code") != "gb" or address.get("state") == "Northern Ireland"
+
+
+def tidy(items: list[_Item]) -> list[dict]:
+    """Places on the island of Ireland, one per name (OSM often returns a town and its
+    electoral or municipal districts under the same name), best match first, at most 5."""
+    out: list[dict] = []
+    seen: set[str] = set()
+    for item in items:
+        if not _on_island(item):
+            continue
+        result = _to_result(item)
+        if result["name"] in seen:
+            continue
+        seen.add(result["name"])
+        out.append(result)
+    return out[:5]
+
+
 async def search(http: httpx.AsyncClient, q: str) -> list[dict]:
     """Up to 5 places for `q`. The caller must hold a token. Raises UpstreamError."""
     try:
@@ -90,7 +112,7 @@ async def search(http: httpx.AsyncClient, q: str) -> list[dict]:
                 "countrycodes": "ie,gb",
                 "viewbox": VIEWBOX,
                 "bounded": 1,
-                "limit": 5,
+                "limit": 10,  # room for the duplicates and Scottish places that tidy() drops
                 "addressdetails": 1,
             },
             timeout=TIMEOUT,
@@ -101,4 +123,4 @@ async def search(http: httpx.AsyncClient, q: str) -> list[dict]:
         logger.warning("external_api_error source=nominatim error={}", type(exc).__name__)
         EXTERNAL_ERRORS.labels(source="nominatim").inc()
         raise UpstreamError("nominatim_unavailable", str(exc)) from exc
-    return [_to_result(item) for item in items[:5]]
+    return tidy(items)
