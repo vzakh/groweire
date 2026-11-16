@@ -16,7 +16,7 @@ const flow = useFlowStore()
   <button
     v-if="flow.section !== 'maps'"
     type="button"
-    class="map-switch absolute right-3 bottom-10 z-10"
+    class="map-switch absolute right-3 bottom-3 z-10"
     :aria-label="field.satellite ? copy.map.toMapLabel : copy.map.toSatelliteLabel"
     :aria-pressed="field.satellite"
     @click="field.satellite = !field.satellite"
@@ -108,9 +108,9 @@ const flow = useFlowStore()
   line-height: 1;
   text-align: center;
 }
-/* Phones: the map is short, so keep the tile small and in the corner (credits are an (i) there) */
+/* Phones: the map is short, so keep the tile small and in the corner */
 @media (max-width: 640px) {
-  .map-switch { width: 4.25rem; height: 4.25rem; right: 0.5rem; bottom: 2.25rem; border-width: 2px; border-radius: 0.6rem; }
+  .map-switch { width: 4.25rem; height: 4.25rem; right: 0.5rem; bottom: 0.5rem; border-width: 2px; border-radius: 0.6rem; }
   .map-switch__label { padding: 0.9rem 0.2rem 0.25rem; font-size: 0.8125rem; }
 }
 .map-switch:hover { box-shadow: 0 3px 12px rgb(0 0 0 / 0.45); }

@@ -11,6 +11,9 @@ const FALLBACK_BASEMAP = 'https://demotiles.maplibre.org/style.json'
 /** The island of Ireland, west / south / east / north. The map opens fitted to it on any screen. */
 export const IRELAND: [number, number, number, number] = [-10.7, 51.3, -5.3, 55.5]
 
+/** How long the map credits stay open before folding into the (i) button. */
+const CREDITS_SHOWN_MS = 6000
+
 type MapStatus = 'idle' | 'loading' | 'ready' | 'error'
 
 type MapLibre = typeof import('maplibre-gl')
@@ -53,7 +56,7 @@ async function start(): Promise<void> {
       import('maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'),
       import('maplibre-gl/dist/maplibre-gl.css'),
     ])
-    const { Map, NavigationControl, setWorkerUrl } = module
+    const { AttributionControl, Map, NavigationControl, setWorkerUrl } = module
     setWorkerUrl(workerUrl)
     lib.value = module
     const instance = new Map({
@@ -61,15 +64,19 @@ async function start(): Promise<void> {
       style: BASEMAP,
       bounds: IRELAND,
       fitBoundsOptions: { padding: 24 },
-      // MapLibre's default: the full credits line on wide maps, an (i) button on maps ≤ 640 px
-      attributionControl: {},
+      attributionControl: false, // added below, bottom-left and compact
     })
-    // The (i) box starts open and covers the bottom of a short phone map (the south of Ireland).
-    // Start it closed; one tap on (i) opens it.
+    // Map credits (OpenStreetMap, OpenFreeMap, NASA): an (i) button in the bottom-left corner.
+    // The OSMF attribution guideline allows a collapsed (i) only if the credits are first shown
+    // without any action, so they open on load and fold into the (i) after a few seconds, or as
+    // soon as the person drags the map (MapLibre's own behaviour). Tapping (i) shows them again.
+    instance.addControl(new AttributionControl({ compact: true }), 'bottom-left')
     instance.once('load', () => {
-      const credits = getContainer().querySelector('.maplibregl-ctrl-attrib.maplibregl-compact')
-      credits?.classList.remove('maplibregl-compact-show')
-      credits?.removeAttribute('open')
+      setTimeout(() => {
+        const credits = getContainer().querySelector('.maplibregl-ctrl-attrib.maplibregl-compact')
+        credits?.classList.remove('maplibregl-compact-show')
+        credits?.removeAttribute('open')
+      }, CREDITS_SHOWN_MS)
     })
     instance.on('movestart', (event) => {
       if (event.originalEvent) holdingIreland = false // the person dragged or zoomed
