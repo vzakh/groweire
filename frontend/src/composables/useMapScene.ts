@@ -7,7 +7,7 @@ import { useCatalogStore } from '@/stores/catalog'
 import { useFieldStore } from '@/stores/field'
 import { useFlowStore } from '@/stores/flow'
 import { useRiskStore } from '@/stores/risk'
-import { useMap } from './useMap'
+import { IRELAND, useMap } from './useMap'
 
 /**
  * What the one map shows and does, decided by where the person is:
@@ -312,6 +312,13 @@ export function useMapScene() {
     m.getCanvas().style.cursor = active ? 'crosshair' : ''
   }
 
+  /** Back to the whole island: where a new field starts. */
+  function zoomToIreland() {
+    const m = ready()
+    if (!m) return
+    m.fitBounds([[IRELAND[0], IRELAND[1]], [IRELAND[2], IRELAND[3]]], { padding: 24, duration: 900 })
+  }
+
   function zoomToPlace() {
     const m = ready()
     const target = field.place
@@ -383,4 +390,14 @@ export function useMapScene() {
   })
   watch([placing, () => field.preview, () => field.corners, () => field.point, () => field.drawing], showPlacement)
   watch(() => field.place, zoomToPlace)
+  // "Start a new field" leaves the field: show all of Ireland again, not the old field
+  watch(
+    () => flow.fieldId,
+    (id, previous) => {
+      if (!id && previous && flow.section !== 'maps') {
+        field.clearPlacement()
+        zoomToIreland()
+      }
+    },
+  )
 }

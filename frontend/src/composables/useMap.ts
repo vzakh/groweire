@@ -9,7 +9,7 @@ import type { Map as MapLibreMap } from 'maplibre-gl'
 const BASEMAP = 'https://tiles.openfreemap.org/styles/liberty'
 const FALLBACK_BASEMAP = 'https://demotiles.maplibre.org/style.json'
 /** The island of Ireland, west / south / east / north. The map opens fitted to it on any screen. */
-const IRELAND: [number, number, number, number] = [-10.7, 51.3, -5.3, 55.5]
+export const IRELAND: [number, number, number, number] = [-10.7, 51.3, -5.3, 55.5]
 
 type MapStatus = 'idle' | 'loading' | 'ready' | 'error'
 
