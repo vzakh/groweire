@@ -5,6 +5,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 API_PREFIX = "/api/v1"
@@ -28,6 +29,18 @@ class Settings(BaseSettings):
     enable_docs: bool = True
     repo_url: str = "https://example.org/agrolens"
     contact_email: str = "change-me@example.org"
+
+    @field_validator("database_url")
+    @classmethod
+    def _use_psycopg2(cls, url: str) -> str:
+        """Accept a hosting provider's plain URL (Neon: `postgresql://…?sslmode=require`).
+
+        Without a driver name SQLAlchemy picks its own default driver; this app ships psycopg2.
+        """
+        for plain in ("postgresql://", "postgres://"):
+            if url.startswith(plain):
+                return "postgresql+psycopg2://" + url[len(plain):]
+        return url
 
     @property
     def is_prod(self) -> bool:

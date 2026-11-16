@@ -40,6 +40,18 @@ class NoRedis:
         return None
 
 
+def user_agent(version: str, repo_url: str, contact_email: str) -> str:
+    """Identifying User-Agent for Nominatim and the other public APIs.
+
+    Nominatim answers 403 to a placeholder contact (example.org), so an unset email is left out
+    and the repository address alone identifies the app.
+    """
+    contact = contact_email.strip()
+    if contact and "@" in contact and not contact.lower().endswith(("example.org", "example.com")):
+        return f"AgroLens/{version} (+{repo_url}; {contact})"
+    return f"AgroLens/{version} (+{repo_url})"
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     s = get_settings()
@@ -57,7 +69,7 @@ async def lifespan(app: FastAPI):
     app.state.http = httpx.AsyncClient(
         timeout=httpx.Timeout(20, connect=5),
         # Nominatim requires a custom, identifying User-Agent (D20).
-        headers={"User-Agent": f"AgroLens/{s.version} (+{s.repo_url}; {s.contact_email})"},
+        headers={"User-Agent": user_agent(s.version, s.repo_url, s.contact_email)},
     )
     app.state.catalog = load_catalog()  # raises on unsourced numbers
     check_codes(app.state.catalog)
