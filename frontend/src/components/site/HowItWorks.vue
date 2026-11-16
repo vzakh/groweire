@@ -73,17 +73,19 @@ const providers: Source[] = [
                 <span class="device-url">groweire.ie/app</span>
               </div>
               <div class="device-screen">
-                <img
+                <!--
+                  A background picture, not an <img>: browsers have nothing to drag, save or select.
+                  role="img" + aria-label keep it described for screen readers.
+                -->
+                <div
                   v-if="HOW_IT_WORKS_SCREENSHOT"
-                  :src="HOW_IT_WORKS_SCREENSHOT"
-                  :alt="HOW_IT_WORKS_SCREENSHOT_ALT"
-                  width="1600"
-                  height="900"
-                  loading="lazy"
-                  decoding="async"
-                  draggable="false"
-                  class="screenshot size-full object-cover"
-                >
+                  class="screenshot"
+                  role="img"
+                  :aria-label="HOW_IT_WORKS_SCREENSHOT_ALT"
+                  :style="{ backgroundImage: `url(${HOW_IT_WORKS_SCREENSHOT})` }"
+                  @dragstart.prevent
+                  @contextmenu.prevent
+                />
                 <div
                   v-else
                   class="placeholder"
@@ -236,6 +238,10 @@ const providers: Source[] = [
 }
 /* A picture of the app, not the app: no clicks, drags, selection or long-press menu on it */
 .screenshot {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
