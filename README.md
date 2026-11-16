@@ -89,7 +89,9 @@ flowchart LR
 
 ## 🚀 Live demo
 
-**GrowÉire is live at [groweire.vercel.app](https://groweire.vercel.app/).** Search a town, mark your field, or press **Explore an example farm** for a ready-made farm near Athlone.
+GrowÉire is live at [groweire.vercel.app](https://groweire.vercel.app/).
+
+Search a town, mark your field, or press Explore an example farm.
 
 ## 👥 Team KIPISH
 
