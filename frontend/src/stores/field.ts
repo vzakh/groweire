@@ -135,6 +135,15 @@ export const useFieldStore = defineStore('field', () => {
     )
   }
 
+  /** Back to the landing page: the next visit to the app starts from nothing. */
+  function resetAll() {
+    clearSearch()
+    clearPlacement()
+    areaHa.value = DEFAULT_AREA_HA
+    satellite.value = false
+    forget()
+  }
+
   function forget() {
     field.reset()
     conditions.reset()
@@ -148,6 +157,7 @@ export const useFieldStore = defineStore('field', () => {
     place,
     search,
     clearSearch,
+    resetAll,
     choosePlace,
     point,
     areaHa,

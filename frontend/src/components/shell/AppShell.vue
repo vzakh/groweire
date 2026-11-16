@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { Maximize2Icon, Minimize2Icon } from '@lucide/vue'
 import MapCanvas from '@/components/map/MapCanvas.vue'
 import MapLegend from '@/components/map/MapLegend.vue'
@@ -7,6 +8,7 @@ import MapTypeSwitch from '@/components/map/MapTypeSwitch.vue'
 import { Button } from '@/components/ui/button'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { useLayout } from '@/composables/useLayout'
+import { useMap } from '@/composables/useMap'
 import { useMapScene } from '@/composables/useMapScene'
 import { initTextScale } from '@/composables/useTextScale'
 import { copy } from '@/copy/en'
@@ -37,6 +39,15 @@ const catalog = useCatalogStore()
 // The saved text size applies here too, so the app does not depend on the landing page's start-up.
 initTextScale()
 useMapScene()
+
+// Leaving for the landing page starts the app afresh next time: no pin, corners, search or
+// field, satellite off, and the map back on the whole of Ireland (the map itself is kept).
+const { showIreland } = useMap()
+onBeforeRouteLeave((to) => {
+  if (to.name !== 'home') return
+  field.resetAll()
+  showIreland(0)
+})
 
 onMounted(() => {
   void checkContract()
