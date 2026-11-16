@@ -48,7 +48,7 @@ const cards = [
           <span class="text-emerald">made simple.</span>
         </h2>
         <p class="mx-auto mt-5 max-w-[44rem] text-[1.1875rem] text-muted-ink">
-          From individual tillage fields in Carlow and Westmeath to advisory visits and regional catchment monitoring—built on 45 years of NASA Earth observations.
+          From individual tillage fields in Carlow and Westmeath to advisory visits and regional catchment monitoring — built on 45 years of NASA Earth observations.
         </p>
       </header>
 
