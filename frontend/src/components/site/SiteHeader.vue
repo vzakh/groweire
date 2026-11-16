@@ -8,6 +8,7 @@
  */
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import GrowEireLogo from '@/components/brand/GrowEireLogo.vue'
 import { useTextScale } from '@/composables/useTextScale'
 
 const { cycle, label } = useTextScale()
@@ -63,24 +64,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
         to="/"
         aria-label="GrowÉire home"
       >
-        <span aria-hidden="true">Grow</span><span
-          class="e"
-          aria-hidden="true"
-        >E<svg
-          viewBox="0 0 40 16"
-          preserveAspectRatio="none"
-        ><path
-          d="M6 15 C14 10 24 5 34 3"
-          stroke="#C8F36B"
-          stroke-width="4"
-          fill="none"
-          stroke-linecap="round"
-        /><circle
-          cx="35"
-          cy="3"
-          r="3.2"
-          fill="#C8F36B"
-        /></svg></span><span aria-hidden="true">ire</span>
+        <GrowEireLogo on-dark />
       </RouterLink>
       <nav aria-label="Main">
         <ol class="navl">
@@ -163,15 +147,8 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
   text-decoration: none;
   color: inherit;
 }
-.wordmark .e { position: relative; }
-.wordmark .e svg {
-  position: absolute;
-  left: 10%;
-  top: -0.36em;
-  width: 95%;
-  height: 0.4em;
-  overflow: visible;
-}
+/* the header sets the size (smaller at big text sizes on phones) */
+.wordmark :deep(.ge-logo) { font-size: inherit; }
 
 /* Links (v7.3) */
 .navl {
