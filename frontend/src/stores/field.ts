@@ -69,6 +69,13 @@ export const useFieldStore = defineStore('field', () => {
   function addCorner(corner: LngLat) {
     if (corners.value.length < MAX_CORNERS) corners.value = [...corners.value, corner]
   }
+  /** A corner was dragged to a new spot on the map. */
+  function moveCorner(index: number, corner: LngLat) {
+    if (index < 0 || index >= corners.value.length) return
+    const next = [...corners.value]
+    next[index] = corner
+    corners.value = next
+  }
   function undoCorner() {
     corners.value = corners.value.slice(0, -1)
   }
@@ -152,6 +159,7 @@ export const useFieldStore = defineStore('field', () => {
     usePlace,
     startDrawing,
     addCorner,
+    moveCorner,
     undoCorner,
     stopDrawing,
     clearPlacement,

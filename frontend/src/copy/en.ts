@@ -73,7 +73,7 @@ export const copy = {
     usePlace: 'Use the place I searched',
     usePlaceHint: 'This marks a 10 ha field at that place.',
     draw: "Draw my field's edges instead",
-    drawHint: 'Tap each corner of your field on the map.',
+    drawHint: 'Tap each corner of your field on the map. Drag a corner to move it.',
     drawCorners: (n: number) => (n === 1 ? '1 corner' : `${n} corners`),
     drawArea: (ha: string) => `About ${ha} ha`,
     drawUndo: 'Undo last corner',
@@ -307,7 +307,8 @@ export const copy = {
     toMap: 'Map',
     toSatelliteLabel: 'Show the NASA satellite photo',
     toMapLabel: 'Show the plain map',
-    marker: 'Your field',
+    marker: 'Your field. Drag to move it.',
+    corner: (n: number) => `Corner ${n} of your field. Drag to move it.`,
   },
 
   risk: {

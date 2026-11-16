@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import type { GeoJSONSource, Map as MapLibreMap, MapMouseEvent, Marker, Popup } from 'maplibre-gl'
 import { copy } from '@/copy/en'
-import { bboxOf } from '@/lib/geo'
+import { bboxOf, type LngLat } from '@/lib/geo'
 import { RISK_LEVELS, STRESS_TYPES, type RiskLevel, type StressType } from '@/lib/risk'
 import { useCatalogStore } from '@/stores/catalog'
 import { useFieldStore } from '@/stores/field'
@@ -286,27 +286,75 @@ export function useMapScene() {
   }
 
   // --- placing (step 1) -----------------------------------------------------------------
+  /** One draggable handle per drawn corner (MapLibre markers: mouse and touch both drag). */
+  const cornerHandles: Marker[] = []
+  let dragging: number | null = null
+
+  function cornerHandle(index: number): Marker {
+    const el = document.createElement('div')
+    el.className = 'field-corner'
+    Object.assign(el.style, {
+      width: '20px',
+      height: '20px',
+      borderRadius: '50%',
+      background: '#ffffff',
+      border: `3px solid ${FOREST}`,
+      boxShadow: '0 1px 4px rgb(0 0 0 / 0.35)',
+      cursor: 'grab',
+      touchAction: 'none',
+    })
+    const handle = new lib.value!.Marker({ element: el, draggable: true })
+    // Move the outline while dragging, not only at the end
+    handle.on('dragstart', () => (dragging = index))
+    handle.on('dragend', () => (dragging = null))
+    handle.on('drag', () => {
+      const { lng, lat } = handle.getLngLat()
+      field.moveCorner(index, [lng, lat])
+    })
+    return handle
+  }
+
+  function showCorners(m: MapLibreMap, corners: LngLat[]) {
+    while (cornerHandles.length > corners.length) cornerHandles.pop()!.remove()
+    corners.forEach((corner, i) => {
+      const handle = (cornerHandles[i] ??= cornerHandle(i))
+      // Do not fight the drag in progress: the store already has this position
+      if (dragging !== i) handle.setLngLat(corner)
+      handle.getElement().setAttribute('aria-label', copy.map.corner(i + 1))
+      // Add once: adding again would take it off the map and end a drag in progress
+      if (!handle.getElement().isConnected) handle.addTo(m)
+    })
+  }
+
   function showPlacement() {
     const m = ready()
     if (!m) return
     const active = placing.value
     setData('preview', active && field.preview ? { type: 'Feature', geometry: field.preview, properties: {} } : EMPTY)
-    setData(
-      'corners',
-      active && field.drawing
-        ? {
-            type: 'FeatureCollection',
-            features: field.corners.map((corner) => ({
-              type: 'Feature',
-              geometry: { type: 'Point', coordinates: corner },
-              properties: {},
-            })),
-          }
-        : EMPTY,
-    )
+    // Corners are draggable markers when MapLibre has loaded; the circle layer is the fallback
+    const drawn = active && field.drawing ? field.corners : []
+    if (lib.value) {
+      setData('corners', EMPTY)
+      showCorners(m, drawn)
+    } else {
+      setData('corners', {
+        type: 'FeatureCollection',
+        features: drawn.map((corner) => ({
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: corner },
+          properties: {},
+        })),
+      })
+    }
     const at = active && !field.drawing ? field.point : null
     if (at && lib.value) {
-      marker ??= new lib.value.Marker({ color: FOREST, scale: 1.4 })
+      if (!marker) {
+        marker = new lib.value.Marker({ color: FOREST, scale: 1.4, draggable: true })
+        marker.on('dragend', () => {
+          const { lng, lat } = marker!.getLngLat()
+          field.setPoint([lng, lat])
+        })
+      }
       marker.setLngLat(at).addTo(m)
       marker.getElement().setAttribute('aria-label', copy.map.marker)
     } else {
@@ -338,6 +386,8 @@ export function useMapScene() {
     const m = ready()
     if (!m) return
     if (placing.value) {
+      // A tap or drag on a corner or the pin moves it; it must not also add a corner
+      if ((event.originalEvent.target as HTMLElement | null)?.closest('.maplibregl-marker')) return
       const at: [number, number] = [event.lngLat.lng, event.lngLat.lat]
       if (field.drawing) field.addCorner(at)
       else field.setPoint(at)
