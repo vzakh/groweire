@@ -258,6 +258,10 @@ export const copy = {
   },
   whatDoesThisMean: 'What does this mean?',
   startAgain: 'Start again',
+  waking: {
+    title: 'Waking up the server…',
+    text: 'This free demo sleeps when nobody has used it for a while. It takes up to a minute, only the first time.',
+  },
   startAgainLabel: 'Start again: clear the field, the search and the map',
   words: 'Words',
 

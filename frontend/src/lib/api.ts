@@ -21,8 +21,44 @@ const withRequestId: Middleware = {
   },
 }
 
+/**
+ * True while an API request has been waiting longer than WAKE_AFTER_MS. On free hosting the API
+ * sleeps after 15 minutes without visitors and the first request can take up to a minute, so the
+ * app shows a "waking up" note instead of looking broken.
+ */
+export const serverWaking = ref(false)
+const WAKE_AFTER_MS = 4000
+let inFlight = 0
+let wakeTimer: ReturnType<typeof setTimeout> | undefined
+
+async function trackedFetch(input: Request): Promise<Response> {
+  inFlight++
+  wakeTimer ??= setTimeout(() => {
+    if (inFlight > 0) serverWaking.value = true
+  }, WAKE_AFTER_MS)
+  try {
+    return await fetch(input)
+  } finally {
+    inFlight--
+    if (inFlight === 0) {
+      clearTimeout(wakeTimer)
+      wakeTimer = undefined
+      serverWaking.value = false
+    }
+  }
+}
+
+/**
+ * Start waking the API in the background (landing page): by the time the visitor opens the app,
+ * it is usually awake. Fire and forget; errors do not matter here.
+ */
+export function wakeServer(): void {
+  if (import.meta.env.VITE_MOCK === '1') return
+  void fetch('/api/v1/health/live', { cache: 'no-store' }).catch(() => undefined)
+}
+
 /** Typed client. Paths already include `/api/v1`, so the base is the page's own origin. */
-export const api = createClient<paths>({ baseUrl: '' })
+export const api = createClient<paths>({ baseUrl: '', fetch: trackedFetch })
 api.use(withRequestId)
 
 export interface FriendlyError {
