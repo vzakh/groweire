@@ -49,8 +49,6 @@ export const copy = {
   field: {
     none: 'No field chosen yet',
     summary: (name: string | null | undefined, ha: string) => `${name ?? 'Your field'} · ${ha} ha`,
-    menuLabel: 'Field menu',
-    startNew: 'Start a new field',
     changeAnswers: 'Change my answers',
     home: 'Go to the GrowÉire home page',
     loading: 'Finding your field…',
