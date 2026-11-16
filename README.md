@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="https://groweire.vercel.app/"><img src="https://img.shields.io/badge/Live%20demo-groweire.vercel.app-0d3b26?style=for-the-badge&logo=vercel&logoColor=white" alt="Live demo: groweire.vercel.app"></a>
+  <a href="https://groweire.vercel.app/"><img src="https://img.shields.io/badge/Live%20demo-groweire.vercel.app-0d3b26?style=for-the-badge" alt="Live demo: groweire.vercel.app"></a>
 </p>
 
 <p align="center">
@@ -90,15 +90,6 @@ flowchart LR
 ## 🚀 Live demo
 
 **GrowÉire is live at [groweire.vercel.app](https://groweire.vercel.app/).** Search a town, mark your field, or press **Explore an example farm** for a ready-made farm near Athlone.
-
-> [!TIP]
-> It runs on free hosting, so the server sleeps when nobody has used it for a while. The first answer can take up to a minute while it wakes up (the app tells you), and after that it's quick.
-
-| Part | Hosted on |
-|---|---|
-| Website | [Vercel](https://vercel.com) |
-| API (FastAPI, Docker) | [Render](https://render.com), Frankfurt |
-| Database (Postgres + PostGIS) | [Neon](https://neon.com), Frankfurt |
 
 ### Run it on your own computer
 
