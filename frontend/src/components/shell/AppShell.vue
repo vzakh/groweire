@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { Maximize2Icon, Minimize2Icon } from '@lucide/vue'
 import MapCanvas from '@/components/map/MapCanvas.vue'
 import MapLegend from '@/components/map/MapLegend.vue'
+import MapTypeSwitch from '@/components/map/MapTypeSwitch.vue'
 import { Button } from '@/components/ui/button'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { useLayout } from '@/composables/useLayout'
@@ -84,6 +85,7 @@ const mapHeight = computed(() => {
         <div class="relative min-h-0 flex-1">
           <MapCanvas />
           <MapLegend />
+          <MapTypeSwitch />
         </div>
       </SidebarInset>
     </template>
@@ -98,6 +100,7 @@ const mapHeight = computed(() => {
         :class="mapHeight"
       >
         <MapCanvas />
+        <MapTypeSwitch />
         <Button
           variant="outline"
           size="tap"

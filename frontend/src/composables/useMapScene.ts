@@ -11,7 +11,8 @@ import { IRELAND, useMap } from './useMap'
 
 /**
  * What the one map shows and does, decided by where the person is:
- *   step 1            tap to mark the field (or its corners); optional satellite photo
+ *   step 1            tap to mark the field (or its corners)
+ *   every step        Map / Satellite switch in the corner (not on More maps, which has its own)
  *   steps 2 and 3     the field outline, with the risk squares faint behind it; taps do nothing
  *   step 4            the field outline and the risk squares for the picked month; tap a square
  *   More maps         any NASA layer, or the risk map for any month and weather type
@@ -46,13 +47,13 @@ export function useMapScene() {
   const placing = computed(() => !flow.section && flow.step === 1)
 
   /**
-   * The NASA picture layer to have on the map, if any. In step 1 the satellite photo is loaded
-   * even before it is asked for (see `warm`), so the button only has to make it visible.
+   * The NASA picture layer to have on the map, if any. Outside "More maps" this is the satellite
+   * photo, loaded even before it is asked for (see `warm`), so the switch only makes it visible.
    */
   const picture = computed(() => {
     let id: string | null = null
     if (flow.section === 'maps') id = risk.explore.layerId === 'stress_risk' ? null : risk.explore.layerId
-    else if (placing.value) id = 'true_colour'
+    else id = 'true_colour'
     const layer = id ? catalog.layerById.get(id) : undefined
     if (!layer || layer.kind !== 'gibs_wmts') return null
     const day = (flow.section === 'maps' && risk.explore.date) || layer.time.default
@@ -156,12 +157,12 @@ export function useMapScene() {
   // --- NASA picture layer ---------------------------------------------------------------
   /** True when the person should see the picture (not only have it loaded). */
   const pictureShown = computed(() =>
-    flow.section === 'maps' ? picture.value !== null : placing.value && field.satellite,
+    flow.section === 'maps' ? picture.value !== null : field.satellite,
   )
 
   /**
    * NASA's tile server says "do not cache" (no-store), so every tile is a fresh download.
-   * Once the step-1 map has settled, load the photo for the current view at opacity 0;
+   * Once the map has settled, load the photo for the current view at opacity 0;
    * MapLibre keeps those tiles in memory and the button then shows them at once.
    * Skipped when the browser asks to save data or the connection is slow.
    */
@@ -175,14 +176,14 @@ export function useMapScene() {
   }
   function warmWhenIdle() {
     const m = ready()
-    if (!m || warm.value || !placing.value || !mayPreload()) return
+    if (!m || warm.value || flow.section === 'maps' || !mayPreload()) return
     // 'idle' fires only after the next render, so check whether the map has settled already
     if (m.loaded() && m.areTilesLoaded()) {
       warm.value = true
       return
     }
     m.once('idle', () => {
-      if (placing.value) warm.value = true
+      if (flow.section !== 'maps') warm.value = true
     })
   }
 
@@ -383,7 +384,7 @@ export function useMapScene() {
 
   watch(() => risk.view, showRisk, { deep: true })
   watch([() => picture.value?.key, pictureShown, warm], showPicture)
-  watch([placing, styleVersion], warmWhenIdle, { immediate: true })
+  watch([() => flow.section, styleVersion], warmWhenIdle, { immediate: true })
   watch([outline, placing], showField)
   watch([() => outline.value?.field_id, wide, () => flow.section], () => {
     if (outline.value && flow.section !== 'maps') zoomToField()

@@ -38,7 +38,7 @@ export const useFieldStore = defineStore('field', () => {
   /** Corners tapped while drawing the field's edges. */
   const corners = shallowRef<LngLat[]>([])
   const drawing = ref(false)
-  /** Show the satellite photo under the map while placing the field. */
+  /** Map / Satellite switch: show the NASA satellite photo under our layers, in every step. */
   const satellite = ref(false)
 
   function setPoint(next: LngLat) {

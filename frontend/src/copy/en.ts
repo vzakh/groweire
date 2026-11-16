@@ -72,8 +72,6 @@ export const copy = {
     sizeOther: 'Other size',
     sizeOtherLabel: 'Size in hectares',
     sizeRange: 'From 0.1 to 2,000 hectares.',
-    satelliteShow: 'Show satellite photo',
-    satelliteHide: 'Hide satellite photo',
     usePlace: 'Use the place I searched',
     usePlaceHint: 'This marks a 10 ha field at that place.',
     draw: "Draw my field's edges instead",
@@ -306,6 +304,11 @@ export const copy = {
     failed: 'The map did not load. Check your connection, then load the page again.',
     bigger: 'Bigger map',
     smaller: 'Smaller map',
+    /** The corner switch shows the OTHER view, like Google Maps: its label names what you get. */
+    toSatellite: 'Satellite',
+    toMap: 'Map',
+    toSatelliteLabel: 'Show the NASA satellite photo',
+    toMapLabel: 'Show the plain map',
     marker: 'Your field',
   },
 

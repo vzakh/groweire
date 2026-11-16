@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { MapPinIcon, PencilLineIcon, SatelliteIcon, SearchIcon, Undo2Icon, XIcon } from '@lucide/vue'
+import { MapPinIcon, PencilLineIcon, SearchIcon, Undo2Icon, XIcon } from '@lucide/vue'
 import ErrorState from '@/components/common/ErrorState.vue'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -304,16 +304,6 @@ onBeforeUnmount(() => flow.setGuard(null))
     </section>
 
     <div class="flex flex-col gap-2">
-      <Button
-        variant="outline"
-        size="tap"
-        class="self-start"
-        :aria-pressed="field.satellite"
-        @click="field.satellite = !field.satellite"
-      >
-        <SatelliteIcon data-icon="inline-start" />
-        {{ field.satellite ? copy.where.satelliteHide : copy.where.satelliteShow }}
-      </Button>
       <p
         v-if="field.satellite && satelliteNote"
         class="text-base text-muted-foreground"
