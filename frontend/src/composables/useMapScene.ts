@@ -19,6 +19,17 @@ import { useMap } from './useMap'
  */
 const EMPTY = { type: 'FeatureCollection', features: [] } as const
 const FOREST = '#122b23'
+/**
+ * Under the satellite photo: NASA Blue Marble Next Generation, a cloud-free picture of the
+ * whole Earth (about 500 m). The sharp HLS photo covers only what the satellite saw on its day,
+ * so without this the land around it would be the plain street map.
+ */
+const PHOTO_BACKDROP = {
+  tiles:
+    'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_NextGeneration/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg',
+  maxzoom: 8,
+}
+const PICTURE_LAYERS = ['picture-base', 'picture'] as const
 
 export function useMapScene() {
   const { map, lib, styleVersion } = useMap()
@@ -46,6 +57,7 @@ export function useMapScene() {
     if (!layer || layer.kind !== 'gibs_wmts') return null
     const day = (flow.section === 'maps' && risk.explore.date) || layer.time.default
     return {
+      id: layer.id,
       key: `${layer.id}|${day}`,
       tiles: layer.url_template.replace('{Time}', day),
       maxzoom: layer.max_zoom ?? 9,
@@ -181,10 +193,30 @@ export function useMapScene() {
     const wanted = picture.value
     // Only rebuild the source when the layer or day changes, so the loaded tiles are kept
     if (!wanted || wanted.key !== pictureKey || !m.getSource('picture')) {
-      if (m.getLayer('picture')) m.removeLayer('picture')
-      if (m.getSource('picture')) m.removeSource('picture')
+      for (const id of PICTURE_LAYERS) {
+        if (m.getLayer(id)) m.removeLayer(id)
+        if (m.getSource(id)) m.removeSource(id)
+      }
       pictureKey = null
       if (!wanted) return
+      if (wanted.id === 'true_colour') {
+        m.addSource('picture-base', {
+          type: 'raster',
+          tiles: [PHOTO_BACKDROP.tiles],
+          tileSize: 256,
+          maxzoom: PHOTO_BACKDROP.maxzoom,
+          attribution: 'NASA Blue Marble',
+        })
+        m.addLayer(
+          {
+            id: 'picture-base',
+            type: 'raster',
+            source: 'picture-base',
+            paint: { 'raster-opacity': 0, 'raster-opacity-transition': { duration: 200, delay: 0 } },
+          },
+          'risk-fill',
+        )
+      }
       m.addSource('picture', {
         type: 'raster',
         tiles: [wanted.tiles],
@@ -206,8 +238,11 @@ export function useMapScene() {
     }
     const shown = pictureShown.value
     // Hidden layers ('none') load nothing; a warm one loads at opacity 0
-    m.setLayoutProperty('picture', 'visibility', shown || warm.value ? 'visible' : 'none')
-    m.setPaintProperty('picture', 'raster-opacity', shown ? 1 : 0)
+    for (const id of PICTURE_LAYERS) {
+      if (!m.getLayer(id)) continue
+      m.setLayoutProperty(id, 'visibility', shown || warm.value ? 'visible' : 'none')
+      m.setPaintProperty(id, 'raster-opacity', shown ? 1 : 0)
+    }
   }
 
   // --- the field ------------------------------------------------------------------------
