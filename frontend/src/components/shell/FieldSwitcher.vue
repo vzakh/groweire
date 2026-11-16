@@ -13,6 +13,12 @@ const flow = useFlowStore()
 const field = useFieldStore()
 
 const label = computed(() => {
+  // On step 1, the field being placed: its size follows the size buttons or the drawn corners
+  if (!flow.section && flow.step === 1 && field.hasPlacement) {
+    const ha = field.hasDrawing ? field.drawnAreaHa : field.areaHa
+    const name = field.place ? `Near ${field.place.name.split(',')[0]}` : null
+    return copy.field.summary(name, hectares(ha))
+  }
   const current = field.field
   return current && current.field_id === flow.fieldId
     ? copy.field.summary(current.name, hectares(current.area_ha))
