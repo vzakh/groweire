@@ -9,12 +9,15 @@ import './style.css'
 import App from './App.vue'
 import { router } from './router'
 import { initTextScale } from './composables/useTextScale'
+import { wakeServer } from './lib/api'
 
 // ?static=1 freezes all motion in its final state (screenshots / Figma capture)
 if (new URLSearchParams(window.location.search).get('static') === '1') {
   document.documentElement.classList.add('is-static')
 }
 initTextScale()
+// Free hosting sleeps when idle: start waking the API while the visitor reads the landing page
+wakeServer()
 
 /**
  * `npm run dev:mock` answers the API from recorded responses, so the app runs without a backend.

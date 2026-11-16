@@ -24,20 +24,52 @@ from services.rotation.catalog import load_catalog
 ROUTERS = (health, places, fields, conditions, predict, crops, rotations, layers)
 
 
+class NoRedis:
+    """Stands in for Redis when REDIS_URL is empty.
+
+    Every call fails at once, so the cache falls back to Postgres and the Nominatim limit to the
+    per-process limiter, the same paths as a Redis outage but with no connect timeout.
+    """
+
+    async def _down(self, *_args, **_kwargs):
+        raise aioredis.ConnectionError("Redis is not configured")
+
+    get = set = ping = _down
+
+    async def aclose(self) -> None:
+        return None
+
+
+def user_agent(version: str, repo_url: str, contact_email: str) -> str:
+    """Identifying User-Agent for Nominatim and the other public APIs.
+
+    Nominatim answers 403 to a placeholder contact (example.org), so an unset email is left out
+    and the repository address alone identifies the app.
+    """
+    contact = contact_email.strip()
+    if contact and "@" in contact and not contact.lower().endswith(("example.org", "example.com")):
+        return f"AgroLens/{version} (+{repo_url}; {contact})"
+    return f"AgroLens/{version} (+{repo_url})"
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     s = get_settings()
     setup_logging(s.log_level, json_logs=s.app_env != "test")
     app.state.engine = make_engine(s.database_url)
     app.state.session_factory = make_session_factory(app.state.engine)
-    app.state.redis = aioredis.from_url(
-        s.redis_url, decode_responses=True, socket_connect_timeout=1, socket_timeout=2
+    app.state.redis = (
+        aioredis.from_url(
+            s.redis_url, decode_responses=True, socket_connect_timeout=1, socket_timeout=2
+        )
+        if s.redis_url
+        else NoRedis()  # REDIS_URL="" (free hosting): use the Postgres cache straight away
     )
     app.state.cache = Cache(app.state.redis, app.state.session_factory)
     app.state.http = httpx.AsyncClient(
         timeout=httpx.Timeout(20, connect=5),
         # Nominatim requires a custom, identifying User-Agent (D20).
-        headers={"User-Agent": f"AgroLens/{s.version} (+{s.repo_url}; {s.contact_email})"},
+        headers={"User-Agent": user_agent(s.version, s.repo_url, s.contact_email)},
     )
     app.state.catalog = load_catalog()  # raises on unsourced numbers
     check_codes(app.state.catalog)

@@ -108,7 +108,10 @@ class RequestContextMiddleware:
 def install_middleware(app: FastAPI, settings: Settings) -> None:
     app.add_middleware(GZipMiddleware, minimum_size=1000)
     if settings.is_prod:
-        app.add_middleware(TrustedHostMiddleware, allowed_hosts=[settings.domain])
+        # DOMAIN may list several hosts ("a.example,b.example") or be "*" on a PaaS whose
+        # router already checks the host (Render health checks use an internal address).
+        hosts = [h.strip() for h in settings.domain.split(",") if h.strip()]
+        app.add_middleware(TrustedHostMiddleware, allowed_hosts=hosts or ["*"])
     else:
         app.add_middleware(
             CORSMiddleware,

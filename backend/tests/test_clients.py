@@ -174,3 +174,43 @@ def test_place_search_drops_duplicates_and_scotland():
         item("Lisburn", "County Antrim", {"country_code": "gb", "state": "Northern Ireland"}),
     ])
     assert [r["name"] for r in results] == ["Athlone, County Westmeath", "Lisburn, County Antrim"]
+
+
+async def test_no_redis_fails_fast_and_degrades():
+    """REDIS_URL="" (free hosting): the cache and the Nominatim limiter degrade with no wait."""
+    import time  # pylint: disable=import-outside-toplevel
+
+    from clients import nominatim  # pylint: disable=import-outside-toplevel
+    from main import NoRedis  # pylint: disable=import-outside-toplevel
+
+    cache = Cache(NoRedis())  # no Postgres either: a miss, never an error
+    start = time.monotonic()
+    assert await cache.get("k") is None
+    await cache.set("k", {"v": 1}, ttl_s=60)
+    assert await cache.get_or_set("k", 60, _one) == 1
+    assert time.monotonic() - start < 0.5
+    nominatim._local_last_call = 0.0  # pylint: disable=protected-access
+    assert await nominatim.acquire_token(NoRedis()) is True
+
+
+async def _one():
+    return 1
+
+
+def test_plain_database_url_uses_psycopg2():
+    from core.config import Settings  # pylint: disable=import-outside-toplevel
+
+    neon = "postgresql://u:p@ep-x.eu-central-1.aws.neon.tech/neondb?sslmode=require"
+    assert Settings(database_url=neon).database_url.startswith("postgresql+psycopg2://u:p@ep-x.")
+    assert Settings(database_url="postgres://u:p@h/db").database_url == "postgresql+psycopg2://u:p@h/db"
+    explicit = "postgresql+psycopg2://a:b@localhost:55432/agrolens"
+    assert Settings(database_url=explicit).database_url == explicit
+
+
+def test_user_agent_leaves_out_a_placeholder_email():
+    from main import user_agent  # pylint: disable=import-outside-toplevel
+
+    repo = "https://github.com/vzakh/groweire"
+    assert user_agent("2.0", repo, "change-me@example.org") == f"AgroLens/2.0 (+{repo})"
+    assert user_agent("2.0", repo, "") == f"AgroLens/2.0 (+{repo})"
+    assert user_agent("2.0", repo, "me@mail.ie") == f"AgroLens/2.0 (+{repo}; me@mail.ie)"
