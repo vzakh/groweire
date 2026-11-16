@@ -1,12 +1,14 @@
 import { computed, ref, watch } from 'vue'
 import type { GeoJSONSource, Map as MapLibreMap, MapMouseEvent, Marker, Popup } from 'maplibre-gl'
 import { copy } from '@/copy/en'
+import { EXAMPLE_ZOOM } from '@/lib/example'
 import { bboxOf, type LngLat } from '@/lib/geo'
 import { RISK_LEVELS, STRESS_TYPES, type RiskLevel, type StressType } from '@/lib/risk'
 import { useCatalogStore } from '@/stores/catalog'
 import { useFieldStore } from '@/stores/field'
 import { useFlowStore } from '@/stores/flow'
 import { useRiskStore } from '@/stores/risk'
+import { router } from '@/router'
 import { useMap } from './useMap'
 
 /**
@@ -281,7 +283,10 @@ export function useMapScene() {
     const box = current && bboxOf((current.geometry as { coordinates?: unknown }).coordinates)
     if (!m || !current || !box) return
     releaseIreland()
-    if (wide.value) m.flyTo({ center: current.centroid, zoom: 9.5, duration: 900 })
+    // The example farm is shown up close on every step, so the farm itself is what you see
+    if (router.currentRoute.value.query.farm === 'sample') {
+      m.fitBounds([[box[0], box[1]], [box[2], box[3]]], { padding: 90, maxZoom: EXAMPLE_ZOOM, duration: 900 })
+    } else if (wide.value) m.flyTo({ center: current.centroid, zoom: 9.5, duration: 900 })
     else m.fitBounds([[box[0], box[1]], [box[2], box[3]]], { padding: 90, maxZoom: 13.5, duration: 900 })
   }
 

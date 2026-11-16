@@ -20,11 +20,15 @@ export const EXAMPLE_FARM = {
   } satisfies Answers,
 }
 
+/** How close the map comes to the example field: the farm itself, not the 50 km risk squares. */
+export const EXAMPLE_ZOOM = 13
+
 /** Where to go once the example field exists: its answer step, answers filled in. */
 export function exampleFarmRoute(fieldId: string): RouteLocationRaw {
   return {
     name: 'field',
     params: { id: fieldId, section: '' },
-    query: { s: '4', ...answersToQuery(EXAMPLE_FARM.answers) },
+    // `farm=sample` stays in the address (the steps keep the query), so the map knows it is the example
+    query: { s: '4', farm: 'sample', ...answersToQuery(EXAMPLE_FARM.answers) },
   }
 }
