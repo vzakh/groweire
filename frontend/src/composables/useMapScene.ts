@@ -62,7 +62,8 @@ export function useMapScene() {
       key: `${layer.id}|${day}`,
       tiles: layer.url_template.replace('{Time}', day),
       maxzoom: layer.max_zoom ?? 9,
-      attribution: layer.attribution,
+      // The map's credits line says just "NASA" (allowed); the full product names are on More maps
+      attribution: layer.kind === 'gibs_wmts' ? 'NASA' : layer.attribution,
     }
   })
 
@@ -206,7 +207,7 @@ export function useMapScene() {
           tiles: [PHOTO_BACKDROP.tiles],
           tileSize: 256,
           maxzoom: PHOTO_BACKDROP.maxzoom,
-          attribution: 'NASA Blue Marble',
+          attribution: 'NASA',
         })
         m.addLayer(
           {
