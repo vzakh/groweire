@@ -27,7 +27,7 @@ Every dataset, method, guideline and software package GrowÉire uses, with its l
 | **MCD12Q1 v6.1**, MODIS/Terra+Aqua Land Cover Type Yearly L3 Global 500 m (IGBP) | NASA LP DAAC | Agricultural mask for the pilot grid (grassland, cropland, mosaic ≥ 30%) | NASA Earthdata | Friedl, M., Sulla-Menashe, D. (2022). <https://doi.org/10.5067/MODIS/MCD12Q1.061> |
 | **SRTMGL1 v003**, NASA Shuttle Radar Topography Mission Global 1 arc second | NASA LP DAAC | Elevation and slope per cell (erosion index, ET0 elevation) | NASA Earthdata | NASA JPL (2013). <https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003> |
 | **SMAP L4 Global 3-hourly 9 km Surface and Root Zone Soil Moisture, v8** (`SPL4SMGP`) | NASA NSIDC DAAC | Root-zone soil moisture series under *More detail* | AppEEARS (points) | Reichle, R., De Lannoy, G., Koster, R.D., Crow, W.T., Kimball, J.S., Liu, Q., Bechtold, M. (2025). <https://doi.org/10.5067/T5RUATAQREF8> |
-| **GIBS** WMTS imagery: `MODIS_Terra_CorrectedReflectance_TrueColor`, `MODIS_Terra_L3_NDVI_16Day`, `SMAP_L4_Analyzed_Root_Zone_Soil_Moisture` | NASA ESDIS | Map layers under *More maps* | Browser tiles from `gibs.earthdata.nasa.gov` | <https://nasa-gibs.github.io/gibs-api-docs/> |
+| **GIBS** WMTS imagery: `HLS_S30_Nadir_BRDF_Adjusted_Reflectance` (clear-sky photo, 2026-04-29), `MODIS_Terra_L3_NDVI_16Day`, `SMAP_L4_Analyzed_Root_Zone_Soil_Moisture` | NASA ESDIS | Map layers under *More maps* | Browser tiles from `gibs.earthdata.nasa.gov` | <https://nasa-gibs.github.io/gibs-api-docs/> |
 
 All NASA data above is open, with no restrictions on use.
 

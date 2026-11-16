@@ -11,18 +11,18 @@
     {
       "id": "true_colour",
       "title": "Satellite photo",
-      "description": "What the land looked like from space on that day. Clouds often hide Ireland.",
+      "description": "A clear NASA photo of the land from 29 April 2026, sharp enough to see single fields. Field shapes change little from year to year.",
       "kind": "gibs_wmts",
-      "gibs_identifier": "MODIS_Terra_CorrectedReflectance_TrueColor",
-      "url_template": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/{Time}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
-      "tile_matrix_set": "GoogleMapsCompatible_Level9",
-      "format": "image/jpeg",
-      "max_zoom": 9,
+      "gibs_identifier": "HLS_S30_Nadir_BRDF_Adjusted_Reflectance",
+      "url_template": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/HLS_S30_Nadir_BRDF_Adjusted_Reflectance/default/{Time}/GoogleMapsCompatible_Level12/{z}/{y}/{x}.png",
+      "tile_matrix_set": "GoogleMapsCompatible_Level12",
+      "format": "image/png",
+      "max_zoom": 12,
       "time": {
-        "default": "2026-11-14",
+        "default": "2026-04-29",
         "period": "P1D"
       },
-      "attribution": "NASA EOSDIS GIBS",
+      "attribution": "NASA EOSDIS GIBS, HLS (Harmonized Landsat Sentinel-2)",
       "dataset_id": "gibs"
     },
     {
