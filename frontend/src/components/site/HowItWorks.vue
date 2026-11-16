@@ -77,6 +77,10 @@ const providers: Source[] = [
                   v-if="HOW_IT_WORKS_SCREENSHOT"
                   :src="HOW_IT_WORKS_SCREENSHOT"
                   :alt="HOW_IT_WORKS_SCREENSHOT_ALT"
+                  width="1600"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
                   class="size-full object-cover"
                 >
                 <div
@@ -227,7 +231,7 @@ const providers: Source[] = [
 }
 .device-screen {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9; /* the screenshot's own shape, so nothing is cropped */
 }
 
 /* Placeholder: a quiet wireframe of the workspace */

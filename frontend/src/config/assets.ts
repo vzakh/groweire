@@ -11,8 +11,9 @@ export const HERO_IMAGE_ALT =
 
 /**
  * Section 4 ("How It Works") screenshot of the real GrowÉire interface.
- * null → a neutral placeholder screen is shown. When the interface exists, put the image in
- * public/img/ and set e.g. '/img/app-screenshot.png' (16:10 works best).
+ * Screenshots live in public/img/screenshots/ (16:9, 1600×900 JPEG from a 4K capture).
+ * null → a neutral placeholder screen is shown.
  */
-export const HOW_IT_WORKS_SCREENSHOT: string | null = null
-export const HOW_IT_WORKS_SCREENSHOT_ALT = 'The GrowÉire field workspace'
+export const HOW_IT_WORKS_SCREENSHOT: string | null = '/img/screenshots/app-step1-where.jpg'
+export const HOW_IT_WORKS_SCREENSHOT_ALT =
+  'The GrowÉire field app, step 1 "Where is your field?": a search box and the map of Ireland, with the four steps in the sidebar'
