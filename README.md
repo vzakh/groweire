@@ -91,18 +91,6 @@ flowchart LR
 
 **GrowÉire is live at [groweire.vercel.app](https://groweire.vercel.app/).** Search a town, mark your field, or press **Explore an example farm** for a ready-made farm near Athlone.
 
-### Run it on your own computer
-
-The quickest way is sample-data mode, which needs no database:
-
-```bash
-cd frontend
-npm ci
-npm run dev:mock    # opens http://localhost:5173
-```
-
-The full setup with the real API and database is in the [technical guide](docs/TECHNICAL.md#getting-started).
-
 ## 👥 Team KIPISH
 
 Built at NASA Space Apps 2026, Hack Athlone, by **Dmytro** ([@h0pers](https://github.com/h0pers)), **Vlad** ([@vzakh](https://github.com/vzakh)) and **Valeriia**.
