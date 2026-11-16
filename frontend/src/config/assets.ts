@@ -1,7 +1,7 @@
 /**
  * Visual assets in public/img/.
  * Licence: the hero photo's credit and licence are still to be confirmed before public use
- * (see README).
+ * (see docs/TECHNICAL.md, Limitations).
  *
  * hero.jpg is 2048×1534, the same aspect ratio as the 1800×1348 overlay coordinate space.
  */
