@@ -23,6 +23,16 @@ const styleVersion = ref(0)
 const status = ref<MapStatus>('idle')
 let container: HTMLDivElement | null = null
 let starting: Promise<void> | null = null
+/**
+ * True while the map should keep the whole island in view: at the start and after "start a new
+ * field". The map's box changes size after it opens (phone layout, sidebar, "Bigger map"), so on
+ * each resize it fits Ireland again, until the person moves the map or the app zooms to a place.
+ */
+let holdingIreland = true
+
+function fitIreland(m: MapLibreMap, duration = 0) {
+  m.fitBounds([[IRELAND[0], IRELAND[1]], [IRELAND[2], IRELAND[3]]], { padding: 24, duration })
+}
 
 function getContainer(): HTMLDivElement {
   if (!container) {
@@ -51,7 +61,21 @@ async function start(): Promise<void> {
       style: BASEMAP,
       bounds: IRELAND,
       fitBoundsOptions: { padding: 24 },
-      attributionControl: { compact: false },
+      // MapLibre's default: the full credits line on wide maps, an (i) button on maps ≤ 640 px
+      attributionControl: {},
+    })
+    // The (i) box starts open and covers the bottom of a short phone map (the south of Ireland).
+    // Start it closed; one tap on (i) opens it.
+    instance.once('load', () => {
+      const credits = getContainer().querySelector('.maplibregl-ctrl-attrib.maplibregl-compact')
+      credits?.classList.remove('maplibregl-compact-show')
+      credits?.removeAttribute('open')
+    })
+    instance.on('movestart', (event) => {
+      if (event.originalEvent) holdingIreland = false // the person dragged or zoomed
+    })
+    instance.on('resize', () => {
+      if (holdingIreland) fitIreland(instance)
     })
     instance.addControl(new NavigationControl({ showCompass: false }), 'top-right')
 
@@ -96,5 +120,16 @@ export function useMap() {
     if (container?.parentElement === host) host.removeChild(container)
   }
 
-  return { map, lib, status, styleVersion, attach, detach }
+  /** Show all of Ireland and keep it in view until something else is shown. */
+  function showIreland(duration = 900) {
+    holdingIreland = true
+    if (map.value) fitIreland(map.value, duration)
+  }
+
+  /** The app is about to zoom somewhere else: stop keeping Ireland in view. */
+  function releaseIreland() {
+    holdingIreland = false
+  }
+
+  return { map, lib, status, styleVersion, attach, detach, showIreland, releaseIreland }
 }

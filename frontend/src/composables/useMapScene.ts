@@ -7,7 +7,7 @@ import { useCatalogStore } from '@/stores/catalog'
 import { useFieldStore } from '@/stores/field'
 import { useFlowStore } from '@/stores/flow'
 import { useRiskStore } from '@/stores/risk'
-import { IRELAND, useMap } from './useMap'
+import { useMap } from './useMap'
 
 /**
  * What the one map shows and does, decided by where the person is:
@@ -33,7 +33,7 @@ const PHOTO_BACKDROP = {
 const PICTURE_LAYERS = ['picture-base', 'picture'] as const
 
 export function useMapScene() {
-  const { map, lib, styleVersion } = useMap()
+  const { map, lib, styleVersion, showIreland, releaseIreland } = useMap()
   const flow = useFlowStore()
   const field = useFieldStore()
   const risk = useRiskStore()
@@ -279,6 +279,7 @@ export function useMapScene() {
     const current = outline.value
     const box = current && bboxOf((current.geometry as { coordinates?: unknown }).coordinates)
     if (!m || !current || !box) return
+    releaseIreland()
     if (wide.value) m.flyTo({ center: current.centroid, zoom: 9.5, duration: 900 })
     else m.fitBounds([[box[0], box[1]], [box[2], box[3]]], { padding: 90, maxZoom: 13.5, duration: 900 })
   }
@@ -315,15 +316,14 @@ export function useMapScene() {
 
   /** Back to the whole island: where a new field starts. */
   function zoomToIreland() {
-    const m = ready()
-    if (!m) return
-    m.fitBounds([[IRELAND[0], IRELAND[1]], [IRELAND[2], IRELAND[3]]], { padding: 24, duration: 900 })
+    if (ready()) showIreland()
   }
 
   function zoomToPlace() {
     const m = ready()
     const target = field.place
     if (!m || !target) return
+    releaseIreland()
     const box = target.bbox
     if (box && box.length === 4) {
       m.fitBounds([[box[0]!, box[1]!], [box[2]!, box[3]!]], { padding: 40, maxZoom: 14, duration: 900 })

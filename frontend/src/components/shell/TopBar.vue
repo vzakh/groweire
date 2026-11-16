@@ -42,6 +42,10 @@ defineProps<{ compact?: boolean }>()
 const flow = useFlowStore()
 const { state, toggleSidebar } = useSidebar()
 
+/** Buttons on the dark green phone bar: outlined in white, like the sidebar header on desktop. */
+const ON_DARK =
+  'border-white/40 bg-transparent text-white shadow-none hover:bg-white/10 hover:text-white dark:bg-transparent dark:hover:bg-white/10'
+
 const here = computed(() =>
   flow.section ? copy.more[flow.section].label : copy.steps[flow.step - 1]!.short,
 )
@@ -99,22 +103,23 @@ const here = computed(() =>
     v-else
     class="@container shrink-0 border-b bg-background"
   >
-    <div class="flex h-(--app-header-h) items-center gap-2 px-4">
+    <!-- Dark green like the desktop sidebar header; the logo has the same hover -->
+    <div class="flex h-(--app-header-h) items-center gap-2 bg-forest-deep px-2 text-white">
       <RouterLink
         to="/"
-        class="tap inline-flex items-center"
+        class="tap inline-flex items-center rounded-md px-2 pt-3 pb-1 outline-hidden hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white"
         :aria-label="copy.field.home"
       >
-        <GrowEireLogo />
+        <GrowEireLogo on-dark />
       </RouterLink>
-      <div class="ml-auto flex items-center gap-2">
-        <TextSizeButton />
+      <div class="ml-auto flex items-center gap-2 pr-2">
+        <TextSizeButton :class="ON_DARK" />
         <!-- At the biggest text size a phone has no room for this button; the same page is in "More" -->
         <Button
           as-child
           variant="outline"
           size="tap"
-          class="@max-[20rem]:hidden"
+          :class="['@max-[20rem]:hidden', ON_DARK]"
         >
           <RouterLink :to="flow.place({ section: 'words' })">
             <CircleHelpIcon data-icon="inline-start" />
@@ -126,6 +131,7 @@ const here = computed(() =>
             <Button
               variant="outline"
               size="icon-tap"
+              :class="ON_DARK"
               :aria-label="copy.more.menu"
             >
               <EllipsisIcon />

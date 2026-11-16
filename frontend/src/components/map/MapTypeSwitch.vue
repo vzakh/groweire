@@ -108,9 +108,10 @@ const flow = useFlowStore()
   line-height: 1;
   text-align: center;
 }
+/* Phones: the map is short, so keep the tile small and in the corner (credits are an (i) there) */
 @media (max-width: 640px) {
-  .map-switch { width: 6.5rem; height: 6.5rem; }
-  .map-switch__label { padding: 1.1rem 0.4rem 0.4rem; font-size: 0.9375rem; }
+  .map-switch { width: 4.25rem; height: 4.25rem; right: 0.5rem; bottom: 2.25rem; border-width: 2px; border-radius: 0.6rem; }
+  .map-switch__label { padding: 0.9rem 0.2rem 0.25rem; font-size: 0.8125rem; }
 }
 .map-switch:hover { box-shadow: 0 3px 12px rgb(0 0 0 / 0.45); }
 .map-switch:focus-visible {
