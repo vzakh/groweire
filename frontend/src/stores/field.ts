@@ -28,6 +28,13 @@ export const useFieldStore = defineStore('field', () => {
     return places.run(() => unwrap(api.GET('/api/v1/places', { params: { query: { q } } })))
   }
 
+  /** The search box was emptied: forget the results and the place picked from them. */
+  function clearSearch() {
+    places.reset()
+    searched.value = ''
+    place.value = null
+  }
+
   function choosePlace(result: Schemas['Place']) {
     place.value = result
   }
@@ -91,11 +98,12 @@ export const useFieldStore = defineStore('field', () => {
   const conditions = useResource<Schemas['ConditionsOut']>()
 
   /** Create the field from what was placed. Resolves the new field, or null on failure. */
-  async function create(): Promise<Schemas['FieldOut'] | null> {
+  async function create(name?: string): Promise<Schemas['FieldOut'] | null> {
     const body: Schemas['FieldCreate'] = hasDrawing.value
       ? { geometry: polygonFromCorners(corners.value) }
       : { point: point.value, area_ha: areaHa.value }
-    if (place.value) body.name = `Near ${place.value.name.split(',')[0]}`
+    if (name) body.name = name
+    else if (place.value) body.name = `Near ${place.value.name.split(',')[0]}`
     const created = await field.run(() => unwrap(api.POST('/api/v1/fields', { body })))
     if (created) {
       conditions.reset()
@@ -132,6 +140,7 @@ export const useFieldStore = defineStore('field', () => {
     searched,
     place,
     search,
+    clearSearch,
     choosePlace,
     point,
     areaHa,

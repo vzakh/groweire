@@ -58,7 +58,7 @@ export const copy = {
 
   where: {
     searchLabel: 'Town or townland',
-    searchPlaceholder: 'For example Bagenalstown',
+    searchPlaceholder: 'For example Athlone',
     searchButton: 'Find',
     searching: 'Searching…',
     noResults: "We couldn't find that place. Tap your field on the map instead.",

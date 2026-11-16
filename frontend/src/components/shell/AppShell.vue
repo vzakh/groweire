@@ -11,11 +11,13 @@ import { useMapScene } from '@/composables/useMapScene'
 import { initTextScale } from '@/composables/useTextScale'
 import { copy } from '@/copy/en'
 import { riskCrop } from '@/lib/answers'
+import { EXAMPLE_FARM, exampleFarmRoute } from '@/lib/example'
 import { checkContract } from '@/lib/api'
 import { useCatalogStore } from '@/stores/catalog'
 import { useFieldStore } from '@/stores/field'
 import { useFlowStore } from '@/stores/flow'
 import { useRiskStore } from '@/stores/risk'
+import { router } from '@/router'
 import AppSidebar from './AppSidebar.vue'
 import FieldPanel from './FieldPanel.vue'
 import PanelFooter from './PanelFooter.vue'
@@ -38,7 +40,17 @@ useMapScene()
 
 onMounted(() => {
   void checkContract()
+  void openExampleFarm()
 })
+
+/** `/app?farm=sample` (the landing page's "Explore an example farm"): make the example field. */
+async function openExampleFarm() {
+  if (router.currentRoute.value.query.farm !== 'sample' || flow.fieldId) return
+  field.setPoint(EXAMPLE_FARM.point)
+  field.setArea(EXAMPLE_FARM.areaHa)
+  const created = await field.create(EXAMPLE_FARM.name)
+  if (created) await router.replace(exampleFarmRoute(created.field_id))
+}
 
 // As soon as there is a field: load it (a shared link), then fetch in the background what the
 // next steps need, so the answer is ready by the time the farmer gets there.

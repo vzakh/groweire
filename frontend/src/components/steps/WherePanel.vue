@@ -23,6 +23,10 @@ const catalog = useCatalogStore()
 
 const SIZES = [2, 5, 10, 20, 40]
 const query = ref(field.searched)
+// Emptying the box (typing it away or the search field's own ✕) clears the places found
+watch(query, (text) => {
+  if (!text.trim()) field.clearSearch()
+})
 const otherSize = ref(!SIZES.includes(field.areaHa))
 
 const sizeChoice = computed({

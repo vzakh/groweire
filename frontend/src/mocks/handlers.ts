@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { areaHa, circlePolygon, type LngLat, type Polygon } from '@/lib/geo'
 
 /**
  * Mock handlers built from the backend's recorded responses
@@ -33,6 +34,30 @@ function reply(name: string) {
 }
 
 const API = '/api/v1'
+
+/** Fields placed in mock mode, by id, kept for the browser tab so a reload finds them again. */
+const STORE_KEY = 'groweire:mock-fields'
+function remember(field: Record<string, unknown>) {
+  try {
+    const all = JSON.parse(sessionStorage.getItem(STORE_KEY) ?? '{}') as Record<string, unknown>
+    all[String(field.field_id)] = field
+    sessionStorage.setItem(STORE_KEY, JSON.stringify(all))
+  } catch {
+    // storage blocked: the field still works until the page reloads
+  }
+}
+function recall(id: string): unknown {
+  try {
+    return (JSON.parse(sessionStorage.getItem(STORE_KEY) ?? '{}') as Record<string, unknown>)[id] ?? null
+  } catch {
+    return null
+  }
+}
+function centre(ring: LngLat[]): LngLat {
+  const points = ring.slice(0, -1)
+  const sum = points.reduce(([x, y], [a, b]) => [x + a, y + b], [0, 0])
+  return [Math.round((sum[0] / points.length) * 1e6) / 1e6, Math.round((sum[1] / points.length) * 1e6) / 1e6]
+}
 
 /**
  * Live place search for mock mode, with the same request and result shape as the backend
@@ -96,19 +121,36 @@ export const handlers = [
 
   http.get(`${API}/places`, async ({ request }) => {
     const q = (new URL(request.url).searchParams.get('q') ?? '').trim().toLowerCase()
-    if (q === 'bagenalstwn') return reply('places_fallback')
-    if (q.includes('bagenal')) return reply('places')
-    // Any other search: ask OpenStreetMap live, like the backend (clients/nominatim.py)
+    // Ask OpenStreetMap live, like the backend (clients/nominatim.py)
     const { attribution, source } = fixtures.places ?? {}
     return HttpResponse.json({ results: await nominatim(q), attribution, source })
   }),
 
+  // The recorded sample field is near Bagenalstown; put it where the person placed theirs instead.
+  // Its weather, soil and rotation answers stay the recorded sample (they are examples).
   http.post(`${API}/fields`, async ({ request }) => {
-    const body = (await request.json()) as { point?: unknown; area_ha?: unknown; geometry?: unknown }
+    const body = (await request.json()) as {
+      point?: LngLat
+      area_ha?: number
+      geometry?: Polygon
+      name?: string
+    }
     const hasPoint = body.point != null && body.area_ha != null
     const hasShape = body.geometry != null
     if (hasPoint === hasShape) return reply('error_validation')
-    return reply(hasShape ? 'fields_create_polygon' : 'fields_create_point')
+    const { _fixture_source, _request, ...sample } = fixtures[hasShape ? 'fields_create_polygon' : 'fields_create_point']!
+    const geometry = hasShape ? body.geometry! : circlePolygon(body.point!, body.area_ha!)
+    const ring = geometry.coordinates[0]!
+    const field = {
+      ...sample,
+      name: body.name ?? null,
+      geometry,
+      area_ha: hasShape ? Math.round(areaHa(ring.slice(0, -1) as LngLat[]) * 10) / 10 : body.area_ha,
+      area_source: hasShape ? 'drawn' : 'approximate',
+      centroid: hasShape ? centre(ring) : body.point,
+    }
+    remember(field)
+    return HttpResponse.json(field, { status: _request.status })
   }),
 
   http.get(`${API}/fields/:id/conditions`, ({ params }) => {
@@ -117,10 +159,12 @@ export const handlers = [
     return reply('error_field_not_found')
   }),
 
-  // There is no recorded field for the non-pilot id yet, so only the pilot field restores.
-  http.get(`${API}/fields/:id`, ({ params }) =>
-    reply(params.id === 'f_00000001' ? 'fields_get' : 'error_field_not_found'),
-  ),
+  // The field as it was placed (kept for this browser tab), else the recorded sample field
+  http.get(`${API}/fields/:id`, ({ params }) => {
+    const placed = recall(String(params.id))
+    if (placed) return HttpResponse.json(placed)
+    return reply(params.id === 'f_00000001' ? 'fields_get' : 'error_field_not_found')
+  }),
 
   http.post(`${API}/predict/stress-risk`, async ({ request }) => {
     const body = (await request.json()) as { field_id?: string; crop_id?: string | null }
