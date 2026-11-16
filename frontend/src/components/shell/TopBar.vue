@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import {
   ArrowLeftIcon,
   BookOpenIcon,
+  ChevronDownIcon,
   CircleHelpIcon,
   EllipsisIcon,
   InfoIcon,
@@ -15,6 +16,7 @@ import GrowEireLogo from '@/components/brand/GrowEireLogo.vue'
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -29,8 +31,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useSidebar } from '@/components/ui/sidebar'
 import { copy } from '@/copy/en'
-import { STEP_COUNT } from '@/lib/query'
-import { useFlowStore } from '@/stores/flow'
+import { STEP_COUNT, type Step } from '@/lib/query'
+import { useFlowStore, type Section } from '@/stores/flow'
 import TextSizeButton from './TextSizeButton.vue'
 import { useStartAgain } from '@/composables/useStartAgain'
 
@@ -48,6 +50,18 @@ const startAgain = useStartAgain()
 /** Buttons on the dark green phone bar: outlined in white, like the sidebar header on desktop. */
 const ON_DARK =
   'border-white/40 bg-transparent text-white shadow-none hover:bg-white/10 hover:text-white dark:bg-transparent dark:hover:bg-white/10'
+
+/** The step just before the current one (from step 3 on; on step 2 it is "Your field" = step 1). */
+const earlier = computed(() =>
+  flow.step > 2 ? [{ label: copy.steps[flow.step - 2]!.short, step: (flow.step - 1) as Step }] : [],
+)
+const SECTIONS: Section[] = ['maps', 'words', 'sources']
+/** "Your field" gives way first: below 44rem whenever it is a link, below 58rem when a step-back link follows */
+const lead = computed(() => ({
+  '@max-[44rem]:hidden': Boolean(flow.section) || flow.step > 1,
+  '@max-[58rem]:hidden': earlier.value.length > 0,
+}))
+const LINK = 'cursor-pointer whitespace-nowrap rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ring'
 
 const here = computed(() =>
   flow.section ? copy.more[flow.section].label : copy.steps[flow.step - 1]!.short,
@@ -73,13 +87,78 @@ const here = computed(() =>
 
     <Breadcrumb class="min-w-0">
       <!-- When the bar is tight (big text, narrow window) only the current place is shown -->
+      <!--
+        Every part but the last is a link. Steps: "Your field" goes to step 1, then the step just
+        before this one (one step back). More pages: "Your field" goes back to the step you were
+        on, "More" opens the list of More pages. A tight bar drops "Your field" when it can.
+      -->
       <BreadcrumbList class="flex-nowrap text-base text-foreground">
-        <BreadcrumbItem class="@max-[44rem]:hidden">
-          {{ flow.section ? copy.more.group : copy.stepsGroup }}
+        <BreadcrumbItem :class="lead">
+          <BreadcrumbLink
+            v-if="flow.section || flow.step > 1"
+            as="button"
+            type="button"
+            :class="LINK"
+            @click="flow.section ? flow.backToField() : flow.goTo(1)"
+          >
+            {{ copy.stepsGroup }}
+          </BreadcrumbLink>
+          <template v-else>
+            {{ copy.stepsGroup }}
+          </template>
         </BreadcrumbItem>
-        <BreadcrumbSeparator class="@max-[44rem]:hidden" />
+        <BreadcrumbSeparator :class="lead" />
+
+        <template v-if="flow.section">
+          <BreadcrumbItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                :class="[LINK, 'inline-flex items-center gap-1']"
+              >
+                {{ copy.more.group }}
+                <ChevronDownIcon
+                  class="size-4"
+                  aria-hidden="true"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="start"
+                class="min-w-56"
+              >
+                <DropdownMenuItem
+                  v-for="id in SECTIONS"
+                  :key="id"
+                  class="min-h-11"
+                  @select="flow.openSection(id)"
+                >
+                  {{ copy.more[id].label }}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+        </template>
+
+        <template
+          v-for="item in flow.section ? [] : earlier"
+          :key="item.step"
+        >
+          <!-- One step back -->
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              as="button"
+              type="button"
+              :class="LINK"
+              @click="flow.goTo(item.step)"
+            >
+              {{ item.label }}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+        </template>
+
         <BreadcrumbItem class="min-w-0">
-          <BreadcrumbPage class="truncate font-bold">
+          <BreadcrumbPage class="truncate font-bold whitespace-nowrap">
             {{ here }}
           </BreadcrumbPage>
         </BreadcrumbItem>
@@ -94,7 +173,8 @@ const here = computed(() =>
         @click="startAgain"
       >
         <RotateCcwIcon data-icon="inline-start" />
-        <span class="@max-[44rem]:hidden">{{ copy.startAgain }}</span>
+        <!-- Label only when the bar is wide; the trail needs the room first -->
+        <span class="@max-[62rem]:hidden">{{ copy.startAgain }}</span>
       </Button>
       <TextSizeButton />
       <Button
