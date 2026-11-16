@@ -81,7 +81,8 @@ const providers: Source[] = [
                   height="900"
                   loading="lazy"
                   decoding="async"
-                  class="size-full object-cover"
+                  draggable="false"
+                  class="screenshot size-full object-cover"
                 >
                 <div
                   v-else
@@ -232,6 +233,13 @@ const providers: Source[] = [
 .device-screen {
   position: relative;
   aspect-ratio: 16 / 9; /* the screenshot's own shape, so nothing is cropped */
+}
+/* A picture of the app, not the app: no clicks, drags, selection or long-press menu on it */
+.screenshot {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
 /* Placeholder: a quiet wireframe of the workspace */
