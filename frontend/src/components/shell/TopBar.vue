@@ -102,10 +102,10 @@ const here = computed(() =>
     <div class="flex h-(--app-header-h) items-center gap-2 px-4">
       <RouterLink
         to="/"
-        class="tap inline-flex items-center rounded-md bg-forest-night px-3 pt-3 pb-2"
+        class="tap inline-flex items-center"
         :aria-label="copy.field.home"
       >
-        <GrowEireLogo on-dark />
+        <GrowEireLogo />
       </RouterLink>
       <div class="ml-auto flex items-center gap-2">
         <TextSizeButton />

@@ -36,15 +36,12 @@ const label = computed(() => {
         <DropdownMenuTrigger as-child>
           <SidebarMenuButton
             size="lg"
-            class="h-auto min-h-14"
+            class="h-auto min-h-14 pt-3 hover:bg-white/10 hover:text-white active:bg-white/10 active:text-white data-open:hover:bg-white/10 data-open:hover:text-white data-[state=open]:bg-white/10"
             :aria-label="`${copy.brand}. ${label}. ${copy.field.menuLabel}`"
           >
-            <span class="flex min-w-0 flex-1 flex-col gap-1.5 text-left">
-              <!-- Dark band like the landing header, with room above the E for the sprout -->
-              <span class="self-start rounded-md bg-forest-night px-3 pt-3 pb-2">
-                <GrowEireLogo on-dark />
-              </span>
-              <span class="truncate">{{ label }}</span>
+            <span class="flex min-w-0 flex-1 flex-col text-left">
+              <GrowEireLogo on-dark />
+              <span class="truncate text-white/85">{{ label }}</span>
             </span>
             <ChevronsUpDownIcon aria-hidden="true" />
           </SidebarMenuButton>

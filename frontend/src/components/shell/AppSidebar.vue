@@ -24,7 +24,8 @@ const flow = useFlowStore()
 
 <template>
   <Sidebar collapsible="offcanvas">
-    <SidebarHeader>
+    <!-- Dark green like the landing page bar, so the white logo and lime sprout stand out -->
+    <SidebarHeader class="bg-forest-deep text-white">
       <FieldSwitcher />
     </SidebarHeader>
 
