@@ -16,7 +16,11 @@
 </p>
 
 <p align="center">
-  <a href="#-live-demo">Live demo</a> ·
+  <a href="https://groweire.vercel.app/"><img src="https://img.shields.io/badge/Live%20demo-groweire.vercel.app-0d3b26?style=for-the-badge&logo=vercel&logoColor=white" alt="Live demo: groweire.vercel.app"></a>
+</p>
+
+<p align="center">
+  <a href="https://groweire.vercel.app/"><b>Try it live</b></a> ·
   <a href="#-how-it-works">How it works</a> ·
   <a href="#-tech-stack">Tech stack</a> ·
   <a href="docs/TECHNICAL.md">Technical guide</a> ·
@@ -28,7 +32,7 @@
 </p>
 
 > [!NOTE]
-> **A quick word on this repo.** GrowÉire was built in one weekend by team KIPISH at NASA Space Apps 2026 (Hack Athlone, Ireland). This is a lightly polished copy of that project, tidied up mainly so it can be hosted and used online: a clearer map, sharper NASA satellite imagery, smoother mobile layout and a few bug fixes. The original hackathon code lives at **[h0pers/nasa-hackathon-2026](https://github.com/h0pers/nasa-hackathon-2026)**.
+> **A quick word on this repo.** GrowÉire was built in one weekend by team KIPISH at NASA Space Apps 2026 (Hack Athlone, Ireland). This is a lightly polished copy of that project, tidied up mainly so it can be hosted and used online (now live at **[groweire.vercel.app](https://groweire.vercel.app/)**): a clearer map, sharper NASA satellite imagery, smoother mobile layout and a few bug fixes. The original hackathon code lives at **[h0pers/nasa-hackathon-2026](https://github.com/h0pers/nasa-hackathon-2026)**.
 
 ---
 
@@ -85,7 +89,20 @@ flowchart LR
 
 ## 🚀 Live demo
 
-The hosted version is coming soon. Until then, you can run it locally in sample-data mode, which needs no database:
+**GrowÉire is live at [groweire.vercel.app](https://groweire.vercel.app/).** Search a town, mark your field, or press **Explore an example farm** for a ready-made farm near Athlone.
+
+> [!TIP]
+> It runs on free hosting, so the server sleeps when nobody has used it for a while. The first answer can take up to a minute while it wakes up (the app tells you), and after that it's quick.
+
+| Part | Hosted on |
+|---|---|
+| Website | [Vercel](https://vercel.com) |
+| API (FastAPI, Docker) | [Render](https://render.com), Frankfurt |
+| Database (Postgres + PostGIS) | [Neon](https://neon.com), Frankfurt |
+
+### Run it on your own computer
+
+The quickest way is sample-data mode, which needs no database:
 
 ```bash
 cd frontend
