@@ -256,7 +256,9 @@ import { HERO_IMAGE, HERO_IMAGE_ALT } from '@/config/assets'
   padding: 1.5rem 0 0;
   border-top: 1px solid rgba(246, 245, 239, 0.22);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Each step as wide as its words (one line on desktop), spread across the row */
+  grid-template-columns: repeat(3, auto);
+  justify-content: space-between;
   gap: 1.5rem;
 }
 .hsteps li {
