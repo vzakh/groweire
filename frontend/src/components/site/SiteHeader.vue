@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
- * Top bar, ported from final-header/groweire-v7.3 (`header.top`). Right corner: the A+ text-size
- * button (100 / 125 / 150%) and the Find my field button (desing-reference/desired.jpg).
+ * Top bar. Right corner: the A+ text-size
+ * button (100 / 125 / 150%) and the Find my field button.
  * Fixed; dark gradient over the hero photo, solid deep green after 70% of a screen of scroll.
  * The link for the section currently in view is underlined in lime.
  * Links point at the matching parts of this page.
@@ -124,7 +124,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
 </template>
 
 <style scoped>
-/* Top bar (v7.3) */
+/* Top bar */
 .top {
   position: fixed;
   left: 0;
@@ -151,7 +151,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
 }
 .dark :focus-visible { outline-color: #c8f36b; }
 
-/* Wordmark (v7.3) */
+/* Wordmark */
 .wordmark {
   display: inline-flex;
   align-items: center;
@@ -167,7 +167,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
 /* the header sets the size (smaller at big text sizes on phones) */
 .wordmark :deep(.ge-logo) { font-size: inherit; }
 
-/* Links (v7.3) */
+/* Links */
 .navl {
   display: flex;
   gap: 0.25rem;
@@ -188,7 +188,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScrollRaf))
 }
 .navl a[aria-current='true'] { border-bottom-color: #c8f36b; }
 
-/* A+ and Find my field (reference: desing-reference/desired.jpg) */
+/* A+ and Find my field */
 .aplus {
   min-width: 3.25rem;
   min-height: 3rem;

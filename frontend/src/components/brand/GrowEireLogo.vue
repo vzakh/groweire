@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * GrowÉire wordmark, the same one as the landing page header (final-header/groweire-v7.3):
+ * GrowÉire wordmark, the same one as the landing page header:
  * "GrowEire" with a lime sprout over the E standing in for the fada.
  * White text on dark backgrounds (`onDark`), forest green on light ones. The sprout stays lime.
  * Size follows `--ge-logo-size` (default 1.5rem), or `font-size` set on the logo itself.

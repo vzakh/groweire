@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Homepage hero, ported exactly from final-header/groweire-v7.3 (`section.home`).
+ * Homepage hero: photo, headline, the three steps and the main buttons.
  * Links point at this site: "Check my field" → /app, "Explore an example farm" → the sample farm.
  * Motion (photo settle, line draw, headline rise) is frozen by style.css for reduced motion / ?static=1.
  */
@@ -106,7 +106,7 @@ import { HERO_IMAGE, HERO_IMAGE_ALT } from '@/config/assets'
 </template>
 
 <style scoped>
-/* All values from final-header/groweire-v7.3 */
+/* Hero layout and colours */
 .dark {
   background: #0c2019;
   color: #ffffff;
