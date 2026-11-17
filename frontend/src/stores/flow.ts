@@ -66,23 +66,48 @@ export const useFlowStore = defineStore('flow', () => {
     guard = next
   }
 
+  /** Run the current step's check. True: free to move on. */
+  async function passGuard(): Promise<boolean> {
+    blocked.value = null
+    if (!guard) return true
+    busy.value = true
+    try {
+      const verdict = await guard()
+      if (typeof verdict === 'string') blocked.value = verdict
+      return verdict === true
+    } finally {
+      busy.value = false
+    }
+  }
+
   async function next() {
     if (isLast.value || busy.value) return
-    blocked.value = null
-    if (guard) {
-      busy.value = true
-      try {
-        const verdict = await guard()
-        if (verdict === false) return
-        if (typeof verdict === 'string') {
-          blocked.value = verdict
-          return
-        }
-      } finally {
-        busy.value = false
-      }
-    }
-    await goTo((step.value + 1) as Step)
+    if (await passGuard()) await goTo((step.value + 1) as Step)
+  }
+
+  /** The furthest step reached with each field, so steps already seen stay one tap away. */
+  const furthest = ref<Record<string, Step>>({})
+  watch(
+    [fieldId, step],
+    ([id, now]) => {
+      if (id && now > (furthest.value[id] ?? 1)) furthest.value = { ...furthest.value, [id]: now }
+    },
+    { immediate: true },
+  )
+  const reached = computed<Step>(() =>
+    fieldId.value ? (Math.max(furthest.value[fieldId.value] ?? 1, step.value) as Step) : 1,
+  )
+  /** A step the list can open: any step reached so far, or the one after it (like Next). */
+  function canJump(target: Step) {
+    return target <= Math.min(reached.value + 1, STEP_COUNT)
+  }
+
+  /** Open a step from the step list. Going forward runs the same check as Next. */
+  async function jump(target: Step) {
+    if (target === step.value || busy.value || !canJump(target)) return
+    if (target < step.value) return goTo(target)
+    // Step 1's check makes the field and moves to step 2 itself (it then answers false)
+    if (await passGuard()) await goTo(target)
   }
 
   function back() {
@@ -127,6 +152,9 @@ export const useFlowStore = defineStore('flow', () => {
     goTo,
     setGuard,
     next,
+    reached,
+    canJump,
+    jump,
     back,
     openSection,
     backToField,

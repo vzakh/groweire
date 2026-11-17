@@ -14,14 +14,16 @@ import { useFlowStore } from '@/stores/flow'
 
 /**
  * The four steps as a progress list (done, now, next), not a menu.
- * A finished step can be tapped to go back to it; steps ahead are reached with Next.
+ * Any step already reached with this field can be tapped, before or after the current one,
+ * and so can the step after the furthest one (same checks as Next). Later steps wait.
  */
 const flow = useFlowStore()
 
 function stateOf(n: number): 'done' | 'now' | 'next' {
-  if (n < flow.step) return 'done'
-  return n === flow.step ? 'now' : 'next'
+  if (n === flow.step) return 'now'
+  return n <= flow.reached ? 'done' : 'next'
 }
+const open = (n: number) => n !== flow.step && flow.canJump(n as Step)
 </script>
 
 <template>
@@ -39,9 +41,9 @@ function stateOf(n: number): 'done' | 'now' | 'next' {
             size="lg"
             :is-active="stateOf(index + 1) === 'now'"
             :aria-current="stateOf(index + 1) === 'now' ? 'step' : undefined"
-            :as="stateOf(index + 1) === 'next' ? 'div' : 'button'"
-            :class="{ 'hover:bg-transparent active:bg-transparent': stateOf(index + 1) === 'next' }"
-            @click="stateOf(index + 1) !== 'next' && flow.goTo((index + 1) as Step)"
+            :as="open(index + 1) || stateOf(index + 1) === 'now' ? 'button' : 'div'"
+            :class="{ 'hover:bg-transparent active:bg-transparent': !open(index + 1) && stateOf(index + 1) !== 'now' }"
+            @click="open(index + 1) && flow.jump((index + 1) as Step)"
           >
             <span
               class="flex size-8 shrink-0 items-center justify-center rounded-full border-2 font-bold"
