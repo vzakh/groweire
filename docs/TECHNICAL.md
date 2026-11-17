@@ -9,7 +9,7 @@ Built for **NASA Space Apps Challenge 2026: _Field Shift: Adapting Farms with NA
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](../LICENSE) ![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg) ![Vue 3](https://img.shields.io/badge/vue-3.5-42b883.svg)
 
 > [!NOTE]
-> **Status: hackathon proof of concept.** The guided flow, the counted-risk engine, the rotation comparison and the landing page all work end to end against the API or recorded fixtures. The project runs locally; see [Running locally](#running-locally).
+> **Status: hackathon proof of concept.** The guided flow, the counted-risk engine, the rotation comparison and the landing page all work end to end against the API or recorded fixtures. It is live at [groweire.vercel.app](https://groweire.vercel.app/), and it also runs locally; see [Running locally](#running-locally).
 
 > [!IMPORTANT]
 > GrowÉire **supports, but does not replace**, the farmer's own judgement and local agronomic advice. Every answer lists its information gaps and points the farmer to their advisor.
