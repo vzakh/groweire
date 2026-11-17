@@ -354,8 +354,7 @@ That is why field-level outputs are *risk indicators*, not measurements.
 ├── Makefile                     every common task (see below)
 ├── REFERENCES.md                every source, with DOIs, licences and acknowledgement wording
 ├── LICENSE                      MIT
-├── pyproject.toml · uv.lock     uv workspace root (Python 3.12)
-└── .mcp.json · .claude/skills/  shadcn-vue MCP server and agent skill for Claude Code
+└── pyproject.toml · uv.lock     uv workspace root (Python 3.12)
 ```
 
 `data/` (raw downloads, processed Parquet and generated synthetic tables) is **gitignored**. It is created locally by the steps below.
@@ -739,7 +738,6 @@ See [Getting started](#getting-started) for the three ways to start it.
 - **Changing wording** in `plain.yaml` changes what farmers read. The snapshot tests in `backend/tests/test_plain.py` must be updated deliberately.
 - **Changing the API** means regenerating `openapi.json`, the fixtures and the frontend types in the same change (see [Testing](#testing-and-quality-checks)).
 - **Secrets.** Never commit `.env`, `.netrc`, `.envs/.dev/` or `.envs/.prod/`, or Earthdata credentials.
-- **Claude Code.** `.mcp.json` registers the shadcn-vue MCP server, and `.claude/skills/shadcn-vue/` holds its skill for adding UI components consistently.
 
 ## Acknowledgements and data attribution
 

@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "shadcnVue": {
-      "command": "npx",
-      "args": ["--prefix", "frontend", "shadcn-vue", "mcp", "--cwd", "frontend"]
-    }
-  }
-}

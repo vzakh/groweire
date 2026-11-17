@@ -24,12 +24,19 @@ ml/artifacts/_scratch/
 .envs/.dev/
 .envs/.prod/
 
-# Claude Code: keep the shared shadcn-vue skill, ignore each person's local tools and settings
-.claude/*
-!.claude/skills/
-.claude/skills/*
-!.claude/skills/shadcn-vue/
+# Local developer tooling (not part of the project)
+.claude/
+.mcp.json
+.agents/
+.cursor/
+.codex/
+.gemini/
+.windsurf/
+.continue/
+.aider*
 CLAUDE.md
+AGENTS.md
+GEMINI.md
 skills-lock.json
 
 # Local tool output (may contain credentials or screenshots)
